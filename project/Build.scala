@@ -1,3 +1,5 @@
+import sbt._
+import play.Project._
 
 object ApplicationBuild extends Build {
 
@@ -7,7 +9,15 @@ object ApplicationBuild extends Build {
   val appDependencies = Seq(
     // Add your project dependencies here,
     jdbc,
-    anorm
+    anorm,
+    "junit" % "junit-dep" % "4.11" % "test",
+    "info.cukes" % "cucumber-scala" % "1.1.3" % "test",
+    "info.cukes" % "cucumber-junit" % "1.1.3" % "test",
+    "org.fluentlenium" % "fluentlenium-core" % "0.7.7" % "test",
+
+    "play" %% "play-test" % "2.1.0" % "test",
+    "org.specs2" %% "specs2" % "1.14" % "test"
+
   )
 
 
