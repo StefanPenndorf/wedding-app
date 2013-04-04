@@ -23,8 +23,7 @@ object ApplicationBuild extends Build {
 
 
     "play" %% "play-test" % "2.1.0" % "test",
-    "org.specs2" %% "specs2" % "1.14" % "test"
-
+    "org.scalatest" %% "scalatest" % "1.9.1" % "test"
   )
 
 
