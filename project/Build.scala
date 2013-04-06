@@ -22,7 +22,7 @@ object ApplicationBuild extends Build {
     "org.seleniumhq.selenium" % "selenium-java" % "2.31.0" % "test",
 
 
-    "play" %% "play-test" % "2.1.0" % "test",
+    "play" %% "play-test" % "2.1.1" % "test",
     "org.scalatest" %% "scalatest" % "1.9.1" % "test"
   )
 
