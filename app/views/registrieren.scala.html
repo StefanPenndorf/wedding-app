@@ -1,0 +1,31 @@
+@(registrierungsFormular: Form[_root_.registrierung.HochzeitsGastBewerbung])
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@main() {
+    <h1>Als Hochzeitsgast registrieren</h1>
+
+    @form(action = routes.Registrierung.registrieren) {
+
+        @inputText(
+            registrierungsFormular("nutzername"),
+            'id -> "nutzername",
+            'size -> 30
+        )
+
+        @inputText(
+            registrierungsFormular("email"),
+            'id -> "email",
+            'size -> 30
+        )
+
+
+        <input type="submit" id="registrieren" value="Registrieren" />
+
+}
+
+}
+
+
+

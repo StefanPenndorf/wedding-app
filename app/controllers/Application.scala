@@ -2,6 +2,10 @@ package controllers
 
 import play.api.mvc._
 
+/**
+ *
+ * @author Stefan Penndorf <stefan@cyphoria.net>
+ */
 object Application extends Controller {
 
   def index = Action {
@@ -12,5 +16,5 @@ object Application extends Controller {
     Ok(views.html.impressum())
   }
 
-  
+
 }

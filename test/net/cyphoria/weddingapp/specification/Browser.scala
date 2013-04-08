@@ -13,23 +13,55 @@ import org.openqa.selenium.firefox.FirefoxDriver
  */
 trait Browser extends ScalaDsl {
 
+  lazy val browser = Browser.browser.get
+  lazy val server = Browser.server
+
+  Browser.register(this)
+
+  def registerHooks() {
+    Before { f: (Scenario) => Unit
+      Browser.server.start()
+    }
+
+    Before { f: (Scenario) => Unit
+      Browser.startBrowser()
+    }
+
+    After { f: (Scenario) => Unit
+       Browser.stopBrowser()
+    }
+
+    After { f: (Scenario) => Unit
+       Browser.server.stop()
+    }
+  }
+
+}
+
+object Browser {
+
   var webDriver: Class[FirefoxDriver] = Helpers.FIREFOX
   var port: Int = Helpers.testServerPort
   var app: FakeApplication = FakeApplication()
 
-  lazy val browser: TestBrowser = TestBrowser.of(webDriver, Some("http://localhost:" + port))
+  var browser: Option[TestBrowser] = Option.empty
   lazy val server: TestServer = TestServer(port, app)
 
-  Before { f: (Scenario) => Unit
-    server.start()
+  var hooksRegistered = false
+
+  def register(that: Browser) {
+      if (!hooksRegistered) {
+        that.registerHooks()
+        hooksRegistered = true
+      }
   }
 
-  After { f: (Scenario) => Unit
-    browser.quit()
+  def startBrowser() {
+    browser = Option(TestBrowser.of(webDriver, Some("http://localhost:" + port)))
   }
 
-  After { f: (Scenario) => Unit
-    server.stop()
+  def stopBrowser() {
+    browser.get.quit()
   }
 
 }

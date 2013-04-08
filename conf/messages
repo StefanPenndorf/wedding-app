@@ -1,0 +1,36 @@
+nutzername=Nutzername
+email=E-Mail
+
+
+# Default messages
+
+# --- Constraints
+constraint.required=Pflichtfeld
+constraint.min=Mindeswert: {0}
+constraint.max=Mindeswert: {0}
+constraint.minLength=Mindestlänge: {0}
+constraint.maxLength=Maximallänge: {0}
+constraint.email=Gültige E-Mail-Adresse
+
+# --- Formats
+format.date=Date (''{0}'')
+format.numeric=Numeric
+format.real=Real
+
+# --- Errors
+error.invalid=Ungültige Eingabe
+error.required=Eingabe in diesem Feld wird benötigt.
+error.number=Numeric value expected
+error.real=Real number value expected
+error.real.precision=Real number value with no more than {0} digit(s) including {1} decimal(s) expected
+error.min=Must be greater or equal to {0}
+error.min.strict=Must be strictly greater than {0}
+error.max=Must be less or equal to {0}
+error.max.strict=Must be strictly less than {0}
+error.minLength=Mindestlänge ist {0}
+error.maxLength=Maximallänge ist {0}
+error.email=Eine gültige E-Mail wird benötigt
+error.pattern=Must satisfy {0}
+# --- Constraints
+
+# --- Errors
