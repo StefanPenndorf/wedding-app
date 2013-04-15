@@ -1,5 +1,8 @@
 nutzername=Nutzername
 email=E-Mail
+sicherheitsfrage=Sicherheitsfrage: Von wem stammt das Zitat auf der Einladungskarte?
+nutzername.pattern=Nur Zeichen a-z, A-Z und 0-9
+sicherheitsfrage.error=Antwort auf Sicherheitsfrage ist ungültig.
 
 
 # Default messages
@@ -11,6 +14,7 @@ constraint.max=Mindeswert: {0}
 constraint.minLength=Mindestlänge: {0}
 constraint.maxLength=Maximallänge: {0}
 constraint.email=Gültige E-Mail-Adresse
+
 
 # --- Formats
 format.date=Date (''{0}'')
@@ -27,9 +31,9 @@ error.min=Must be greater or equal to {0}
 error.min.strict=Must be strictly greater than {0}
 error.max=Must be less or equal to {0}
 error.max.strict=Must be strictly less than {0}
-error.minLength=Mindestlänge ist {0}
-error.maxLength=Maximallänge ist {0}
-error.email=Eine gültige E-Mail wird benötigt
+error.minLength=Mindestens {0} Zeichen benötigt.
+error.maxLength=Maximal {0} Zeichen erlaubt.
+error.email=Eine gültige E-Mail wird benötigt.
 error.pattern=Must satisfy {0}
 # --- Constraints
 

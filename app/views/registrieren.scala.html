@@ -6,20 +6,34 @@
 @main() {
     <h1>Als Hochzeitsgast registrieren</h1>
 
-    @form(action = routes.Registrierung.registrieren) {
+    @form(action = routes.Registrierung.registrieren, 'id -> "registrierungsformular") {
 
+        <fieldset>
+                 <!-- TODO Länge auf 50 Zeichen begrenzen -->
         @inputText(
             registrierungsFormular("nutzername"),
             'id -> "nutzername",
-            'size -> 30
+            'size -> 30,
+            '_showErrors -> true,
+            '_error -> "Force an error"
         )
 
         @inputText(
             registrierungsFormular("email"),
             'id -> "email",
-            'size -> 30
+            'size -> 30,
+            '_showErrors -> true
         )
 
+        @inputText(
+            registrierungsFormular("sicherheitsfrage"),
+            'id -> "sicherheitsfrage",
+            'size -> 30,
+            '_showConstraints -> false,
+            '_showErrors -> true
+        )
+
+        </fieldset>
 
         <input type="submit" id="registrieren" value="Registrieren" />
 
