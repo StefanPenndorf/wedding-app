@@ -36,8 +36,8 @@ class KontoRegistrierungSchritte extends ScalaDsl with DE with Browser {
   }
   Dann("""^wird eine Bestätigungsseite mit einer persönlichen Begrüßung angezeigt$
        """){ () =>
-  //// Express the Regexp above with the code you wish you had
-    throw new PendingException()
+    browser.$("h1").getText should include ("Hallo " + nutzer)
+    browser.$("body").getText should include ("erfolgreich registriert")
   }
   Dann("""^erhält Sie eine E-Mail mit der Aktivierungsbestätigung$"""){ () =>
   //// Express the Regexp above with the code you wish you had

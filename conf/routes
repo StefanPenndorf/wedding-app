@@ -9,8 +9,9 @@ GET     /                           controllers.Application.index
 GET     /impressum                  controllers.Application.impressum
 
 # Registrierung
-GET     /register                   controllers.Registrierung.formularAnzeigen
+GET     /register                   controllers.Registrierung.formular
 POST    /register                   controllers.Registrierung.registrieren
+GET     /confirm-registration       controllers.Registrierung.registrierungsBestaetigung
 
 
 # Map static resources from the /public folder to the /assets URL path

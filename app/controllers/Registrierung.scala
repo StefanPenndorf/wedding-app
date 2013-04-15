@@ -27,12 +27,26 @@ object Registrierung extends Controller {
     registrierungsFormular.bindFromRequest.fold(
       errors => BadRequest(views.html.registrieren(errors)),
 
-      bewerbung => Ok(views.html.registrieren(registrierungsFormular))
+      bewerbung => Redirect(routes.Registrierung.registrierungsBestaetigung())
+                  .flashing("name"  -> bewerbung.nutzername,
+                            "email" -> bewerbung.email)
     )
   }
 
-  def formularAnzeigen = Action {
+  def formular = Action {
     Ok(views.html.registrieren(registrierungsFormular))
+  }
+
+  def registrierungsBestaetigung = Action { implicit request =>
+    if(flash.get("name").isEmpty) {
+      NotFound
+    } else {
+      Ok {
+        val name = flash.get("name").get
+        val email = flash.get("email").get
+        views.html.registrierungsBestaetigung(HochzeitsGastBewerbung(name, email))
+      }
+    }
   }
 
 
