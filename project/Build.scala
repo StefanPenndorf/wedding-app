@@ -11,6 +11,8 @@ object ApplicationBuild extends Build {
     jdbc,
     anorm,
 
+    "mysql" % "mysql-connector-java" % "5.1.24",
+
     "org.slf4j" % "jul-to-slf4j" % "1.6.6",
     "ch.qos.logback" % "logback-classic" % "0.9.11",
 

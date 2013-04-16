@@ -5,6 +5,7 @@ import play.api.data._
 import play.api.data.Forms._
 import play.api.data.validation.Constraints._
 import registrierung.HochzeitsGastBewerbung
+import play.api.db.DB
 
 /**
  *
@@ -21,16 +22,30 @@ object Registrierung extends Controller {
                               .verifying("sicherheitsfrage.error", antwort => antwort.toLowerCase == "albert schweizer")
     )((name, email, _) => HochzeitsGastBewerbung(name, email))
      ((bewerbung: HochzeitsGastBewerbung) => Some(bewerbung.nutzername, bewerbung.email, ""))
+     .verifying("nutzername.error.benutzt", { bewerbung =>
+         false
+    })
   )
 
   def registrieren = Action { implicit request =>
     registrierungsFormular.bindFromRequest.fold(
       errors => BadRequest(views.html.registrieren(errors)),
 
-      bewerbung => Redirect(routes.Registrierung.registrierungsBestaetigung())
-                  .flashing("name"  -> bewerbung.nutzername,
-                            "email" -> bewerbung.email)
+      bewerbung => nimmRegistrierungVor(bewerbung)
     )
+  }
+
+  private def nimmRegistrierungVor(bewerbung: HochzeitsGastBewerbung) = {
+    import play.api.Play.current
+    DB.withConnection { implicit  c =>
+
+    }
+
+
+
+    Redirect(routes.Registrierung.registrierungsBestaetigung())
+            .flashing("name"  -> bewerbung.nutzername,
+                      "email" -> bewerbung.email)
   }
 
   def formular = Action {

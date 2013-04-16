@@ -3,6 +3,7 @@ email=E-Mail
 sicherheitsfrage=Sicherheitsfrage: Von wem stammt das Zitat auf der Einladungskarte?
 nutzername.pattern=Nur Zeichen a-z, A-Z und 0-9
 sicherheitsfrage.error=Antwort auf Sicherheitsfrage ist ungültig.
+nutzername.error.benutzt=Nutzername wird bereits verwendet.
 
 
 # Default messages

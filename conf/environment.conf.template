@@ -1,0 +1,39 @@
+# ~~~~~
+# This is the template for the environment configuration file for the application. Copy that file with a new name and
+# fill in missing configuration for the environment.
+#
+# All configurations options must be written below the include statement and do override the default configuration.
+# ~~~~~
+include "application.conf"
+
+# Secret key
+# ~~~~~
+# The secret key is used to secure cryptographics functions.
+# If you deploy your application to several instances be sure to use the same key!
+application.secret="/V>AoYT]c8_w_XLYCk5:@laSB]=3QI6J=/ljRMjOd9ms>YJ5ME]lhe2d_jR/=_OX"
+
+# Database configuration
+# ~~~~~
+# You can declare as many datasources as you want.
+# By convention, the default datasource is named `default`
+#
+db.default.driver=com.mysql.jdbc.Driver
+db.default.url="jdbc:mysql://localhost/weddingdb"
+db.default.user=
+db.default.password=
+applyEvolutions.default=true
+
+
+# Logger
+# ~~~~~
+# You can also configure logback (http://logback.qos.ch/), by providing a logger.xml file in the conf directory .
+
+# Root logger:
+logger.root=ERROR
+
+# Logger used by the framework:
+logger.play=INFO
+
+# Logger provided to your application:
+logger.application=DEBUG
+
