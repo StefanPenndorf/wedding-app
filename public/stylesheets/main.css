@@ -1,0 +1,7 @@
+body, label, h1, input {
+  color: #EE3F00;
+}
+
+.help-inline, .help-block {
+    color: #909090;
+}
