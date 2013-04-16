@@ -12,7 +12,7 @@ import registrierung.HochzeitsGastBewerbung
  */
 object Registrierung extends Controller {
 
-  val NAMEN_CONSTRAINT = pattern("""[a-zA-ZöüäÖÜÄ-]*""".r, "name.pattern")
+  val NAMEN_CONSTRAINT = pattern("""[a-zA-ZöüäÖÜÄ-]*""".r, "name.pattern", "name.pattern.error")
 
   val registrierungsFormular = Form(
     mapping(
