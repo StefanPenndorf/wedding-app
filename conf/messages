@@ -35,6 +35,3 @@ error.minLength=Mindestens {0} Zeichen benötigt.
 error.maxLength=Maximal {0} Zeichen erlaubt.
 error.email=Eine gültige E-Mail wird benötigt.
 error.pattern=Must satisfy {0}
-# --- Constraints
-
-# --- Errors
