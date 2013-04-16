@@ -1,7 +1,8 @@
-nutzername=Nutzername
+vorname=Vorname
+nachname=Nachname
 email=E-Mail
 sicherheitsfrage=Sicherheitsfrage: Von wem stammt das Zitat auf der Einladungskarte?
-nutzername.pattern=Nur Zeichen a-z, A-Z und 0-9
+name.pattern=Nur kleine und große Buchstaben a-z, A-Z
 sicherheitsfrage.error=Antwort auf Sicherheitsfrage ist ungültig.
 nutzername.error.benutzt=Nutzername wird bereits verwendet.
 

@@ -5,7 +5,6 @@ import play.api.data._
 import play.api.data.Forms._
 import play.api.data.validation.Constraints._
 import registrierung.HochzeitsGastBewerbung
-import play.api.db.DB
 
 /**
  *
@@ -13,18 +12,24 @@ import play.api.db.DB
  */
 object Registrierung extends Controller {
 
+  val NAMEN_CONSTRAINT = pattern("""[a-zA-Z]*""".r, "name.pattern")
+
   val registrierungsFormular = Form(
     mapping(
-        "nutzername" -> text(minLength = 3, maxLength = 50)
-                        .verifying(pattern("""[a-zA-Z0-9]*""".r, "nutzername.pattern")),
-        "email" -> email,
+        "vorname"  -> text(minLength = 3, maxLength = 50)
+                        .verifying(NAMEN_CONSTRAINT),
+        "nachname" -> text(minLength = 3, maxLength = 50)
+                        .verifying(NAMEN_CONSTRAINT),
+        "email"    -> email,
         "sicherheitsfrage" -> text(maxLength=150)
-                              .verifying("sicherheitsfrage.error", antwort => antwort.toLowerCase == "albert schweizer")
-    )((name, email, _) => HochzeitsGastBewerbung(name, email))
-     ((bewerbung: HochzeitsGastBewerbung) => Some(bewerbung.nutzername, bewerbung.email, ""))
-     .verifying("nutzername.error.benutzt", { bewerbung =>
-         false
-    })
+                              .verifying("sicherheitsfrage.error", antwort => antwort.toLowerCase == "albert schweitzer")
+    )
+    (
+        (vorname, nachname, email, _) => HochzeitsGastBewerbung(vorname, nachname, email)
+    )
+    (
+        (bewerbung: HochzeitsGastBewerbung) => Some(bewerbung.vorname, bewerbung.nachname, bewerbung.email, "")
+    )
   )
 
   def registrieren = Action { implicit request =>
@@ -36,15 +41,8 @@ object Registrierung extends Controller {
   }
 
   private def nimmRegistrierungVor(bewerbung: HochzeitsGastBewerbung) = {
-    import play.api.Play.current
-    DB.withConnection { implicit  c =>
-
-    }
-
-
-
     Redirect(routes.Registrierung.registrierungsBestaetigung())
-            .flashing("name"  -> bewerbung.nutzername,
+            .flashing("name"  -> bewerbung.vorname,
                       "email" -> bewerbung.email)
   }
 
@@ -59,7 +57,7 @@ object Registrierung extends Controller {
       Ok {
         val name = flash.get("name").get
         val email = flash.get("email").get
-        views.html.registrierungsBestaetigung(HochzeitsGastBewerbung(name, email))
+        views.html.registrierungsBestaetigung(name, email)
       }
     }
   }

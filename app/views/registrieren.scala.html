@@ -9,13 +9,21 @@
     @form(action = routes.Registrierung.registrieren, 'id -> "registrierungsformular") {
 
         <fieldset>
-                 <!-- TODO Länge auf 50 Zeichen begrenzen -->
+
         @inputText(
-            registrierungsFormular("nutzername"),
-            'id -> "nutzername",
+            registrierungsFormular("vorname"),
+            'id -> "vorname",
             'size -> 30,
-            '_showErrors -> true,
-            '_error -> "Force an error"
+            'maxlength -> 50,
+            '_showErrors -> true
+        )
+
+        @inputText(
+            registrierungsFormular("nachname"),
+            'id -> "nachname",
+            'size -> 30,
+            'maxlength -> 50,
+            '_showErrors -> true
         )
 
         @inputText(
