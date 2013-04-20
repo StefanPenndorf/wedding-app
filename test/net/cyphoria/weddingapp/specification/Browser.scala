@@ -1,11 +1,13 @@
 package net.cyphoria.weddingapp.specification
 
 import play.api.test.{FakeApplication, TestServer, TestBrowser, Helpers}
+import play.api.test.Helpers._
 import scala.Predef._
 import scala.Some
 import cucumber.api.scala.ScalaDsl
 import cucumber.api.Scenario
 import org.openqa.selenium.firefox.FirefoxDriver
+import play.api.db.DB
 
 /**
  *
@@ -13,14 +15,13 @@ import org.openqa.selenium.firefox.FirefoxDriver
  */
 trait Browser extends ScalaDsl {
 
-  lazy val browser = Browser.browser.get
-  lazy val server = Browser.server
+  def browser = Browser.browser.get
 
   Browser.register(this)
 
   def registerHooks() {
     Before { f: (Scenario) => Unit
-      Browser.server.start()
+      Browser.startServer()
     }
 
     Before { f: (Scenario) => Unit
@@ -32,20 +33,24 @@ trait Browser extends ScalaDsl {
     }
 
     After { f: (Scenario) => Unit
-       Browser.server.stop()
+       Browser.stopServer()
     }
+  }
+
+  def withConnection[A](block : Function1[java.sql.Connection, A]) = {
+    DB.withConnection(block)(Browser.application.get)
   }
 
 }
 
 object Browser {
 
-  var webDriver: Class[FirefoxDriver] = Helpers.FIREFOX
-  var port: Int = Helpers.testServerPort
-  var app: FakeApplication = FakeApplication()
+  val webDriver: Class[FirefoxDriver] = Helpers.FIREFOX
+  val port: Int = Helpers.testServerPort
 
   var browser: Option[TestBrowser] = Option.empty
-  lazy val server: TestServer = TestServer(port, app)
+  var server: Option[TestServer] = Option.empty
+  var application: Option[FakeApplication] = Option.empty
 
   var hooksRegistered = false
 
@@ -62,6 +67,19 @@ object Browser {
 
   def stopBrowser() {
     browser.get.quit()
+    browser = Option.empty
+  }
+
+  def startServer() {
+    application = Option(FakeApplication(additionalConfiguration = inMemoryDatabase()))
+    server = Option(TestServer(port, application.get))
+    server.get.start()
+  }
+
+  def stopServer() {
+    server.get.stop()
+    server = Option.empty
+    application = Option.empty
   }
 
 }

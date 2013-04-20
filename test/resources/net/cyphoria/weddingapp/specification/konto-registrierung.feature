@@ -9,5 +9,6 @@ um Zugriff auf alle geschützten Bereiche zu erhalten.
   Und        ruft die Registrierungsseite auf
   Wenn       sie sich mit ihren Daten für ein neues Benutzerkonto registriert
   Dann       wird eine Bestätigungsseite mit einer persönlichen Begrüßung angezeigt
+  Und        wird ein Konto für Sie angelegt
   Und        erhält Sie eine E-Mail mit der Aktivierungsbestätigung
   Und        erhalten die Administratoren eine Benachrichtigung
