@@ -4,7 +4,7 @@ import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
 import play.api.data.validation.Constraints._
-import registrierung.HochzeitsGastBewerbung
+import model.{Benutzer, HochzeitsGastBewerbung}
 
 /**
  *
@@ -41,6 +41,8 @@ object Registrierung extends Controller {
   }
 
   private def nimmRegistrierungVor(bewerbung: HochzeitsGastBewerbung) = {
+    Benutzer bewirbtSichMit bewerbung
+
     Redirect(routes.Registrierung.registrierungsBestaetigung())
             .flashing("name"  -> bewerbung.vorname,
                       "email" -> bewerbung.email)
