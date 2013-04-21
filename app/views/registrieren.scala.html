@@ -8,6 +8,18 @@
 
     @form(action = routes.Registrierung.registrieren, 'id -> "registrierungsformular") {
 
+        @if(!registrierungsFormular.globalErrors.isEmpty) {
+            <div id="global-errors" class="clearfix  error">
+                <span class="help-inline">Fehler bei der Registrierung:</span>
+                <ul>
+                    @registrierungsFormular.globalErrors.map { error =>
+                        <li class="help-inline">@Messages(error.message)</li>
+                    }
+                </ul>
+            </div>
+        }
+
+
         <fieldset>
 
         @inputText(

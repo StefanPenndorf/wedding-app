@@ -29,6 +29,10 @@ object Registrierung extends Controller {
     )
     (
         (bewerbung: HochzeitsGastBewerbung) => Some(bewerbung.vorname, bewerbung.nachname, bewerbung.email, "")
+    ).verifying(
+        "email.error.used", bewerbung => !Benutzer.existiertMitEMail(bewerbung.email)
+    ).verifying(
+        "nutzername.error.used", bewerbung => !Benutzer.existiertMitName(bewerbung.benutzerName)
     )
   )
 

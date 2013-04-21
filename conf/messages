@@ -1,11 +1,13 @@
 vorname=Vorname
 nachname=Nachname
 email=E-Mail
+email.error.used=Die E-Mail-Adresse wird bereits verwendet.
 sicherheitsfrage=Sicherheitsfrage: Von wem stammt das Zitat auf der Einladungskarte?
 name.pattern=Nur Buchstaben und -
 name.pattern.error=Nur Buchstaben und Bindestrich sind erlaubt.
 sicherheitsfrage.error=Antwort auf Sicherheitsfrage ist ungültig.
 nutzername.error.benutzt=Nutzername wird bereits verwendet.
+nutzername.error.used=Ein Gast mit diesem Namen ist bereits registriert.
 
 
 # Default messages
