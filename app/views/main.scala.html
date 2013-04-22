@@ -7,19 +7,21 @@
         <meta name="language" content="de" />
         <meta name="robots" content="noindex, nofollow" />
         <title>@title</title>
-       <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
         <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
     </head>
     <body>
-    <div id="left-bar" style="float:left;margin:10px">&nbsp;
-    </div>
-    <div id="content">
-        @content
-    </div>
-    <div id="footer">
-      <a id="impressum" href="@routes.Application.impressum">Impressum</a>
+    <div id="page-content">
+        <div id="top-header"></div>
+        <div id="left-bar"></div>
+        <div id="content">
+            @content
+        </div>
+        <div id="footer">
+          <a id="impressum" href="@routes.Application.impressum">Impressum</a>
+        </div>
     </div>
     </body>
 </html>
