@@ -47,6 +47,14 @@ object Registrierung extends Controller {
   private def nimmRegistrierungVor(bewerbung: HochzeitsGastBewerbung) = {
     Benutzer bewirbtSichMit bewerbung
 
+    import com.typesafe.plugin._
+    import play.api.Play.current
+    val mail = use[MailerPlugin].email
+    mail.setSubject(bewerbung.vorname + " hat sich registriert")
+    mail.addRecipient("stephaniegeiler@web.de", "stefan@cyphoria.net")
+    mail.addFrom("Steffi und Stefan <hochzeit@cyphoria.net>")
+    mail.send( bewerbung.toString )
+
     Redirect(routes.Registrierung.registrierungsBestaetigung())
             .flashing("name"  -> bewerbung.vorname,
                       "email" -> bewerbung.email)

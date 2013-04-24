@@ -1,17 +1,21 @@
 package net.cyphoria.weddingapp.specification.infrastructure
 
+import scala.collection.JavaConversions._
 import cucumber.api.scala.ScalaDsl
 import cucumber.api.Scenario
 import com.icegreen.greenmail.util.{ServerSetupTest, GreenMail}
 import org.scalatest.matchers.{MatchResult, Matcher}
 import javax.mail.Message.RecipientType
 import org.scalatest.matchers.ShouldMatchers._
+import javax.mail.internet.{MimeMessage, InternetAddress}
+import javax.mail.Address
+import com.icegreen.greenmail.store.StoredMessage
 
 /**
  *
  * @author Stefan Penndorf <stefan@cyphoria.net>
  */
-trait FakeMailer extends HookRegistering with ScalaDsl {
+trait FakeMailer extends RunningApplication with ScalaDsl {
 
   def mailer = global[GreenMail]("mailServer")
 
@@ -30,10 +34,20 @@ trait FakeMailer extends HookRegistering with ScalaDsl {
     }
   }
 
+  private def toEMail: (MimeMessage) => EMail = {
+    email => EMail(
+      email.getFrom()(0).asInstanceOf[InternetAddress].getAddress,
+      convertAddresses(email.getRecipients(RecipientType.TO)),
+      email.getSubject)
+  }
+
   def receivedEMails() = {
-    mailer.getReceivedMessages.toList map {email => EMail(
-      email.getFrom()(0).toString,
-      email.getRecipients(RecipientType.TO)(0).toString)}
+    mailer.getReceivedMessages.toList map toEMail
+  }
+
+
+  def convertAddresses(addrs: Array[Address]): Set[String] = {
+    addrs.toSet.map {addr: Address => addr.asInstanceOf[InternetAddress].getAddress}
   }
 
   def receivedEMailTo(to: String): EMail = {
@@ -45,8 +59,15 @@ trait FakeMailer extends HookRegistering with ScalaDsl {
     }
   }
 
-  private def receivedEMailsTo(to: String) = {
-      receivedEMails() filter (_.to == to)
+  private def receivedEMailsTo(to: String): List[EMail] = {
+    val greenMailUser = mailer.setUser(to, null)
+    val inbox = mailer.getManagers.getImapHostManager.getInbox(greenMailUser).getMessages
+
+    List[EMail]() ++ (inbox map { m =>
+      m match {
+        case s: StoredMessage => toEMail(s.getMimeMessage)
+      }
+    })
   }
 
   class HasFromMatcher(val from: String) extends Matcher[EMail] {
@@ -59,7 +80,7 @@ trait FakeMailer extends HookRegistering with ScalaDsl {
     }
 
     private def hasFrom(mail: EMail) : Boolean = {
-      false
+      from == mail.from
     }
   }
 
@@ -73,7 +94,7 @@ trait FakeMailer extends HookRegistering with ScalaDsl {
     }
 
     private def hasSubject(mail: EMail) : Boolean = {
-      false
+      subject == mail.subject
     }
   }
 
@@ -81,4 +102,4 @@ trait FakeMailer extends HookRegistering with ScalaDsl {
   def haveSubject(subject: String): Matcher[EMail] = new HaveSubjectMatcher(subject)
 }
 
-case class EMail(from: String, to: String)
+case class EMail(from: String, to: Set[String], subject: String)

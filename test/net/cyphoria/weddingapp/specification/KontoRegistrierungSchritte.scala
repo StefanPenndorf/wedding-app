@@ -55,10 +55,13 @@ class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Bro
   }
 
   Dann("""^erhalten die Administratoren eine Benachrichtigung$"""){ () =>
-    val email = receivedEMailTo("stefan@cyphoria.net")
 
-    email should beFrom("hochzeit@cyphoria.net")
-    email should haveSubject("Kerstin hat sich registriert")
+    for(rcp <- Seq("stefan@cyphoria.net", "stephaniegeiler@web.de")) {
+      val email = receivedEMailTo(rcp)
+
+      email should beFrom("hochzeit@cyphoria.net")
+      email should haveSubject("Kerstin hat sich registriert")
+    }
   }
 
 }
