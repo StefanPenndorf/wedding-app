@@ -2,13 +2,14 @@ package net.cyphoria.weddingapp.specification
 
 import cucumber.api.scala.{DE, ScalaDsl}
 import org.scalatest.matchers.ShouldMatchers._
+import net.cyphoria.weddingapp.specification.infrastructure.{Schritte, Browser}
 
 
 /**
  *
  * @author Stefan Penndorf <stefan@cyphoria.net>
  */
-class ImpressumSchritte extends ScalaDsl with DE with Browser {
+class ImpressumSchritte extends Schritte with ScalaDsl with DE with Browser {
 
   Angenommen("""^ein Benutzer möchte das Impressum sehen$"""){ () =>
   }

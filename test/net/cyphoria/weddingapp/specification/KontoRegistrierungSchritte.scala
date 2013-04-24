@@ -2,20 +2,21 @@ package net.cyphoria.weddingapp.specification
 
 import cucumber.api.scala.{DE, ScalaDsl}
 import org.scalatest.matchers.ShouldMatchers._
-import cucumber.api.PendingException
 import anorm._
+import net.cyphoria.weddingapp.specification.infrastructure.{Schritte, FakeMailer, Browser}
+import java.util.concurrent.TimeUnit
+
 //import org.specs2.matcher.ShouldMatchers
 
 /**
  *
  * @author Stefan Penndorf <stefan@cyphoria.net>
  */
-class KontoRegistrierungSchritte extends ScalaDsl with DE with Browser {
+class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Browser with FakeMailer {
 
   val vorname = "Kerstin"
   val nachname = "Albert"
   val email = "kerstin@cyphoria.net"
-
 
   Angenommen("""^Kerstin hat die Einladungskarte erhalten$"""){ () =>
     // nichts zu tun hier
@@ -23,7 +24,7 @@ class KontoRegistrierungSchritte extends ScalaDsl with DE with Browser {
 
   Angenommen("""^ruft die Registrierungsseite auf$"""){ () =>
     browser.goTo("/")
-    browser.click("#registrieren")
+    browser.withDefaultPageWait(3, TimeUnit.SECONDS).click("#registrieren")
 
     browser.title() should equal("Steffi und Stefan heiraten!")
     browser.$("h1").getText should equal ("Als Hochzeitsgast registrieren")
@@ -53,15 +54,11 @@ class KontoRegistrierungSchritte extends ScalaDsl with DE with Browser {
     cnt should equal(1)
   }
 
-
-  Dann("""^erhält Sie eine E-Mail mit der Aktivierungsbestätigung$"""){ () =>
-  //// Express the Regexp above with the code you wish you had
-    throw new PendingException()
-  }
-
   Dann("""^erhalten die Administratoren eine Benachrichtigung$"""){ () =>
-  //// Express the Regexp above with the code you wish you had
-    throw new PendingException()
+    val email = receivedEMailTo("stefan@cyphoria.net")
+
+    email should beFrom("hochzeit@cyphoria.net")
+    email should haveSubject("Kerstin hat sich registriert")
   }
 
 }
