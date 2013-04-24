@@ -5,6 +5,8 @@ import org.scalatest.matchers.ShouldMatchers._
 import anorm._
 import net.cyphoria.weddingapp.specification.infrastructure.{Schritte, FakeMailer, Browser}
 import java.util.concurrent.TimeUnit
+import com.google.common.base.Predicate
+import org.openqa.selenium.WebDriver
 
 //import org.specs2.matcher.ShouldMatchers
 
@@ -25,6 +27,10 @@ class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Bro
   Angenommen("""^ruft die Registrierungsseite auf$"""){ () =>
     browser.goTo("/")
     browser.withDefaultPageWait(3, TimeUnit.SECONDS).click("#registrieren")
+
+    browser.await().atMost(3, TimeUnit.SECONDS).until(new Predicate[WebDriver] {
+      def apply(p1: WebDriver): Boolean = browser.title() == "Steffi und Stefan heiraten!"
+    })
 
     browser.title() should equal("Steffi und Stefan heiraten!")
     browser.$("h1").getText should equal ("Als Hochzeitsgast registrieren")
