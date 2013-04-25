@@ -24,6 +24,18 @@ db.default.password=
 applyEvolutions.default=true
 
 
+
+# Mailer configuration
+# ~~~~~
+# You can configure the mailer here. smtp.mock must be set to false to override default in application.conf
+smtp.mock=false
+smtp.host=
+smtp.port=25
+smtp.user=
+smtp.password=
+
+
+
 # Logger
 # ~~~~~
 # You can also configure logback (http://logback.qos.ch/), by providing a logger.xml file in the conf directory .
