@@ -2,7 +2,7 @@ package net.cyphoria.weddingapp.functional
 
 import org.specs2.mutable.Specification
 import play.api.test.Helpers._
-import play.api.test.{TestServer, FakeRequest, FakeApplication}
+import play.api.test.{FakeRequest, FakeApplication}
 
 /**
  *
@@ -13,13 +13,13 @@ class ApplicationControllerSpecification extends Specification {
   "Application" should {
 
     "send 404 on a bad request" in {
-      running(FakeApplication()) {
+      running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
         route(FakeRequest(GET, "/boum")) must beNone
       }
     }
 
     "render the index page" in {
-      running(FakeApplication()) {
+      running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
         val home = route(FakeRequest(GET, "/")).get
 
         status(home) must equalTo(OK)
@@ -28,14 +28,6 @@ class ApplicationControllerSpecification extends Specification {
       }
     }
 
-    "work from within a browser" in {
-      running(TestServer(3333), HTMLUNIT) { browser =>
-
-        browser.goTo("http://localhost:3333/")
-
-        browser.pageSource must contain("Steffi und Stefan heiraten!")
-      }
-    }
   }
 
 }
