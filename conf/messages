@@ -1,6 +1,10 @@
 vorname=Vorname
 nachname=Nachname
 email=E-Mail
+passwort=Passwort
+loginname=E-Mail
+
+login.error=Die Zugangsdaten sind falsch oder der Zugang ist nicht freigeschaltet.
 email.error.used=Die E-Mail-Adresse wird bereits verwendet.
 sicherheitsfrage=Sicherheitsfrage: Von wem stammt das Zitat auf der Einladungskarte?
 name.pattern=Nur Buchstaben und -

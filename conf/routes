@@ -5,14 +5,16 @@
 # Home page
 GET     /                           controllers.Application.index
 
-# Impressum
-GET     /impressum                  controllers.Application.impressum
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+POST    /login                      controllers.Application.login
 
 # Registrierung
 GET     /register                   controllers.Registrierung.formular
 POST    /register                   controllers.Registrierung.registrieren
 GET     /confirm-registration       controllers.Registrierung.registrierungsBestaetigung
 
+# Impressum
+GET     /impressum                  controllers.Application.impressum
 
-# Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)

@@ -8,7 +8,6 @@ import java.util.concurrent.TimeUnit
 import com.google.common.base.Predicate
 import org.openqa.selenium.WebDriver
 
-//import org.specs2.matcher.ShouldMatchers
 
 /**
  *
@@ -19,6 +18,7 @@ class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Bro
   val vorname = "Kerstin"
   val nachname = "Albert"
   val email = "kerstin@cyphoria.net"
+  val passwort = "heiraten"
 
   Angenommen("""^Kerstin hat die Einladungskarte erhalten$"""){ () =>
     // nichts zu tun hier
@@ -36,6 +36,20 @@ class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Bro
     browser.$("h1").getText should equal ("Als Hochzeitsgast registrieren")
   }
 
+  Angenommen("""^Kerstin hat sich registriert$"""){ () =>
+    withConnection { implicit connection =>
+      SQL("""INSERT INTO users (email, vorname, nachname) VALUES ({email},{vorname},{nachname})""")
+        .on(
+          "email" -> email,
+          "vorname" -> vorname,
+          "nachname" -> nachname
+        ).executeInsert()
+    }
+
+    assertEsWurdeEinKontoAngelegt()
+  }
+
+
   Wenn("""^sie sich mit ihren Daten für ein neues Benutzerkonto registriert$"""){ () =>
 
     browser.fill("#vorname") `with` vorname
@@ -46,6 +60,14 @@ class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Bro
     browser.submit("#registrieren")
   }
 
+  Wenn("""^Kerstin sich anmelden möchte$"""){ () =>
+    browser.goTo("/")
+
+    browser.fill("#loginname") `with` email
+    browser.fill("#passwort") `with` passwort
+    browser.submit("#login")
+  }
+
   Dann("""^wird eine Bestätigungsseite mit einer persönlichen Begrüßung angezeigt$"""){ () =>
 
     browser.$("h1").getText should include ("Hallo " + vorname)
@@ -53,8 +75,12 @@ class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Bro
   }
 
   Dann("""^wird ein Konto für Sie angelegt$"""){ () =>
+     assertEsWurdeEinKontoAngelegt()
+  }
+
+  def assertEsWurdeEinKontoAngelegt() {
     val cnt = withConnection { implicit connection =>
-      SQL("""select count(*) as cnt from users""").apply().head[Long]("cnt")
+      SQL("""select count(*) as cnt from users where email={email}""").on("email" -> email).apply().head[Long]("cnt")
     }
 
     cnt should equal(1)
@@ -68,6 +94,10 @@ class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Bro
       email should beFrom("hochzeit@cyphoria.net")
       email should haveSubject("Kerstin hat sich registriert")
     }
+  }
+
+  Dann("""^erhält Kerstin eine Fehlermeldung$"""){ () =>
+    browser.$(".error").getTexts.toArray.mkString("") should include ("nicht freigeschaltet")
   }
 
 }
