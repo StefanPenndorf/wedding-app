@@ -1,6 +1,10 @@
 @(name: String, email: String)
 
-@main(heading="Hallo @name, du hast dich erfolgreich registriert.") {
+@begruessung = {
+    Hallo @name, du hast dich erfolgreich registriert.
+}
+
+@main(heading=begruessung.toString) {
         <div>
             Jetzt musst du nur noch deine Freischaltung abwarten. Das Hochzeitspaar wird deine Registrierung entgegen
             nehmen und dich m&ouml;glichst bald freischalten. Mit deiner Freischaltung erh&auml;lst du auch ein

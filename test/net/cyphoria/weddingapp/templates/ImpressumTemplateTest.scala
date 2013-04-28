@@ -1,6 +1,8 @@
 package net.cyphoria.weddingapp.templates
 
 import org.specs2.mutable.Specification
+import play.api.test.Helpers._
+import play.api.test.FakeApplication
 
 /**
  *
@@ -8,10 +10,13 @@ import org.specs2.mutable.Specification
  */
 class ImpressumTemplateTest extends Specification {
 
-  val impressum = views.html.impressum()
+  val impressum = running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
+      views.html.impressum()
+  }
 
   "Das Impressum" should {
-       "Suchmaschinen das Indizieren nicht erlaubten" in {
+
+      "Suchmaschinen das Indizieren nicht erlaubten" in {
          impressum.body must contain("<meta name=\"robots\" content=\"noindex")
        }
 
@@ -25,6 +30,7 @@ class ImpressumTemplateTest extends Specification {
          impressum.body must contain("stefan at cyphoria dot net")
          impressum.body must contain("0151/11576308")
        }
+
   }
 
 }
