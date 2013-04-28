@@ -1,10 +1,13 @@
+import com.typesafe.config.ConfigFactory
 import sbt._
 import play.Project._
 
 object ApplicationBuild extends Build {
 
+  val conf = ConfigFactory.parseFile(new File("conf/version.conf")).resolve()
+
   val appName         = "WeddingApp"
-  val appVersion      = "1.0-SNAPSHOT"
+  val appVersion      = conf.getString("app.version")
 
   val appDependencies = Seq(
     // Add your project dependencies here,
