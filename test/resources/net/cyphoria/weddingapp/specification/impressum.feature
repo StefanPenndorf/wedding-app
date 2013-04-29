@@ -1,4 +1,5 @@
 #language:de
+@finished
 Funktionalität: Impressum
 Die Seite verfügt über ein Impressum.
 

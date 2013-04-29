@@ -3,6 +3,7 @@ Funktionalität: Account Registrierung
 Kerstin möchte sich ein Benutzerkonto anlegen,
 um Zugriff auf alle geschützten Bereiche zu erhalten.
 
+  @finished
   Szenario: Erfolgreiche Registrierung
   Angenommen Kerstin hat die Einladungskarte erhalten
   Und        ruft die Registrierungsseite auf
