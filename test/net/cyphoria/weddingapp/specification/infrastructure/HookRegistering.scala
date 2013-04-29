@@ -17,8 +17,8 @@ trait HookRegistering {
     HookRegistering.registry -= name
   }
 
-  protected def global[T](name: String) = {
-    HookRegistering.registry.get(name).get.asInstanceOf[T]
+  def global[T](name: String) = {
+    HookRegistering.global[T](name)
   }
 
 }
@@ -35,6 +35,8 @@ object HookRegistering {
     }
   }
 
-
+  def global[T](name: String) = {
+    HookRegistering.registry.get(name).get.asInstanceOf[T]
+  }
 
 }

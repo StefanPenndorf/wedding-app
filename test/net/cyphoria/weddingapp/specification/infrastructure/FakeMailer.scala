@@ -10,29 +10,17 @@ import org.scalatest.matchers.ShouldMatchers._
 import javax.mail.internet.{MimeMessage, InternetAddress}
 import javax.mail.Address
 import com.icegreen.greenmail.store.StoredMessage
+import org.slf4j.LoggerFactory
 
 /**
  *
  * @author Stefan Penndorf <stefan@cyphoria.net>
  */
-trait FakeMailer extends RunningApplication with ScalaDsl {
+trait FakeMailer {
 
-  def mailer = global[GreenMail]("mailServer")
+  val logger = LoggerFactory.getLogger("test")
 
-  abstract override def registerGlobalHooks() {
-    super.registerGlobalHooks()
-    Before { f: (Scenario) => Unit
-      val mailer: GreenMail = new GreenMail(ServerSetupTest.SMTP)
-      mailer.start()
-
-      registerGlobal("mailServer", mailer)
-    }
-
-    After { f: (Scenario) => Unit
-      mailer.stop()
-      unregisterGlobal("mailServer")
-    }
-  }
+  def mailer = HookRegistering.global[GreenMail]("mailServer")
 
   private def toEMail: (MimeMessage) => EMail = {
     email => EMail(
