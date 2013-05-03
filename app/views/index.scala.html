@@ -1,4 +1,4 @@
-@(loginFormular: Form[String])
+@(loginFormular: Form[Option[model.Benutzer]])
 
 @import helper._
 @import helper.twitterBootstrap._
@@ -7,7 +7,7 @@
     <div>
         <h3>Login</h3>
 
-        @form(action = routes.Application.login, 'id -> "loginformular") {
+        @form(action = routes.Application.authenticate, 'id -> "loginformular") {
             @if(!loginFormular.globalErrors.isEmpty) {
             <div id="global-errors" class="error">
                 <ul>

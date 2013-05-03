@@ -7,6 +7,8 @@ import net.cyphoria.weddingapp.specification.infrastructure.{Schritte, FakeMaile
 import java.util.concurrent.TimeUnit
 import com.google.common.base.Predicate
 import org.openqa.selenium.WebDriver
+import net.cyphoria.weddingapp.specification.pages.IndexPage
+import net.cyphoria.weddingapp.specification.users.User._
 
 
 /**
@@ -19,6 +21,9 @@ class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Bro
   val nachname = "Albert"
   val email = "kerstin@cyphoria.net"
   val passwort = "heiraten"
+
+  def indexPage = browser.createPage(classOf[IndexPage])
+
 
   Angenommen("""^Kerstin hat die Einladungskarte erhalten$"""){ () =>
     // nichts zu tun hier
@@ -47,6 +52,12 @@ class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Bro
     }
 
     assertEsWurdeEinKontoAngelegt()
+  }
+
+  Angenommen("""^Stefan hat sich angemeldet$"""){ () =>
+      loadFixture("users.dbt")
+
+      browser goTo indexPage loginAs Stefan
   }
 
 

@@ -5,6 +5,8 @@ import play.api.test.{TestServer, FakeApplication, Helpers}
 import play.api.test.Helpers._
 import play.api.db.DB
 import cucumber.api.Scenario
+import scaladbtest.test.ScalaDbTester
+import javax.sql.DataSource
 
 /**
  *
@@ -16,6 +18,11 @@ trait RunningApplication extends HookRegistering with ScalaDsl {
 
   def server = global[TestServer]("server")
   def application = global[FakeApplication]("application")
+  def scaladbtester = global[ScalaDbTester]("scaladbtester")
+
+  def loadFixture(path: String) {
+     scaladbtester.onBefore(path)
+  }
 
   def withConnection[A](block : Function1[java.sql.Connection, A]) = {
     DB.withConnection(block)(application)
@@ -30,9 +37,16 @@ trait RunningApplication extends HookRegistering with ScalaDsl {
 
       registerGlobal("application", application)
       registerGlobal("server", server)
+
+      val source: DataSource = DB.getDataSource()(application)
+      val scaladbtester = new ScalaDbTester(source, "test/resources/")
+      registerGlobal("scaladbtester", scaladbtester)
     }
 
     After { f: Scenario => Unit
+      scaladbtester.onAfter()
+      unregisterGlobal("scaladbtester")
+
       server.stop()
       unregisterGlobal("server")
       unregisterGlobal("application")

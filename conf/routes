@@ -8,7 +8,7 @@ GET     /                           controllers.Application.index
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
-POST    /login                      controllers.Application.login
+POST    /login                      controllers.Application.authenticate
 
 # Registrierung
 GET     /register                   controllers.Registrierung.formular
@@ -17,4 +17,7 @@ GET     /confirm-registration       controllers.Registrierung.registrierungsBest
 
 # Impressum
 GET     /impressum                  controllers.Application.impressum
+
+# Internal Pages
+GET     /viparea                    controllers.VipArea.viparea
 

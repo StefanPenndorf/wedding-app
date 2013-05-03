@@ -3,22 +3,24 @@ package controllers
 import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
+import jp.t2v.lab.play2.auth.LoginLogout
+import model.Benutzer
 
 
 /**
  *
  * @author Stefan Penndorf <stefan@cyphoria.net>
  */
-object Application extends Controller {
+object Application extends Controller with LoginLogout with WeddingAuthConfig {
 
   val loginFormular = Form(
     mapping(
        "loginname" -> text(),
        "passwort" -> text()
     )
-    ((loginname, passwort) => "" )
-    ((login: String) => Some("",""))
-    .verifying("login.error", login => false)
+    ((loginname, passwort) => Benutzer.authentifiziere(loginname, passwort) )
+    ((_.map(u => (u.email.email, ""))))
+    .verifying("login.error", _.isDefined)
   )
 
 
@@ -30,15 +32,14 @@ object Application extends Controller {
     Ok(views.html.impressum())
   }
 
-  def login = Action { implicit request =>
+  def authenticate = Action { implicit request =>
     loginFormular.bindFromRequest.fold(
-      errors => BadRequest(views.html.index(errors)),
-
-      login => doLogin(login)
+      formWithErrors => BadRequest(views.html.index(formWithErrors)),
+      user => gotoLoginSucceeded(user.get.id.get)
     )
   }
 
-  private def doLogin(login: String) = {
+  private def authenticationSuccessfull(login: String) = {
     Redirect("http://www.google.de")
   }
 
