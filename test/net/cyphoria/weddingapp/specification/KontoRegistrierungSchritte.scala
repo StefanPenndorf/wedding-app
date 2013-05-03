@@ -60,6 +60,13 @@ class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Bro
       browser goTo indexPage loginAs Stefan
   }
 
+  Wenn("""^er Kerstin freischaltet$"""){ () =>
+    browser goTo "/gaesteliste"
+
+    browser.$("h1").getText should equal ("Gästeliste")
+    browser.$("img[alt*=Kerstin freischalten]").click()
+  }
+
 
   Wenn("""^sie sich mit ihren Daten für ein neues Benutzerkonto registriert$"""){ () =>
 

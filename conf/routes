@@ -18,6 +18,10 @@ GET     /confirm-registration       controllers.Registrierung.registrierungsBest
 # Impressum
 GET     /impressum                  controllers.Application.impressum
 
-# Internal Pages
+# VIP Area
 GET     /viparea                    controllers.VipArea.viparea
+
+
+# ADMIN Area
+GET     /gaesteliste                controllers.AdminArea.gaesteliste
 

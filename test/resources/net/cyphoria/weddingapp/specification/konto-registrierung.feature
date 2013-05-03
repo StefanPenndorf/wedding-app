@@ -19,7 +19,7 @@ um Zugriff auf alle geschützten Bereiche zu erhalten.
   @current
   Szenario: Benutzerfreischaltung
   Angenommen Stefan hat sich angemeldet
-  Wenn       er Kerstin frei schaltet
+  Wenn       er Kerstin freischaltet
   Dann       erhält Kerstin eine E-Mail mit einem automatisch generierten Passwort
   Und        kann sich Kerstin mit diesem Passwort anmelden
 
