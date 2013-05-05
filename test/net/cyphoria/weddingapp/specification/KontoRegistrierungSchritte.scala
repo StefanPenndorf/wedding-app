@@ -19,8 +19,10 @@ class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Bro
 
   val vorname = "Kerstin"
   val nachname = "Albert"
-  val email = "kerstin@cyphoria.net"
+  val emailAdresse = "kerstin@cyphoria.net"
   val passwort = "heiraten"
+
+  var emailPasswort: Option[String] = None
 
   def indexPage = browser.createPage(classOf[IndexPage])
 
@@ -45,7 +47,7 @@ class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Bro
     withConnection { implicit connection =>
       SQL("""INSERT INTO users (email, vorname, nachname) VALUES ({email},{vorname},{nachname})""")
         .on(
-          "email" -> email,
+          "email" -> emailAdresse,
           "vorname" -> vorname,
           "nachname" -> nachname
         ).executeInsert()
@@ -64,7 +66,14 @@ class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Bro
     browser goTo "/gaesteliste"
 
     browser.$("h1").getText should equal ("Gästeliste")
-    browser.$("img[alt*=Kerstin freischalten]").click()
+    browser.$("""input[alt*="Kerstin freischalten"]""").click()
+
+    browser.await().atMost(3, TimeUnit.SECONDS).until(new Predicate[WebDriver] {
+      def apply(p1: WebDriver): Boolean = {
+        val messages: String = browser.$(".alert-message.success").getText
+        messages != null && messages.contains("Kerstin wurde freigeschaltet")
+      }
+    })
   }
 
 
@@ -72,7 +81,7 @@ class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Bro
 
     browser.fill("#vorname") `with` vorname
     browser.fill("#nachname") `with` nachname
-    browser.fill("#email") `with` email
+    browser.fill("#email") `with` emailAdresse
     browser.fill("#sicherheitsfrage") `with` "Albert Schweitzer"
 
     browser.submit("#registrieren")
@@ -81,7 +90,7 @@ class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Bro
   Wenn("""^Kerstin sich anmelden möchte$"""){ () =>
     browser.goTo("/")
 
-    browser.fill("#loginname") `with` email
+    browser.fill("#loginname") `with` emailAdresse
     browser.fill("#passwort") `with` passwort
     browser.submit("#login")
   }
@@ -96,9 +105,21 @@ class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Bro
      assertEsWurdeEinKontoAngelegt()
   }
 
+  Dann("""^erhält Kerstin eine E-Mail mit einem automatisch generierten Passwort$"""){ () =>
+    val passwortPattern = "Passwort: ([a-zA-Z0-9+~*%&$/!#;-]*)".r
+    val email = receivedEMailTo(emailAdresse)
+
+    email should beFrom("hochzeit@cyphoria.net")
+    email should haveSubject("Du wurdest als Hochzeitsgast freigeschaltet")
+
+    emailPasswort = passwortPattern findFirstIn email.text
+    emailPasswort should be ('defined)
+    emailPasswort.get should have length (12)
+  }
+
   def assertEsWurdeEinKontoAngelegt() {
     val cnt = withConnection { implicit connection =>
-      SQL("""select count(*) as cnt from users where email={email}""").on("email" -> email).apply().head[Long]("cnt")
+      SQL("""select count(*) as cnt from users where email={email}""").on("email" -> emailAdresse).apply().head[Long]("cnt")
     }
 
     cnt should equal(1)

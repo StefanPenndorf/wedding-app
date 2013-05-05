@@ -21,9 +21,31 @@ case class Benutzer(
     name: BenutzerName,
     email: EMail,
     passwort: Option[String]) {
+
+  def freischalten() {
+    Benutzer.freischalten(this)
+  }
 }
 
 object Benutzer {
+
+  def freischalten(benutzer: Benutzer) {
+    DB.withConnection { implicit connection =>
+      // TODO Test me implement me
+    }
+  }
+
+
+  def alleBenutzer(): List[Benutzer] = {
+    DB.withConnection { implicit connection =>
+      SQL(
+        """
+          SELECT * FROM users
+        """
+      ).as(simple *)
+    }
+  }
+
   def authentifiziere(email: String, passwort: String): Option[Benutzer] = {
     findeMitEMail(email).filter { benutzer => benutzer.passwort.isDefined }
   }
@@ -46,8 +68,8 @@ object Benutzer {
       get[String]("users.email") ~
       get[String]("users.vorname") ~
       get[String]("users.nachname") ~
-      get[String]("users.passwort") map {
-      case id~email~vorname~nachname~passwort => Benutzer(Id(id), BenutzerName(vorname, nachname), EMail(email), Option(passwort))
+      get[Option[String]]("users.passwort") map {
+      case id~email~vorname~nachname~passwort => Benutzer(Id(id), BenutzerName(vorname, nachname), EMail(email), passwort)
     }
   }
 

@@ -38,7 +38,9 @@ trait FakeMailer extends RunningApplication with ScalaDsl {
     email => EMail(
       email.getFrom()(0).asInstanceOf[InternetAddress].getAddress,
       convertAddresses(email.getRecipients(RecipientType.TO)),
-      email.getSubject)
+      email.getSubject,
+      email.getContent.asInstanceOf[String]
+    )
   }
 
   def receivedEMails() = {
@@ -102,4 +104,4 @@ trait FakeMailer extends RunningApplication with ScalaDsl {
   def haveSubject(subject: String): Matcher[EMail] = new HaveSubjectMatcher(subject)
 }
 
-case class EMail(from: String, to: Set[String], subject: String)
+case class EMail(from: String, to: Set[String], subject: String, text: String)
