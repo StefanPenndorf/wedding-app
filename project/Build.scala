@@ -23,10 +23,15 @@ object ApplicationBuild extends Build {
     "jp.t2v" %% "play2.auth"      % "0.9",
     "org.mindrot" % "jbcrypt"  % "0.3m",
 
+    "com.google.inject" % "guice" % "3.0",
+    "com.tzavellas" % "sse-guice" % "0.7.1",
+
 
     // TEST DEPENDENCIES
     "play" %% "play-test" % "2.1.1" % "test",
     "org.scalatest" %% "scalatest" % "1.9.1" % "test",
+    "org.scalamock" %% "scalamock-scalatest-support" % "3.0.1" % "test",
+    "org.scalamock" %% "scalamock-specs2-support" % "3.0.1" % "test",
     "jp.t2v" %% "play2.auth.test" % "0.9" % "test",
 
     "junit" % "junit-dep" % "4.11" % "test",
