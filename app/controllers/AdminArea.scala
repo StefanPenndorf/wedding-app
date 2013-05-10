@@ -2,16 +2,18 @@ package controllers
 
 import jp.t2v.lab.play2.auth.AuthElement
 import play.api.mvc._
-import model.Benutzer
+import model.{BenutzerRepository, Benutzer}
+import com.google.inject._
 
 /**
  *
  * @author Stefan Penndorf <stefan@cyphoria.net>
  */
-object AdminArea extends Controller with AuthElement with WeddingAuthConfig {
+@Singleton
+class AdminArea @Inject()(benutzerRepository: BenutzerRepository) extends Controller with AuthElement with WeddingAuthConfig {
 
   def gaesteliste = Action { implicit request =>
-    Ok(views.html.gaesteliste(Benutzer.alleBenutzer()))
+    Ok(zeigeGaesteliste)
   }
 
   def gastFreischalten(id: Long): Action[AnyContent] = Action { implicit request =>
@@ -29,6 +31,9 @@ object AdminArea extends Controller with AuthElement with WeddingAuthConfig {
   }
 
   private def gastUnbekannt(implicit request: Request[AnyContent]) = {
-    NotFound(views.html.gaesteliste(Benutzer.alleBenutzer()))
+    NotFound(zeigeGaesteliste)
   }
+
+  private def zeigeGaesteliste(implicit request: Request[AnyContent]) =
+    views.html.gaesteliste(benutzerRepository.alleBenutzer())
 }

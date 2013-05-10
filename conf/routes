@@ -23,6 +23,6 @@ GET     /viparea                    controllers.VipArea.viparea
 
 
 # ADMIN Area
-GET     /gaesteliste                controllers.AdminArea.gaesteliste
-POST    /gast/freischalten/:id      controllers.AdminArea.gastFreischalten(id: Long)
+GET     /gaesteliste                @controllers.AdminArea.gaesteliste
+POST    /gast/freischalten/:id      @controllers.AdminArea.gastFreischalten(id: Long)
 

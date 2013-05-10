@@ -20,11 +20,21 @@ case class Benutzer(
     id: Pk[Long] = NotAssigned,
     name: BenutzerName,
     email: EMail,
-    passwort: Option[String]) {
+    passwort: Option[String] = None) {
+
+  def this(vorname: String, nachname: String, email: String) = this(NotAssigned, BenutzerName(vorname,nachname), email)
 
   def freischalten() {
     Benutzer.freischalten(this)
   }
+}
+
+trait BenutzerRepository {
+  def alleBenutzer(): List[Benutzer]
+}
+
+class BenutzerDatabaseRepository extends BenutzerRepository {
+  def alleBenutzer(): List[Benutzer] = Benutzer.alleBenutzer()
 }
 
 object Benutzer {
