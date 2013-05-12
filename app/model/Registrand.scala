@@ -8,12 +8,9 @@ import play.api.Play.current
  *
  * @author Stefan Penndorf <stefan@cyphoria.net>
  */
-case class HochzeitsGastBewerbung(vorname: String, nachname: String, email: String) {
+case class Registrand(vorname: String, nachname: String, email: String) {
   def benutzerName = BenutzerName(vorname, nachname)
-}
-
-object Bewerber {
-  def bewirbtSichMit(bewerbung: HochzeitsGastBewerbung) {
+  def registrieren() {
     DB.withConnection { implicit connection =>
       SQL(
         """
@@ -22,10 +19,11 @@ object Bewerber {
           ({email}, {vorname}, {nachname})
         """
       ).on(
-        'email -> bewerbung.email,
-        'vorname -> bewerbung.vorname,
-        'nachname -> bewerbung.nachname
+        'email -> email,
+        'vorname -> vorname,
+        'nachname -> nachname
       ).executeUpdate()
     }
   }
 }
+

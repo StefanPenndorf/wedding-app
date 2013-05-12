@@ -7,7 +7,7 @@ import com.icegreen.greenmail.util.{ServerSetupTest, GreenMail}
 import org.scalatest.matchers.{MatchResult, Matcher}
 import javax.mail.Message.RecipientType
 import org.scalatest.matchers.ShouldMatchers._
-import javax.mail.internet.{MimeMessage, InternetAddress}
+import javax.mail.internet.{MimeMultipart, MimeMessage, InternetAddress}
 import javax.mail.Address
 import com.icegreen.greenmail.store.StoredMessage
 
@@ -39,7 +39,10 @@ trait FakeMailer extends RunningApplication with ScalaDsl {
       email.getFrom()(0).asInstanceOf[InternetAddress].getAddress,
       convertAddresses(email.getRecipients(RecipientType.TO)),
       email.getSubject,
-      email.getContent.asInstanceOf[String]
+      email.getContent match {
+        case x: String => x
+        case mime: MimeMultipart => mime.getBodyPart(0).getContent.asInstanceOf[String]
+      }
     )
   }
 

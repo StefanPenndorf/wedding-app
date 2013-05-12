@@ -4,6 +4,7 @@ import anorm._
 import anorm.SqlParser._
 import play.api.db.DB
 import play.api.Play.current
+import scala.util.Random
 
 /**
  *
@@ -14,6 +15,19 @@ case class EMail(email: String)
 object EMail {
   implicit def toStringValue(mail: EMail): String = mail.email
   implicit def fromStringValue(email: String): EMail = EMail(email)
+}
+case class PlainTextPasswort(passwort: String)
+object PlainTextPasswort {
+  def generate = {
+    val length = 12
+    val chars = ('a' to 'z') ++ ('A' to 'Z') ++ ('0' to '9') ++ ("-!")
+    val randomPasswort = (1 to length).map(
+      x => chars(Random.nextInt(chars.length))
+    ).mkString("")
+    PlainTextPasswort(randomPasswort)
+  }
+
+
 }
 
 case class Benutzer(
@@ -31,18 +45,27 @@ case class Benutzer(
 
 trait BenutzerRepository {
   def alleBenutzer(): List[Benutzer]
+  def findeMitId(id: Long): Option[Benutzer]
 }
 
 class BenutzerDatabaseRepository extends BenutzerRepository {
-  def alleBenutzer(): List[Benutzer] = Benutzer.alleBenutzer()
+  def alleBenutzer() = Benutzer.alleBenutzer()
+  def findeMitId(id: Long) = Benutzer.findeMitId(id)
 }
 
 object Benutzer {
 
-  def freischalten(benutzer: Benutzer) {
+  def freischalten(bewerber: Benutzer): PlainTextPasswort = {
+
+
     DB.withConnection { implicit connection =>
-      // TODO Test me implement me
+
     }
+
+    //BCrypt.hashpw(pw, BCrypt.gensalt())
+
+    //findeMitId(bewerber.id.get).get
+    null
   }
 
 
@@ -121,22 +144,4 @@ object Benutzer {
       ).as(simple.singleOpt)
     }
   }
-
-  def bewirbtSichMit(bewerbung: HochzeitsGastBewerbung) {
-    DB.withConnection { implicit connection =>
-      SQL(
-        """
-          insert into users
-          ( email,   vorname,   nachname) values
-          ({email}, {vorname}, {nachname})
-        """
-      ).on(
-        'email -> bewerbung.email,
-        'vorname -> bewerbung.vorname,
-        'nachname -> bewerbung.nachname
-      ).executeUpdate()
-    }
-
-  }
-
 }

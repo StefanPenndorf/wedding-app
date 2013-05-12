@@ -1,0 +1,9 @@
+@(benutzer: model.Benutzer)
+Hallo @benutzer.name.vorname,
+
+du wurdest frei geschaltet! Du kannst dich jetzt unter http://hochzeit.cyphoria.net unter Angabe deiner E-Mail-Adresse als Loginname anmelden.
+
+Dein Passwort: @benutzer.passwort.get
+
+Viele Grüße
+Das Hochzeitspaar Steffi und Stefan

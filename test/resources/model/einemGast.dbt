@@ -1,0 +1,2 @@
+users:
+- id: 1, email: "stefan@cyphoria.net",  vorname: "Stefan",  nachname: "Penndorf", passwort: "$2a$10$k5TmtHnitQvFCNAp8SbuFeq1VlhlcSGkXl6JAcwZFX20mRZKgEgm."
