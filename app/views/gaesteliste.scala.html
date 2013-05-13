@@ -1,0 +1,38 @@
+@(gaeste: List[model.Benutzer])(implicit flash: Flash)
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@main(heading="Gästeliste") {
+    @if(flash.get("erfolgsMeldung").isDefined) {
+        <div id="erfolgsMeldungen">
+            <ul>
+                <li class="alert-message success">@flash.get("erfolgsMeldung").get</li>
+            </ul>
+        </div>
+    }
+    <table id="gaesteliste">
+        <thead>
+            <tr>
+                <th>Vorname</th>
+                <th>Nachname</th>
+                <th>E-Mail Adresse</th>
+                <th>Optionen</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for(gast <- gaeste){
+                <tr>
+                    <td>@gast.name.vorname</td>
+                    <td>@gast.name.nachname</td>
+                    <td>@gast.email.email</td>
+                    <td>
+                        @form(action = routes.AdminArea.gastFreischalten(gast.id.get)) {
+                            <input type="submit" alt="@gast.name.vorname freischalten" value="Freischalten">
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

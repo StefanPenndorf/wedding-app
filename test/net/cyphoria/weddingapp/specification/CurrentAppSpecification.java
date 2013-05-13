@@ -9,4 +9,6 @@ import org.junit.runner.RunWith;
 @RunWith(Cucumber.class)
 @Cucumber.Options(format = {"pretty", "html:target/cucumber"}, monochrome = true, tags = "@current")
 public class CurrentAppSpecification {
+
+
 }

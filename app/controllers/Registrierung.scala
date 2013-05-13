@@ -4,7 +4,7 @@ import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
 import play.api.data.validation.Constraints._
-import model.{Benutzer, HochzeitsGastBewerbung}
+import model.{PersistenteGästeliste, Bewerber, HochzeitsGastBewerbung}
 
 /**
  *
@@ -30,9 +30,9 @@ object Registrierung extends Controller {
     (
         (bewerbung: HochzeitsGastBewerbung) => Some(bewerbung.vorname, bewerbung.nachname, bewerbung.email, "")
     ).verifying(
-        "email.error.used", bewerbung => !Benutzer.existiertMitEMail(bewerbung.email)
+        "email.error.used", bewerbung => new PersistenteGästeliste().findeGastMitEMail(bewerbung.email).isEmpty
     ).verifying(
-        "nutzername.error.used", bewerbung => !Benutzer.existiertMitName(bewerbung.benutzerName)
+        "nutzername.error.used", bewerbung => new PersistenteGästeliste().findeGastMitName(bewerbung.benutzerName).isEmpty
     )
   )
 
@@ -45,7 +45,7 @@ object Registrierung extends Controller {
   }
 
   private def nimmRegistrierungVor(bewerbung: HochzeitsGastBewerbung) = {
-    Benutzer bewirbtSichMit bewerbung
+    Bewerber bewirbtSichMit bewerbung
 
     import com.typesafe.plugin._
     import play.api.Play.current

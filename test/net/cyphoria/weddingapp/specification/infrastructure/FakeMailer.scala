@@ -7,7 +7,7 @@ import com.icegreen.greenmail.util.{ServerSetupTest, GreenMail}
 import org.scalatest.matchers.{MatchResult, Matcher}
 import javax.mail.Message.RecipientType
 import org.scalatest.matchers.ShouldMatchers._
-import javax.mail.internet.{MimeMessage, InternetAddress}
+import javax.mail.internet.{MimeMultipart, MimeMessage, InternetAddress}
 import javax.mail.Address
 import com.icegreen.greenmail.store.StoredMessage
 import org.slf4j.LoggerFactory
@@ -26,7 +26,12 @@ trait FakeMailer {
     email => EMail(
       email.getFrom()(0).asInstanceOf[InternetAddress].getAddress,
       convertAddresses(email.getRecipients(RecipientType.TO)),
-      email.getSubject)
+      email.getSubject,
+      email.getContent match {
+        case x: String => x
+        case mime: MimeMultipart => mime.getBodyPart(0).getContent.asInstanceOf[String]
+      }
+    )
   }
 
   def receivedEMails() = {
@@ -90,4 +95,4 @@ trait FakeMailer {
   def haveSubject(subject: String): Matcher[EMail] = new HaveSubjectMatcher(subject)
 }
 
-case class EMail(from: String, to: Set[String], subject: String)
+case class EMail(from: String, to: Set[String], subject: String, text: String)

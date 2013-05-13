@@ -1,9 +1,51 @@
+@(loginFormular: Form[Option[model.Benutzer]])
+
+@import helper._
+@import helper.twitterBootstrap._
+
 @main(heading="Steffi und Stefan heiraten!") {
     <div>
         <h3>Login</h3>
-        <p style="padding: 5px 0px;">
-        Der Login ist in k&uuml;rze m&ouml;glich. Registrierte G&auml;ste erhalten eine Benachrichtigung per E-Mail.
-        </p>
-        <a id="registrieren" href="@routes.Registrierung.formular">Als Hochzeitsgast registrieren</a>
+
+        @form(action = routes.Application.authenticate, 'id -> "loginformular") {
+            @if(!loginFormular.globalErrors.isEmpty) {
+            <div id="global-errors" class="error">
+                <ul>
+                    @loginFormular.globalErrors.map { error =>
+                    <li class="help-inline">@Messages(error.message)</li>
+                    }
+                </ul>
+            </div>
+            }
+
+        <fieldset>
+
+            @inputText(
+                loginFormular("loginname"),
+                'id -> "loginname",
+                'size -> 30,
+                'maxlength -> 255,
+                '_showErrors -> false,
+                '_showConstraints -> false
+            )
+
+            @inputText(
+                loginFormular("passwort"),
+                'id -> "passwort",
+                'size -> 30,
+                'maxlength -> 255,
+                '_showErrors -> false,
+                '_showConstraints -> false
+            )
+
+            <div class="clearfix">
+                <div class="input"><input type="submit" id="login" value="Login"/></div>
+            </div>
+        </fieldset>
+
+        }
+
+        Du hast noch keinen Zugang? Dann musst du dich zuerst
+        <a id="registrieren" href="@routes.Registrierung.formular">als Hochzeitsgast registrieren</a>.
     </div>
 }

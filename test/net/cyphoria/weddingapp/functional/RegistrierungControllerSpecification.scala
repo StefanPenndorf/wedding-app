@@ -2,15 +2,13 @@ package net.cyphoria.weddingapp.functional
 
 import org.specs2.mutable.Specification
 import play.api.test.Helpers._
-import play.api.test.{FakeRequest, FakeApplication}
+import play.api.test.FakeRequest
 
 /**
  *
  * @author Stefan Penndorf <stefan@cyphoria.net>
  */
 class RegistrierungControllerSpecification extends Specification {
-
-  def laufenderAnwendung[T](block: => T) = running(FakeApplication(additionalConfiguration = inMemoryDatabase()))(block)
 
   "Registrierung" should {
     "eine Fehlermeldung anzeigen, wenn bereits ein Benutzer mit der gewünschten E-Mail-Adresse registriert ist" in {
