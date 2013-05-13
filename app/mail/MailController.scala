@@ -1,6 +1,6 @@
 package mail
 
-import model.Benutzer
+import model.{KlartextPasswort, Benutzer}
 import com.typesafe.plugin._
 import play.api.Play.current
 
@@ -10,7 +10,7 @@ import play.api.Play.current
  */
 trait MailController {
 
-  def sendeFreischaltungsbenachrichtigung(benutzer: Benutzer)
+  def sendeFreischaltungsbenachrichtigung(benutzer: Benutzer, passwort: KlartextPasswort)
 
 }
 
@@ -19,11 +19,11 @@ trait MailController {
  */
 class TemplateMailController extends MailController {
 
-  def sendeFreischaltungsbenachrichtigung(benutzer: Benutzer) {
+  def sendeFreischaltungsbenachrichtigung(benutzer: Benutzer, passwort: KlartextPasswort) {
      createMail
        .addRecipient(benutzer.email.email)
        .setSubject("Du wurdest als Hochzeitsgast freigeschaltet")
-       .send(views.txt.mail.freischalteBenachrichtigung(benutzer).toString())
+       .send(views.txt.mail.freischalteBenachrichtigung(benutzer, passwort).toString())
   }
 
   private[TemplateMailController] def createMail: MailerAPI = {

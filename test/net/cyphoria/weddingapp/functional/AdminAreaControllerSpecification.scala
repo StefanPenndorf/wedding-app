@@ -76,7 +76,7 @@ class AdminAreaControllerSpecification extends Specification with MockFactory {
       val gästeliste = stub[Gästeliste]
       (gästeliste.findeGastMitId _).when(*).returns(Some(kerstin))
       val mailController = mock[MailController]
-      (mailController.sendeFreischaltungsbenachrichtigung _).expects(kerstin)
+      (mailController.sendeFreischaltungsbenachrichtigung _).expects(kerstin, *)
 
       val result = new AdminArea(gästeliste, mailController).gastFreischalten(1L)(FakeRequest())
     }

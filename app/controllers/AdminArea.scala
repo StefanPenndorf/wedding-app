@@ -28,9 +28,9 @@ class AdminArea @Inject()(
   }
 
   private def gastFreischalten(bewerber: Benutzer) = {
-    bewerber.freischalten()
+    val passwort = bewerber.freischalten()
 
-    mailController.sendeFreischaltungsbenachrichtigung(bewerber)
+    mailController.sendeFreischaltungsbenachrichtigung(bewerber, passwort)
 
     Redirect(routes.AdminArea.gaesteliste())
       .flashing("erfolgsMeldung"  -> (bewerber.name.vorname + " wurde freigeschaltet"))

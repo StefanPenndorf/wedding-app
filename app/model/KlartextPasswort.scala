@@ -6,7 +6,9 @@ import scala.util.Random
  *
  * @author Stefan Penndorf <stefan@cyphoria.net>
  */
-case class KlartextPasswort private(passwort: String)
+case class KlartextPasswort private(passwort: String) {
+  override def toString = ""
+}
 
 object KlartextPasswort {
   def generate = {
