@@ -2,7 +2,7 @@ package controllers
 
 import jp.t2v.lab.play2.auth.AuthElement
 import play.api.mvc._
-import model.{BenutzerRepository, Benutzer}
+import model.{Gästeliste, Benutzer}
 import com.google.inject._
 import mail.MailController
 
@@ -12,7 +12,7 @@ import mail.MailController
  */
 @Singleton
 class AdminArea @Inject()(
-                           benutzerRepository: BenutzerRepository,
+                           benutzerRepository: Gästeliste,
                            mailController: MailController
                            ) extends Controller with AuthElement with WeddingAuthConfig {
 
@@ -21,7 +21,7 @@ class AdminArea @Inject()(
   }
 
   def gastFreischalten(id: Long): Action[AnyContent] = Action { implicit request =>
-    benutzerRepository.findeMitId(id) match {
+    benutzerRepository.findeGastMitId(id) match {
       case Some(gast) => gastFreischalten(gast)
       case None       => gastUnbekannt(request)
     }
@@ -41,5 +41,5 @@ class AdminArea @Inject()(
   }
 
   private def zeigeGaesteliste(implicit request: Request[AnyContent]) =
-    views.html.gaesteliste(benutzerRepository.alleBenutzer())
+    views.html.gaesteliste(benutzerRepository.gäste)
 }

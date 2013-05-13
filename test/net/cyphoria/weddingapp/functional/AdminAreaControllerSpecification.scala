@@ -41,10 +41,10 @@ class AdminAreaControllerSpecification extends Specification with MockFactory {
           )
 
           val mailController = stub[MailController]
-          val benutzerRep = mock[BenutzerRepository]
-          (benutzerRep.alleBenutzer _).expects.returning(benutzerliste)
+          val gästeliste = mock[Gästeliste]
+          (gästeliste.gäste _).expects.returning(benutzerliste)
 
-          val result = new AdminArea(benutzerRep, mailController).gaesteliste()(FakeRequest())
+          val result = new AdminArea(gästeliste, mailController).gaesteliste()(FakeRequest())
 
           status(result) must equalTo(OK)
           contentAsString(result) must contain("Kerstin")
@@ -63,22 +63,22 @@ class AdminAreaControllerSpecification extends Specification with MockFactory {
 
     "einen Registranden freischalten" in laufenderAnwendung {
         val mailController = stub[MailController]
-        val benutzerRep = mock[BenutzerRepository]
-        (benutzerRep.findeMitId _).expects(1L).returning(Some(kerstin))
+        val gästeliste = mock[Gästeliste]
+        (gästeliste.findeGastMitId _).expects(1L).returning(Some(kerstin))
 
-        val result = new AdminArea(benutzerRep, mailController).gastFreischalten(1L)(FakeRequest())
+        val result = new AdminArea(gästeliste, mailController).gastFreischalten(1L)(FakeRequest())
 
         status(result) must equalTo(SEE_OTHER)
         redirectLocation(result) must beSome.which(_.contains("/gaesteliste"))
     }
 
     "eine Passwort-Mail an den Gast verschicken wenn ein Gast freigeschaltet wird" in laufenderAnwendung {
-      val benutzerRep = stub[BenutzerRepository]
-      (benutzerRep.findeMitId _).when(*).returns(Some(kerstin))
+      val gästeliste = stub[Gästeliste]
+      (gästeliste.findeGastMitId _).when(*).returns(Some(kerstin))
       val mailController = mock[MailController]
       (mailController.sendeFreischaltungsbenachrichtigung _).expects(kerstin)
 
-      val result = new AdminArea(benutzerRep, mailController).gastFreischalten(1L)(FakeRequest())
+      val result = new AdminArea(gästeliste, mailController).gastFreischalten(1L)(FakeRequest())
     }
 
 

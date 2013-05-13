@@ -1,7 +1,7 @@
 package controllers
 
 import jp.t2v.lab.play2.auth.AuthConfig
-import model.Benutzer
+import model.{PersistenteGästeliste, Benutzer}
 import scala.reflect.ClassTag
 import reflect.classTag
 import play.api.mvc.{Result, RequestHeader}
@@ -50,7 +50,7 @@ trait WeddingAuthConfig extends AuthConfig {
    * A function that returns a `User` object from an `Id`.
    * You can alter the procedure to suit your application.
    */
-  def resolveUser(id: Id): Option[User] = Benutzer.findeMitId(id)
+  def resolveUser(id: Id): Option[User] = new PersistenteGästeliste().findeGastMitId(id)
 
   /**
    * Where to redirect the user after a successful login.

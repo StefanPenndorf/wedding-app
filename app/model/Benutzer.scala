@@ -43,16 +43,6 @@ case class Benutzer(
   }
 }
 
-trait BenutzerRepository {
-  def alleBenutzer(): List[Benutzer]
-  def findeMitId(id: Long): Option[Benutzer]
-}
-
-class BenutzerDatabaseRepository extends BenutzerRepository {
-  def alleBenutzer() = Benutzer.alleBenutzer()
-  def findeMitId(id: Long) = Benutzer.findeMitId(id)
-}
-
 object Benutzer {
 
   def freischalten(bewerber: Benutzer): PlainTextPasswort = {
@@ -103,45 +93,6 @@ object Benutzer {
       get[String]("users.nachname") ~
       get[Option[String]]("users.passwort") map {
       case id~email~vorname~nachname~passwort => Benutzer(Id(id), BenutzerName(vorname, nachname), EMail(email), passwort)
-    }
-  }
-
-  def existiertMitName(name: BenutzerName): Boolean = {
-    DB.withConnection { implicit connection =>
-      SQL(
-        """
-          SELECT count(id) FROM users WHERE vorname={vorname} AND nachname={nachname}
-        """
-      ).on(
-        'vorname -> name.vorname,
-        'nachname -> name.nachname
-      ).as(scalar[Long].single) > 0
-    }
-  }
-
-
-  def existiertMitEMail(email: EMail): Boolean = {
-    DB.withConnection { implicit connection =>
-      SQL(
-        """
-          SELECT count(id) FROM users WHERE email={email}
-        """
-      ).on(
-        'email -> email.email
-      ).as(scalar[Long].single) > 0
-    }
-  }
-
-
-  def findeMitId(id: Long): Option[Benutzer] = {
-    DB.withConnection { implicit connection =>
-      SQL(
-        """
-          SELECT * FROM users WHERE id={id}
-        """
-      ).on(
-        'id -> id
-      ).as(simple.singleOpt)
     }
   }
 }

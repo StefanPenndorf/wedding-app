@@ -4,7 +4,7 @@ import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
 import play.api.data.validation.Constraints._
-import model.{Bewerber, Benutzer, HochzeitsGastBewerbung}
+import model.{PersistenteGästeliste, Bewerber, HochzeitsGastBewerbung}
 
 /**
  *
@@ -30,9 +30,9 @@ object Registrierung extends Controller {
     (
         (bewerbung: HochzeitsGastBewerbung) => Some(bewerbung.vorname, bewerbung.nachname, bewerbung.email, "")
     ).verifying(
-        "email.error.used", bewerbung => Benutzer.findeMitEMail(bewerbung.email).isEmpty
+        "email.error.used", bewerbung => new PersistenteGästeliste().findeGastMitEMail(bewerbung.email).isEmpty
     ).verifying(
-        "nutzername.error.used", bewerbung => !Benutzer.existiertMitName(bewerbung.benutzerName)
+        "nutzername.error.used", bewerbung => new PersistenteGästeliste().findeGastMitName(bewerbung.benutzerName).isEmpty
     )
   )
 
