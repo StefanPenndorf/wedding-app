@@ -37,6 +37,23 @@ class GastModelTest extends Specification {
 
       derGast must_== einGast
     }
+  }
+
+  "Ein nicht freigeschalteter Gast" should {
+
+    "nach dem Freischalten ein Passwort mit 12 Zeichen erhalten" in DatenbankMit("einemNichtFreigeschaltetenGast") {
+      val nichtFreigeschaltet = gästeliste.findeGastMitEMail("teresa@cyphoria.net").get
+
+      nichtFreigeschaltet.freischalten().passwort must have length(12)
+    }
+
+    "nach dem Freischalten ein Passwort mit 12 Zeichen erhalten" in DatenbankMit("einemNichtFreigeschaltetenGast") {
+      val nichtFreigeschaltet = gästeliste.findeGastMitEMail("teresa@cyphoria.net").get
+
+      nichtFreigeschaltet.freischalten().passwort must have length(12)
+    }
+
+
 
 
   }
