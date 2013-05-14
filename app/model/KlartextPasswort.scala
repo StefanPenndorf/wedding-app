@@ -7,7 +7,7 @@ import scala.util.Random
  * @author Stefan Penndorf <stefan@cyphoria.net>
  */
 case class KlartextPasswort private(passwort: String) {
-  override def toString = ""
+  override def toString = passwort
 }
 
 object KlartextPasswort {

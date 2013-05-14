@@ -22,7 +22,12 @@ class KlartextPasswortTest  extends Specification {
       val pw1 = KlartextPasswort.generate
       val pw2 = KlartextPasswort.generate
 
-      pw1 must not be_==(pw2)
+      pw1 must not(be_==(pw2))
+    }
+
+    "sollte das Passwort als String-Representation haben" in  {
+      val pw = KlartextPasswort.generate
+      pw.toString must be_==(pw.passwort)
     }
 
   }

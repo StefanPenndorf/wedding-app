@@ -106,15 +106,17 @@ class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Bro
   }
 
   Dann("""^erhält Kerstin eine E-Mail mit einem automatisch generierten Passwort$"""){ () =>
-    val passwortPattern = "Passwort: ([a-zA-Z0-9+~*%&$/!#;-]*)".r
+    val passwortPattern = "(?s).*Passwort: ([a-zA-Z0-9+~*%&$/!#;-]*).*".r
     val email = receivedEMailTo(emailAdresse)
 
     email should beFrom("hochzeit@cyphoria.net")
     email should haveSubject("Du wurdest als Hochzeitsgast freigeschaltet")
 
-    emailPasswort = passwortPattern findFirstIn email.text
-    emailPasswort should be ('defined)
-    emailPasswort.get should have length (12)
+
+    val passwortPattern(emailPasswort) = email.text
+    //emailPasswort = passwortPattern findFirstIn email.text
+    //emailPasswort should be ('defined)
+    emailPasswort should have length (12)
   }
 
   def assertEsWurdeEinKontoAngelegt() {
