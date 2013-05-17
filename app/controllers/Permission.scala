@@ -4,6 +4,5 @@ package controllers
  *
  * @author Stefan Penndorf <stefan@cyphoria.net>
  */
-trait Permission {
-
-}
+sealed trait Berechtigung
+case object GastBerechtigung extends Berechtigung

@@ -4,6 +4,7 @@ import anorm._
 import anorm.SqlParser._
 import play.api.db.DB
 import play.api.Play.current
+import org.mindrot.jbcrypt.BCrypt
 
 /**
  *
@@ -25,29 +26,35 @@ case class Benutzer(
   def this(vorname: String, nachname: String, email: String) = this(NotAssigned, BenutzerName(vorname,nachname), email)
 
   def freischalten(): KlartextPasswort = {
-    KlartextPasswort.generate
-    //BCrypt.hashpw(pw, BCrypt.gensalt())
+    val passwort = KlartextPasswort.generate
+    DB.withConnection { implicit connection =>
+      SQL(
+        """
+          update users set
+             passwort = {passwort}
+          where
+             email = {email}
+        """
+      ).on(
+        'email -> email.email,
+        'passwort -> BCrypt.hashpw(passwort.passwort, BCrypt.gensalt())
+      ).executeUpdate()
+    }
+
+    passwort
   }
 }
 
 object Benutzer {
 
   def authentifiziere(email: String, passwort: String): Option[Benutzer] = {
-    findeMitEMail(email).filter { benutzer => benutzer.passwort.isDefined }
-  }
-
-  def findeMitEMail(email: EMail): Option[Benutzer] = {
-    DB.withConnection { implicit connection =>
-      SQL(
-        """
-          SELECT * FROM users WHERE email={email}
-        """
-      ).on(
-        'email -> email.email
-      ).as(simple.singleOpt)
+    (new PersistenteGästeliste).findeGastMitEMail(email).filter {
+      benutzer => benutzer match {
+        case Benutzer(_,_,_, Some(benutzerPasswort)) => BCrypt.checkpw(passwort, benutzer.passwort.get)
+        case _ => false
+      }
     }
   }
-
 
   val simple = {
       get[Long]("users.id") ~

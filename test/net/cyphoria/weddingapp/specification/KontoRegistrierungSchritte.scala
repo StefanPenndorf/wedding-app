@@ -9,6 +9,7 @@ import com.google.common.base.Predicate
 import org.openqa.selenium.WebDriver
 import net.cyphoria.weddingapp.specification.pages.IndexPage
 import net.cyphoria.weddingapp.specification.users.User._
+import net.cyphoria.weddingapp.specification.users.User
 
 
 /**
@@ -22,7 +23,7 @@ class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Bro
   val emailAdresse = "kerstin@cyphoria.net"
   val passwort = "heiraten"
 
-  var emailPasswort: Option[String] = None
+  var kerstinsPasswort: String = "unbekannt"
 
   def indexPage = browser.createPage(classOf[IndexPage])
 
@@ -112,11 +113,10 @@ class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Bro
     email should beFrom("hochzeit@cyphoria.net")
     email should haveSubject("Du wurdest als Hochzeitsgast freigeschaltet")
 
-
     val passwortPattern(emailPasswort) = email.text
-    //emailPasswort = passwortPattern findFirstIn email.text
-    //emailPasswort should be ('defined)
     emailPasswort should have length (12)
+
+    kerstinsPasswort = emailPasswort
   }
 
   def assertEsWurdeEinKontoAngelegt() {
@@ -128,7 +128,6 @@ class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Bro
   }
 
   Dann("""^erhalten die Administratoren eine Benachrichtigung$"""){ () =>
-
     for(rcp <- Seq("stefan@cyphoria.net", "stephaniegeiler@web.de")) {
       val email = receivedEMailTo(rcp)
 
@@ -139,6 +138,10 @@ class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Bro
 
   Dann("""^erhält Kerstin eine Fehlermeldung$"""){ () =>
     browser.$(".error").getTexts.toArray.mkString("") should include ("nicht freigeschaltet")
+  }
+
+  Dann("""^kann sich Kerstin mit diesem Passwort anmelden$"""){ () =>
+    browser goTo indexPage loginAs User(Kerstin.email, kerstinsPasswort)
   }
 
 }

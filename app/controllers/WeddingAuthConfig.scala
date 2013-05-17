@@ -33,7 +33,7 @@ trait WeddingAuthConfig extends AuthConfig {
    * case object Administrator extends Permission
    * case object NormalUser extends Permission
    */
-  type Authority = Permission
+  type Authority = Berechtigung
 
   /**
    * A `ClassManifest` is used to retrieve an id from the Cache API.
@@ -44,7 +44,7 @@ trait WeddingAuthConfig extends AuthConfig {
   /**
    * The session timeout in seconds
    */
-  val sessionTimeoutInSeconds = 0
+  val sessionTimeoutInSeconds = 60*30
 
   /**
    * A function that returns a `User` object from an `Id`.
@@ -77,13 +77,12 @@ trait WeddingAuthConfig extends AuthConfig {
    * A function that determines what `Authority` a user has.
    * You should alter this procedure to suit your application.
    */
-  def authorize(user: User, authority: Authority): Boolean = false
+  def authorize(user: User, authority: Authority): Boolean = true
 
   /**
    * Whether use the secure option or not use it in the cookie.
    * However default is false, I strongly recommend using true in a production.
    */
-  override lazy val cookieSecureOption: Boolean =
-    play.api.Play.current.configuration.getBoolean("auth.cookie.secure").getOrElse(true)
+  override lazy val cookieSecureOption: Boolean = false
 
 }
