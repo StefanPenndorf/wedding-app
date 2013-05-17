@@ -16,7 +16,7 @@ import scala.Some
  *
  * @author Stefan Penndorf <stefan@cyphoria.net>
  */
-class AdminAreaControllerSpecification extends Specification with MockFactory {
+class AdminAreaControllerTest extends Specification with MockFactory {
 
   val kerstin = new Benutzer(Id(1L), BenutzerName("Kerstin", "Albert"), "kerstin@cyphoria.net")
 

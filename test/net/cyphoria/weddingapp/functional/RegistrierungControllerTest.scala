@@ -8,7 +8,7 @@ import play.api.test.FakeRequest
  *
  * @author Stefan Penndorf <stefan@cyphoria.net>
  */
-class RegistrierungControllerSpecification extends Specification {
+class RegistrierungControllerTest extends Specification {
 
   "Registrierung" should {
     "eine Fehlermeldung anzeigen, wenn bereits ein Benutzer mit der gewünschten E-Mail-Adresse registriert ist" in {

@@ -8,7 +8,7 @@ import play.api.test.{FakeRequest, FakeApplication}
  *
  * @author Stefan Penndorf <stefan@cyphoria.net>
  */
-class ApplicationControllerSpecification extends Specification {
+class ApplicationControllerTest extends Specification {
 
   "Application" should {
 
