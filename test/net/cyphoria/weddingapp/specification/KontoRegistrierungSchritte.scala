@@ -7,9 +7,7 @@ import net.cyphoria.weddingapp.specification.infrastructure.{Schritte, FakeMaile
 import java.util.concurrent.TimeUnit
 import com.google.common.base.Predicate
 import org.openqa.selenium.WebDriver
-import net.cyphoria.weddingapp.specification.pages.IndexPage
-import net.cyphoria.weddingapp.specification.users.User._
-import net.cyphoria.weddingapp.specification.users.User
+import net.cyphoria.weddingapp.specification.persona.Persona._
 
 
 /**
@@ -18,15 +16,7 @@ import net.cyphoria.weddingapp.specification.users.User
  */
 class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Browser with FakeMailer {
 
-  val vorname = "Kerstin"
-  val nachname = "Albert"
-  val emailAdresse = "kerstin@cyphoria.net"
-  val passwort = "heiraten"
-
-  var kerstinsPasswort: String = "unbekannt"
-
-  def indexPage = browser.createPage(classOf[IndexPage])
-
+  var kerstinsNeuesPasswort: String = "unbekannt"
 
   Angenommen("""^Kerstin hat die Einladungskarte erhalten$"""){ () =>
     // nichts zu tun hier
@@ -45,22 +35,9 @@ class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Bro
   }
 
   Angenommen("""^Kerstin hat sich registriert$"""){ () =>
-    withConnection { implicit connection =>
-      SQL("""INSERT INTO users (email, vorname, nachname) VALUES ({email},{vorname},{nachname})""")
-        .on(
-          "email" -> emailAdresse,
-          "vorname" -> vorname,
-          "nachname" -> nachname
-        ).executeInsert()
-    }
+    loadFixture("kerstin-hat-sich-registriert.dbt")
 
     assertEsWurdeEinKontoAngelegt()
-  }
-
-  Angenommen("""^Stefan hat sich angemeldet$"""){ () =>
-      loadFixture("users.dbt")
-
-      browser goTo indexPage loginAs Stefan
   }
 
   Wenn("""^er Kerstin freischaltet$"""){ () =>
@@ -77,28 +54,19 @@ class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Bro
     })
   }
 
-
   Wenn("""^sie sich mit ihren Daten für ein neues Benutzerkonto registriert$"""){ () =>
 
-    browser.fill("#vorname") `with` vorname
-    browser.fill("#nachname") `with` nachname
-    browser.fill("#email") `with` emailAdresse
+    browser.fill("#vorname") `with` Kerstin.vorname
+    browser.fill("#nachname") `with` Kerstin.nachname
+    browser.fill("#email") `with` Kerstin.email
     browser.fill("#sicherheitsfrage") `with` "Albert Schweitzer"
 
     browser.submit("#registrieren")
   }
 
-  Wenn("""^Kerstin sich anmelden möchte$"""){ () =>
-    browser.goTo("/")
-
-    browser.fill("#loginname") `with` emailAdresse
-    browser.fill("#passwort") `with` passwort
-    browser.submit("#login")
-  }
-
   Dann("""^wird eine Bestätigungsseite mit einer persönlichen Begrüßung angezeigt$"""){ () =>
 
-    browser.$("h1").getText should include ("Hallo " + vorname)
+    browser.$("h1").getText should include ("Hallo " + Kerstin.vorname)
     browser.$("body").getText should include ("erfolgreich registriert")
   }
 
@@ -108,7 +76,7 @@ class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Bro
 
   Dann("""^erhält Kerstin eine E-Mail mit einem automatisch generierten Passwort$"""){ () =>
     val passwortPattern = "(?s).*Passwort: ([a-zA-Z0-9+~*%&$/!#;-]*).*".r
-    val email = receivedEMailTo(emailAdresse)
+    val email = receivedEMailTo(Kerstin.email)
 
     email should beFrom("hochzeit@cyphoria.net")
     email should haveSubject("Du wurdest als Hochzeitsgast freigeschaltet")
@@ -116,12 +84,12 @@ class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Bro
     val passwortPattern(emailPasswort) = email.text
     emailPasswort should have length (12)
 
-    kerstinsPasswort = emailPasswort
+    AnmeldeContext.kerstinsNeuesPasswort = emailPasswort
   }
 
   def assertEsWurdeEinKontoAngelegt() {
     val cnt = withConnection { implicit connection =>
-      SQL("""select count(*) as cnt from users where email={email}""").on("email" -> emailAdresse).apply().head[Long]("cnt")
+      SQL("""select count(*) as cnt from users where email={email}""").on("email" -> Kerstin.email).apply().head[Long]("cnt")
     }
 
     cnt should equal(1)
@@ -134,14 +102,6 @@ class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Bro
       email should beFrom("hochzeit@cyphoria.net")
       email should haveSubject("Kerstin hat sich registriert")
     }
-  }
-
-  Dann("""^erhält Kerstin eine Fehlermeldung$"""){ () =>
-    browser.$(".error").getTexts.toArray.mkString("") should include ("nicht freigeschaltet")
-  }
-
-  Dann("""^kann sich Kerstin mit diesem Passwort anmelden$"""){ () =>
-    browser goTo indexPage loginAs User(Kerstin.email, kerstinsPasswort)
   }
 
 }

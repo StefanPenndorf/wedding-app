@@ -1,4 +1,4 @@
-package net.cyphoria.weddingapp.specification.pages
+package net.cyphoria.weddingapp.specification.seiten
 
 import org.fluentlenium.core.FluentPage
 import org.scalatest.matchers.ShouldMatchers
@@ -7,7 +7,7 @@ import org.scalatest.matchers.ShouldMatchers
  *
  * @author Stefan Penndorf <stefan@cyphoria.net>
  */
-class VipAreaWelcomePage extends FluentPage with ShouldMatchers {
+class VipAreaStartSeite extends FluentPage with ShouldMatchers {
 
   override def getUrl: String = "/vip"
 

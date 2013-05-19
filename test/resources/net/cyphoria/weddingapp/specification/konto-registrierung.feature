@@ -12,18 +12,21 @@ um Zugriff auf alle geschützten Bereiche zu erhalten.
   Und        wird ein Konto für Sie angelegt
   Und        erhalten die Administratoren eine Benachrichtigung
 
+  @finished
   Szenario: Kein Login ohne Freischaltung
   Angenommen Kerstin hat sich registriert
-  Wenn       Kerstin sich anmelden möchte
-  Dann       erhält Kerstin eine Fehlermeldung
+  Wenn       Kerstin versucht sich anzumelden
+  Dann       wird Kerstin die Anmeldung verweigert
 
-  @current
+  @finished
   Szenario: Benutzerfreischaltung
-  Angenommen Stefan hat sich angemeldet
+  Angenommen Kerstin hat sich registriert
+  Und        Stefan hat sich angemeldet
   Wenn       er Kerstin freischaltet
   Dann       erhält Kerstin eine E-Mail mit einem automatisch generierten Passwort
-  Und        kann sich Kerstin mit diesem Passwort anmelden
+  Und        kann sich Kerstin mit dem neuen Passwort anmelden
 
+  @current
   Szenario: Benutzerreischaltung nur für Administratoren
   Angenommen Kerstin hat sich angemeldet
   Wenn       Kerstin die Gästeliste aufruft
