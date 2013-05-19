@@ -75,7 +75,7 @@ class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Bro
   }
 
   Dann("""^erhält Kerstin eine E-Mail mit einem automatisch generierten Passwort$"""){ () =>
-    val passwortPattern = "(?s).*Passwort: ([a-zA-Z0-9+~*%&$/!#;-]*).*".r
+    val passwortPattern = "(?s).*Passwort lautet: ([a-zA-Z0-9+~*%&$/!#;-]*).*".r
     val email = receivedEMailTo(Kerstin.email)
 
     email should beFrom("hochzeit@cyphoria.net")

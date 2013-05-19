@@ -1,9 +1,11 @@
 @(benutzer: model.Benutzer, passwort: model.KlartextPasswort)
 Hallo @benutzer.name.vorname,
 
-du wurdest frei geschaltet! Du kannst dich jetzt unter http://hochzeit.cyphoria.net unter Angabe deiner E-Mail-Adresse als Loginname anmelden.
+wir freuen uns sehr, dass du unsere Hochzeit mit uns feiern möchtest!
 
-Dein Passwort: @passwort
+Du wurdest soeben frei geschaltet und kannst dich jetzt unter http://hochzeit.cyphoria.net unter Angabe deiner E-Mail-Adresse als Loginname anmelden. Dein Passwort lautet: @passwort
 
-Viele Grüße
-Das Hochzeitspaar Steffi und Stefan
+Auf unserer Internetseite findest du in Zukunft alle wichtigen Informationen zu unserer Hochzeit wie zum Beispiel zum Ablauf. Später gibt es hier dann auch Fotos :)
+
+Liebe Grüße und bis hoffentlich bald!
+Steffi & Stefan

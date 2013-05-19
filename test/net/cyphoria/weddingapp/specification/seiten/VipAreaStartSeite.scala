@@ -13,7 +13,8 @@ class VipAreaStartSeite extends FluentPage with ShouldMatchers {
 
   override def isAt {
     title() should be("Steffi und Stefan heiraten!")
-    $("h1").getText should startWith regex("Willkommen.*,")
+    $("h1").getText should startWith("Willkommen")
+    $("body").getText should include("Auf dieser Seite findest du alle wichtigen Infos zu unserer Hochzeit.")
   }
 
 }
