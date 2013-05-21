@@ -27,7 +27,7 @@ um Zugriff auf alle geschützten Bereiche zu erhalten.
   Und        kann sich Kerstin mit dem neuen Passwort anmelden
 
   @current
-  Szenario: Benutzerreischaltung nur für Administratoren
+  Szenario: Benutzerfreischaltung nur für Administratoren
   Angenommen Kerstin hat sich angemeldet
   Wenn       Kerstin die Gästeliste aufruft
   Dann       wird Kerstin der Zugang verwehrt
