@@ -20,7 +20,8 @@ class VipAreaTemplateTest extends Specification {
   "Die Vip-Area" should {
 
       "eine persönliche Begrüßung enthalten" in {
-        vipArea.body must contain("Willkommen Kerstin,")
+        vipArea.body must contain("Willkommen Kerstin")
+        vipArea.body must contain("""Auf dieser Seite findest du alle wichtigen Infos zu unserer Hochzeit.""")
       }
   }
 
