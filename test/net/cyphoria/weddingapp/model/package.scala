@@ -1,10 +1,8 @@
 package net.cyphoria.weddingapp
 
-import play.api.test.Helpers._
-import play.api.test.FakeApplication
-import javax.sql.DataSource
-import play.api.db.DB
-import scaladbtest.test.ScalaDbTester
+import _root_.model.{BenutzerName, Benutzer}
+import net.cyphoria.weddingapp.functional._
+import anorm.Id
 
 /**
  *
@@ -12,17 +10,11 @@ import scaladbtest.test.ScalaDbTester
  */
 package object model {
 
-  def mitDatenbank[T](block: => T) = running(FakeApplication(additionalConfiguration = inMemoryDatabase()))(block)
+  // TODO Refactor tests so dass Konstanten aus model benutzt werden.
+  val KERSTIN = new Benutzer(Id(1L), BenutzerName("Kerstin", "Albert"), "kerstin@cyphoria.net")
 
-  def DatenbankMit[T](fixtureFileName: String)(block: => T) {
-    val application = FakeApplication(additionalConfiguration = inMemoryDatabase())
-    val source: DataSource = DB.getDataSource()(application)
-    val scaladbtester = new ScalaDbTester(source, "test/resources/model")
-    running(application) {
-      scaladbtester.onBefore(fixtureFileName + ".dbt")
-      block
-      scaladbtester.onAfter()
-    }
-  }
+  def mitDatenbank[T](block: => T) = laufenderAnwendung(block)
+
+  def DatenbankMit[T](fixtureFileName: String)(block: => T) = laufenderAnwendungMitScenario(fixtureFileName)(block)
 
 }

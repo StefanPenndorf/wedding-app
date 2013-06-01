@@ -4,6 +4,7 @@ import net.cyphoria.weddingapp.specification.infrastructure.{Browser, Schritte}
 import cucumber.api.scala.{DE, ScalaDsl}
 import org.scalatest.matchers.ShouldMatchers._
 import net.cyphoria.weddingapp.specification.persona.Persona._
+import net.cyphoria.weddingapp.specification.persona.Persona
 
 /**
  *
@@ -11,8 +12,8 @@ import net.cyphoria.weddingapp.specification.persona.Persona._
  */
 class AnmeldeSchritte extends Schritte with ScalaDsl with DE with Browser {
 
-  Angenommen("""^Stefan hat sich angemeldet$"""){ () =>
-    browser goTo startSeite anmeldenAls Stefan
+  Angenommen("""^(\w*) hat sich angemeldet$"""){ personaName: String =>
+    browser goTo startSeite anmeldenAls Persona.fromName(personaName)
   }
 
   Wenn("""^Kerstin versucht sich anzumelden$"""){ () =>
@@ -26,6 +27,8 @@ class AnmeldeSchritte extends Schritte with ScalaDsl with DE with Browser {
   Dann("""^kann sich Kerstin mit dem neuen Passwort anmelden$"""){ () =>
     browser goTo startSeite anmeldenAls Kerstin.mitPasswort(AnmeldeContext.kerstinsNeuesPasswort)
   }
+
+
 
 
 }

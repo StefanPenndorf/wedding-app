@@ -6,3 +6,4 @@ package controllers
  */
 sealed trait Berechtigung
 case object GastBerechtigung extends Berechtigung
+case object AdminBerechtigung extends Berechtigung

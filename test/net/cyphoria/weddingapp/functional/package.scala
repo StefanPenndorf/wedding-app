@@ -3,6 +3,10 @@ package net.cyphoria.weddingapp
 import play.api.test.Helpers._
 import play.api.test.FakeApplication
 
+import javax.sql.DataSource
+import play.api.db.DB
+import scaladbtest.test.ScalaDbTester
+
 /**
  *
  * @author Stefan Penndorf <stefan@cyphoria.net>
@@ -10,5 +14,16 @@ import play.api.test.FakeApplication
 package object functional {
 
   def laufenderAnwendung[T](block: => T) = running(FakeApplication(additionalConfiguration = inMemoryDatabase()))(block)
+
+  def laufenderAnwendungMitScenario[T](fixtureFileName: String)(block: => T) {
+    val application = FakeApplication(additionalConfiguration = inMemoryDatabase())
+    val source: DataSource = DB.getDataSource()(application)
+    val scaladbtester = new ScalaDbTester(source, "test/resources/model")
+    running(application) {
+      scaladbtester.onBefore(fixtureFileName + ".dbt")
+      block
+      scaladbtester.onAfter()
+    }
+  }
 
 }

@@ -4,7 +4,8 @@ import org.specs2.mutable.Specification
 import play.api.test.Helpers._
 import play.api.test.FakeRequest
 import model._
-import controllers.AdminArea
+import jp.t2v.lab.play2.auth.test.Helpers._
+import controllers.{WeddingAuthConfig, AdminArea}
 import org.scalamock.specs2.MockFactory
 import mail.MailController
 import model.BenutzerName
@@ -18,37 +19,22 @@ import scala.Some
  */
 class AdminAreaControllerTest extends Specification with MockFactory {
 
+  object config extends WeddingAuthConfig
+
+  val einGast = Benutzer(Id(1L), BenutzerName("Kerstin", "Albert"), "kerstin@cyphoria.net", Some("$2a$10$k5TmtHnitQvFCNAp8SbuFeq1VlhlcSGkXl6JAcwZFX20mRZKgEgm."))
+  val einAdmin = Benutzer(Id(1L), BenutzerName("Stefan", "Penndorf"), "stefan@cyphoria.net", Some("$2a$10$k5TmtHnitQvFCNAp8SbuFeq1VlhlcSGkXl6JAcwZFX20mRZKgEgm."))
   val kerstin = new Benutzer(Id(1L), BenutzerName("Kerstin", "Albert"), "kerstin@cyphoria.net")
 
   "AdminArea" should {
-      "alle registrierten Gäste anzeigen"  in {
-        laufenderAnwendung {
+      "alle registrierten Gäste anzeigen" in laufenderAnwendungMitScenario("einemAdmin") {
             Bewerber bewirbtSichMit(HochzeitsGastBewerbung("Kerstin", "Albert", "kerstin@cyphoria.net"))
             Bewerber bewirbtSichMit(HochzeitsGastBewerbung("Teresa", "Merfert", "resi@cyphoria.net"))
 
-            val result = route(FakeRequest(GET, "/gaesteliste")).get
+            val result = route(FakeRequest(GET, "/gaesteliste").withLoggedIn(config)(einAdmin.id.get)).get
 
             status(result) must equalTo(OK)
             contentAsString(result) must contain("Kerstin")
             contentAsString(result) must contain("Teresa")
-        }
-      }
-
-      "alle registrierten Gäste anzeigen"  in {
-          val benutzerliste = List(
-            new Benutzer(Id(1L), BenutzerName("Kerstin", "Albert"), "kerstin@cyphoria.net"),
-            new Benutzer(Id(2L), BenutzerName("Teresa", "Merfert"), "resi@cyphoria.net")
-          )
-
-          val mailController = stub[MailController]
-          val gästeliste = mock[Gästeliste]
-          (gästeliste.gäste _).expects.returning(benutzerliste)
-
-          val result = new AdminArea(gästeliste, mailController).gaesteliste()(FakeRequest())
-
-          status(result) must equalTo(OK)
-          contentAsString(result) must contain("Kerstin")
-          contentAsString(result) must contain("Teresa")
       }
 
     "einen Gast freischalten" in {
@@ -58,6 +44,7 @@ class AdminAreaControllerTest extends Specification with MockFactory {
         val result = route(FakeRequest(POST, "/gast/freischalten/1")).get
 
         status(result) must equalTo(SEE_OTHER)
+        redirectLocation(result) must beSome.which(_.contains("/gaesteliste"))
       }
     }
 
@@ -81,6 +68,16 @@ class AdminAreaControllerTest extends Specification with MockFactory {
       val result = new AdminArea(gästeliste, mailController).gastFreischalten(1L)(FakeRequest())
     }
 
+
+    "den Zugriff für Gäste auf die Gästeliste verwehren" in laufenderAnwendungMitScenario("einemGast") {
+      val result = route(FakeRequest(GET, "/gaesteliste").withLoggedIn(config)(einGast.id.get)).get
+
+      status(result) must equalTo(FORBIDDEN)
+    }
+
+    //TODO Zugriff auch noch für Freischaltung einschränken
+    //TODO Funktionalität aus dem AdminArea-Controller herausrefactoren, so dass nur noch GUI-Logik bleibt
+    //TODO Wer soll die Funktionalität übernehmen? Die Gästeliste?
 
   }
 

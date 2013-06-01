@@ -77,7 +77,12 @@ trait WeddingAuthConfig extends AuthConfig {
    * A function that determines what `Authority` a user has.
    * You should alter this procedure to suit your application.
    */
-  def authorize(user: User, authority: Authority): Boolean = true
+  def authorize(user: User, authority: Authority): Boolean = {
+    user match {
+      case Benutzer(_,_,_,_, true) => true
+      case _ => false
+    }
+  }
 
   /**
    * Whether use the secure option or not use it in the cookie.

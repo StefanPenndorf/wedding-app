@@ -16,7 +16,7 @@ class AdminArea @Inject()(
                            mailController: MailController
                            ) extends Controller with AuthElement with WeddingAuthConfig {
 
-  def gaesteliste = Action { implicit request =>
+  def gaesteliste =  StackAction(AuthorityKey -> GastBerechtigung) { implicit request =>
     Ok(zeigeGaesteliste)
   }
 

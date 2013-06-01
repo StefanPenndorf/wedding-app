@@ -28,6 +28,7 @@ um Zugriff auf alle geschützten Bereiche zu erhalten.
 
   @current
   Szenario: Benutzerfreischaltung nur für Administratoren
-  Angenommen Kerstin hat sich angemeldet
+  Angenommen Kerstin wurde freigeschaltet
+  Und        Kerstin hat sich angemeldet
   Wenn       Kerstin die Gästeliste aufruft
   Dann       wird Kerstin der Zugang verwehrt

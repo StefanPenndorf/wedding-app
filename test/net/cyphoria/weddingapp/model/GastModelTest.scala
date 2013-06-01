@@ -10,7 +10,7 @@ import anorm.Id
  */
 class GastModelTest extends Specification {
 
-  val einGast = Benutzer(Id(1L), BenutzerName("Stefan", "Penndorf"), "stefan@cyphoria.net", Some("$2a$10$k5TmtHnitQvFCNAp8SbuFeq1VlhlcSGkXl6JAcwZFX20mRZKgEgm."))
+  val einGast = Benutzer(Id(1L), BenutzerName("Kerstin", "Albert"), "kerstin@cyphoria.net", Some("$2a$10$k5TmtHnitQvFCNAp8SbuFeq1VlhlcSGkXl6JAcwZFX20mRZKgEgm."))
   val gästeliste = new PersistenteGästeliste
 
   "Ein Gast" should {
@@ -33,7 +33,7 @@ class GastModelTest extends Specification {
 
 
     "auf der Gästeliste unter der angegebenen Id stehen" in DatenbankMit("einemGast") {
-      val derGast = gästeliste.findeGastMitId(1L).get
+      val derGast = gästeliste.findeGastMitId(einGast.id.get).get
 
       derGast must_== einGast
     }

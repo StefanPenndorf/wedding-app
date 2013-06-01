@@ -40,6 +40,12 @@ class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Bro
     assertEsWurdeEinKontoAngelegt()
   }
 
+  Angenommen("""^Kerstin wurde freigeschaltet$"""){ () =>
+    loadFixture("kerstin-wurde-freigeschaltet.dbt")
+
+    assertEsWurdeEinKontoAngelegt()
+  }
+
   Wenn("""^er Kerstin freischaltet$"""){ () =>
     browser goTo "/gaesteliste"
 
@@ -62,6 +68,10 @@ class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Bro
     browser.fill("#sicherheitsfrage") `with` "Albert Schweitzer"
 
     browser.submit("#registrieren")
+  }
+
+  Wenn("""^Kerstin die Gästeliste aufruft$"""){ () =>
+    browser goTo "/gaesteliste"
   }
 
   Dann("""^wird eine Bestätigungsseite mit einer persönlichen Begrüßung angezeigt$"""){ () =>
@@ -103,5 +113,11 @@ class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Bro
       email should haveSubject("Kerstin hat sich registriert")
     }
   }
+
+
+  Dann("""^wird Kerstin der Zugang verwehrt$"""){ () =>
+    browser.webDriver.getPageSource should include ("no permission")
+  }
+
 
 }

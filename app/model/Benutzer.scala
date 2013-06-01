@@ -21,7 +21,8 @@ case class Benutzer(
     id: Pk[Long] = NotAssigned,
     name: BenutzerName,
     email: EMail,
-    passwort: Option[String] = None) {
+    passwort: Option[String] = None,
+    istAdmin: Boolean = false) {
 
   def this(vorname: String, nachname: String, email: String) = this(NotAssigned, BenutzerName(vorname,nachname), email)
 
@@ -50,7 +51,7 @@ object Benutzer {
   def authentifiziere(email: String, passwort: String): Option[Benutzer] = {
     (new PersistenteGästeliste).findeGastMitEMail(email).filter {
       benutzer => benutzer match {
-        case Benutzer(_,_,_, Some(benutzerPasswort)) => BCrypt.checkpw(passwort, benutzer.passwort.get)
+        case Benutzer(_,_,_, Some(benutzerPasswort),_) => BCrypt.checkpw(passwort, benutzer.passwort.get)
         case _ => false
       }
     }
@@ -61,8 +62,10 @@ object Benutzer {
       get[String]("users.email") ~
       get[String]("users.vorname") ~
       get[String]("users.nachname") ~
-      get[Option[String]]("users.passwort") map {
-      case id~email~vorname~nachname~passwort => Benutzer(Id(id), BenutzerName(vorname, nachname), EMail(email), passwort)
+      get[Option[String]]("users.passwort") ~
+      get[Boolean]("users.istAdmin") map {
+      case id~email~vorname~nachname~passwort~istAdmin =>
+          Benutzer(Id(id), BenutzerName(vorname, nachname), EMail(email), passwort, istAdmin)
     }
   }
 }
