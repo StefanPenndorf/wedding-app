@@ -3,7 +3,7 @@ Hallo @benutzer.name.vorname,
 
 wir freuen uns sehr, dass du unsere Hochzeit mit uns feiern möchtest!
 
-Du wurdest soeben frei geschaltet und kannst dich jetzt unter http://hochzeit.cyphoria.net unter Angabe deiner E-Mail-Adresse als Loginname anmelden. Dein Passwort lautet: @passwort
+Nun läuft die Homepage endlich! Du wurdest soeben frei geschaltet und kannst dich jetzt unter http://hochzeit.cyphoria.net unter Angabe deiner E-Mail-Adresse als Loginname anmelden. Dein Passwort lautet: @passwort
 
 Auf unserer Internetseite findest du in Zukunft alle wichtigen Informationen zu unserer Hochzeit wie zum Beispiel zum Ablauf. Später gibt es hier dann auch Fotos :)
 

@@ -58,11 +58,7 @@ class GastModelTest extends Specification {
     }
 
     "nach dem Freischalten ein Passwort mit 12 Zeichen erhalten" in DatenbankMit("einemNichtFreigeschaltetenGast") {
-      nichtFreigeschalteterGast.freischalten().passwort must have length(12)
-    }
-
-    "nach dem Freischalten ein Passwort mit 12 Zeichen erhalten" in DatenbankMit("einemNichtFreigeschaltetenGast") {
-      nichtFreigeschalteterGast.freischalten().passwort must have length(12)
+      nichtFreigeschalteterGast.freischalten().passwort must have length(8)
     }
 
     "sich nach dem Freischalten mit dem neuen Passwort anmelden können" in DatenbankMit("einemNichtFreigeschaltetenGast") {

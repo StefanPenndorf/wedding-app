@@ -10,8 +10,8 @@ import model.KlartextPasswort
 class KlartextPasswortTest  extends Specification {
 
   "Ein Klartextpasswort" should {
-    "12 Zeichen lang sein" in {
-      KlartextPasswort.generate.passwort must have length(12)
+    "8 Zeichen lang sein" in {
+      KlartextPasswort.generate.passwort must have length(8)
     }
 
     "sollte nur aus Buchstaben, Zahlen, Bindestrich und Ausrufezeichen bestehen" in {

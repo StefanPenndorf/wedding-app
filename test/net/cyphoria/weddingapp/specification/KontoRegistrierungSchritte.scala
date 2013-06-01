@@ -92,7 +92,7 @@ class KontoRegistrierungSchritte extends Schritte with ScalaDsl with DE with Bro
     email should haveSubject("Du wurdest als Hochzeitsgast freigeschaltet")
 
     val passwortPattern(emailPasswort) = email.text
-    emailPasswort should have length (12)
+    emailPasswort should have length (8)
 
     AnmeldeContext.kerstinsNeuesPasswort = emailPasswort
   }
