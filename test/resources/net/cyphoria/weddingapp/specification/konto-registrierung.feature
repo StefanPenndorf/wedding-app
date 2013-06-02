@@ -26,7 +26,7 @@ um Zugriff auf alle geschützten Bereiche zu erhalten.
   Dann       erhält Kerstin eine E-Mail mit einem automatisch generierten Passwort
   Und        kann sich Kerstin mit dem neuen Passwort anmelden
 
-  @current
+  @finished
   Szenario: Benutzerfreischaltung nur für Administratoren
   Angenommen Kerstin wurde freigeschaltet
   Und        Kerstin hat sich angemeldet

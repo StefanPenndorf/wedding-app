@@ -1,7 +1,7 @@
 package modules
 
 import com.tzavellas.sse.guice.ScalaModule
-import model.{PersistenteGästeliste, Gästeliste}
+import model.{HochzeitsplanerImpl, Hochzeitsplaner, PersistenteGästeliste, Gästeliste}
 import mail.{TemplateMailController, MailController}
 
 /**
@@ -12,5 +12,6 @@ class ProductionModule extends ScalaModule {
   def configure() {
        bind[MailController].to[TemplateMailController]
        bind[Gästeliste].to[PersistenteGästeliste]
+       bind[Hochzeitsplaner].to[HochzeitsplanerImpl]
   }
 }

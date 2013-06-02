@@ -17,6 +17,8 @@ object EMail {
   implicit def fromStringValue(email: String): EMail = EMail(email)
 }
 
+
+
 case class Benutzer(
     id: Pk[Long] = NotAssigned,
     name: BenutzerName,

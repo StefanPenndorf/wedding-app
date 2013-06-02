@@ -5,9 +5,8 @@ import play.api.test.Helpers._
 import play.api.test.FakeRequest
 import model._
 import jp.t2v.lab.play2.auth.test.Helpers._
-import controllers.{WeddingAuthConfig, AdminArea}
+import controllers.WeddingAuthConfig
 import org.scalamock.specs2.MockFactory
-import mail.MailController
 import model.BenutzerName
 import anorm.Id
 import model.HochzeitsGastBewerbung
@@ -37,48 +36,35 @@ class AdminAreaControllerTest extends Specification with MockFactory {
             contentAsString(result) must contain("Teresa")
       }
 
-    "einen Gast freischalten" in {
-      laufenderAnwendung {
+      "einen Gast freischalten" in laufenderAnwendungMitScenario("einemAdmin") {
+          Bewerber bewirbtSichMit(HochzeitsGastBewerbung("Kerstin", "Albert", "kerstin@cyphoria.net"))
+
+          val result = route(FakeRequest(POST, "/gast/freischalten/1").withLoggedIn(config)(einAdmin.id.get)).get
+
+          status(result) must equalTo(SEE_OTHER)
+          redirectLocation(result) must beSome.which(_.contains("/gaesteliste"))
+      }
+
+      "eine Fehlermeldung anzeigen wenn der Gast der freigeschaltet werden soll nicht existiert" in laufenderAnwendungMitScenario("einemAdmin") {
         Bewerber bewirbtSichMit(HochzeitsGastBewerbung("Kerstin", "Albert", "kerstin@cyphoria.net"))
 
-        val result = route(FakeRequest(POST, "/gast/freischalten/1")).get
+        val result = route(FakeRequest(POST, "/gast/freischalten/42").withLoggedIn(config)(einAdmin.id.get)).get
 
-        status(result) must equalTo(SEE_OTHER)
-        redirectLocation(result) must beSome.which(_.contains("/gaesteliste"))
+        status(result) must equalTo(NOT_FOUND)
+        contentAsString(result) must contain("Kerstin")
       }
-    }
 
-    "einen Registranden freischalten" in laufenderAnwendung {
-        val mailController = stub[MailController]
-        val gästeliste = mock[Gästeliste]
-        (gästeliste.findeGastMitId _).expects(1L).returning(Some(kerstin))
+      "den Zugriff für Gäste auf die Gästeliste verwehren" in laufenderAnwendungMitScenario("einemGast") {
+        val result = route(FakeRequest(GET, "/gaesteliste").withLoggedIn(config)(einGast.id.get)).get
 
-        val result = new AdminArea(gästeliste, mailController).gastFreischalten(1L)(FakeRequest())
+        status(result) must equalTo(FORBIDDEN)
+      }
 
-        status(result) must equalTo(SEE_OTHER)
-        redirectLocation(result) must beSome.which(_.contains("/gaesteliste"))
-    }
+      "den Zugriff für Gäste auf die Freischaltung verwehren" in laufenderAnwendungMitScenario("einemGast") {
+        val result = route(FakeRequest(POST, "/gast/freischalten/1").withLoggedIn(config)(einGast.id.get)).get
 
-    "eine Passwort-Mail an den Gast verschicken wenn ein Gast freigeschaltet wird" in laufenderAnwendung {
-      val gästeliste = stub[Gästeliste]
-      (gästeliste.findeGastMitId _).when(*).returns(Some(kerstin))
-      val mailController = mock[MailController]
-      (mailController.sendeFreischaltungsbenachrichtigung _).expects(kerstin, *)
-
-      val result = new AdminArea(gästeliste, mailController).gastFreischalten(1L)(FakeRequest())
-    }
-
-
-    "den Zugriff für Gäste auf die Gästeliste verwehren" in laufenderAnwendungMitScenario("einemGast") {
-      val result = route(FakeRequest(GET, "/gaesteliste").withLoggedIn(config)(einGast.id.get)).get
-
-      status(result) must equalTo(FORBIDDEN)
-    }
-
-    //TODO Zugriff auch noch für Freischaltung einschränken
-    //TODO Funktionalität aus dem AdminArea-Controller herausrefactoren, so dass nur noch GUI-Logik bleibt
-    //TODO Wer soll die Funktionalität übernehmen? Die Gästeliste?
-
+        status(result) must equalTo(FORBIDDEN)
+      }
   }
 
 }
