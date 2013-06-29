@@ -59,7 +59,7 @@ object ApplicationBuild extends Build {
     // Add your own project settings here
     resolvers += "Cloudbees Repository" at "http://repository-saucelabs.forge.cloudbees.com/release/"
 
-    //,checksums in update := Nil
+    ,checksums in update := Nil
   )
 
 }
