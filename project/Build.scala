@@ -1,5 +1,6 @@
 import com.typesafe.config.ConfigFactory
 import sbt._
+import sbt.Keys._
 import play.Project._
 
 object ApplicationBuild extends Build {
@@ -37,8 +38,14 @@ object ApplicationBuild extends Build {
     "junit" % "junit-dep" % "4.11" % "test",
     "info.cukes" % "cucumber-scala" % "1.1.2" % "test",
     "info.cukes" % "cucumber-junit" % "1.1.2" % "test",
+
+    "com.saucelabs.selenium" % "selenium-client-factory" % "2.9" % "test",
+    "com.saucelabs.selenium" % "sauce-ondemand-driver" % "2.9" % "test",
+    "com.saucelabs.selenium" % "selenium-embedded-rc-driver" % "2.9" % "test",
     "org.fluentlenium" % "fluentlenium-core" % "0.8.0" % "test",
     "org.seleniumhq.selenium" % "selenium-java" % "2.32.0" % "test",
+    "org.seleniumhq.selenium" % "selenium-server" % "2.32.0" % "test",
+
 
     "com.icegreen" % "greenmail" % "1.3.1b" % "test",
 
@@ -49,7 +56,10 @@ object ApplicationBuild extends Build {
 
 
   val main = play.Project(appName, appVersion, appDependencies).settings(
-    // Add your own project settings here      
+    // Add your own project settings here
+    resolvers += "Cloudbees Repository" at "http://repository-saucelabs.forge.cloudbees.com/release/"
+
+    //,checksums in update := Nil
   )
 
 }

@@ -1,10 +1,11 @@
 package net.cyphoria.weddingapp.specification.infrastructure
 
-import play.api.test.{TestBrowser, Helpers}
+import play.api.test.TestBrowser
 import scala.Predef._
 import scala.Some
-import org.openqa.selenium.firefox.FirefoxDriver
 import net.cyphoria.weddingapp.specification.seiten.StartSeite
+import com.saucelabs.selenium.client.factory.SeleniumFactory
+import org.openqa.selenium.remote.DesiredCapabilities
 
 /**
  *
@@ -12,15 +13,16 @@ import net.cyphoria.weddingapp.specification.seiten.StartSeite
  */
 trait Browser extends RunningApplication {
 
-  val webDriver: Class[FirefoxDriver] = Helpers.FIREFOX
-
   def browser = global[TestBrowser]("testbrowser")
   def startSeite = browser.createPage(classOf[StartSeite])
 
   abstract override def registerGlobalHooks() {
     super.registerGlobalHooks()
     Before { _ => Unit
-       registerGlobal("testbrowser", TestBrowser.of(webDriver, Some("http://localhost:" + applicationPort)))
+       registerGlobal("testbrowser",
+         new TestBrowser(
+            SeleniumFactory.createWebDriver(DesiredCapabilities.firefox()),
+            Some("http://localhost:" + applicationPort)))
     }
 
     After { _ => Unit
