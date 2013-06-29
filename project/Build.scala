@@ -57,7 +57,7 @@ object ApplicationBuild extends Build {
 
   val main = play.Project(appName, appVersion, appDependencies).settings(
     // Add your own project settings here
-    resolvers += "Cloudbees Repository" at "http://repository-saucelabs.forge.cloudbees.com/release/",
+    resolvers += "Cloudbees Repository" at "http://repository-saucelabs.forge.cloudbees.com/release/"
 
     //,checksums in update := Nil
   )
