@@ -26,8 +26,8 @@ class AdminAreaControllerTest extends Specification with MockFactory {
 
   "AdminArea" should {
       "alle registrierten Gäste anzeigen" in laufenderAnwendungMitScenario("einemAdmin") {
-            Bewerber bewirbtSichMit(HochzeitsGastBewerbung("Kerstin", "Albert", "kerstin@cyphoria.net"))
-            Bewerber bewirbtSichMit(HochzeitsGastBewerbung("Teresa", "Merfert", "resi@cyphoria.net"))
+            Bewerber bewirbtSichMit HochzeitsGastBewerbung("Kerstin", "Albert", "kerstin@cyphoria.net")
+            Bewerber bewirbtSichMit HochzeitsGastBewerbung("Teresa", "Merfert", "resi@cyphoria.net")
 
             val result = route(FakeRequest(GET, "/gaesteliste").withLoggedIn(config)(einAdmin.id.get)).get
 
@@ -37,7 +37,7 @@ class AdminAreaControllerTest extends Specification with MockFactory {
       }
 
       "einen Gast freischalten" in laufenderAnwendungMitScenario("einemAdmin") {
-          Bewerber bewirbtSichMit(HochzeitsGastBewerbung("Kerstin", "Albert", "kerstin@cyphoria.net"))
+          Bewerber bewirbtSichMit HochzeitsGastBewerbung("Kerstin", "Albert", "kerstin@cyphoria.net")
 
           val result = route(FakeRequest(POST, "/gast/freischalten/1").withLoggedIn(config)(einAdmin.id.get)).get
 
@@ -46,7 +46,7 @@ class AdminAreaControllerTest extends Specification with MockFactory {
       }
 
       "eine Fehlermeldung anzeigen wenn der Gast der freigeschaltet werden soll nicht existiert" in laufenderAnwendungMitScenario("einemAdmin") {
-        Bewerber bewirbtSichMit(HochzeitsGastBewerbung("Kerstin", "Albert", "kerstin@cyphoria.net"))
+        Bewerber bewirbtSichMit HochzeitsGastBewerbung("Kerstin", "Albert", "kerstin@cyphoria.net")
 
         val result = route(FakeRequest(POST, "/gast/freischalten/42").withLoggedIn(config)(einAdmin.id.get)).get
 
@@ -65,6 +65,17 @@ class AdminAreaControllerTest extends Specification with MockFactory {
 
         status(result) must equalTo(FORBIDDEN)
       }
+
+      "einen Newletter verschicken" in laufenderAnwendungMitScenario("einemAdmin") {
+        val result = route(FakeRequest(POST, "/newsletter").withLoggedIn(config)(einAdmin.id.get)).get
+
+        status(result) must equalTo(SEE_OTHER)
+        redirectLocation(result) must beSome.which(_.contains("/gaesteliste"))
+        flash(result).get("erfolgsMeldung").get must contain("Newsletter wurde gesendet")
+      }
+
+
+
   }
 
 }

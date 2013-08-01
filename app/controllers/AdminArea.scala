@@ -2,7 +2,7 @@ package controllers
 
 import jp.t2v.lab.play2.auth.AuthElement
 import play.api.mvc._
-import model.{Hochzeitsplaner, Gästeliste, Benutzer}
+import model.{Newsletter, Hochzeitsplaner, Gästeliste, Benutzer}
 import com.google.inject._
 
 /**
@@ -12,7 +12,8 @@ import com.google.inject._
 @Singleton
 class AdminArea @Inject()(
                            gästeliste: Gästeliste,
-                           hochzeitsplaner: Hochzeitsplaner
+                           hochzeitsplaner: Hochzeitsplaner,
+                           newsletter: Newsletter
                            ) extends Controller with AuthElement with WeddingAuthConfig {
 
   def gaesteliste =  StackAction(AuthorityKey -> AdminBerechtigung) { implicit request =>
@@ -24,6 +25,12 @@ class AdminArea @Inject()(
       case Some(gast) => gastFreigeschaltet(gast)
       case None       => gastUnbekannt(request)
     }
+  }
+
+  def sendNewsletter(): Action[AnyContent] = StackAction(AuthorityKey -> AdminBerechtigung) { implicit request =>
+    newsletter.sendNewsletter()
+    Redirect(routes.AdminArea.gaesteliste())
+      .flashing("erfolgsMeldung"  -> "Der Newsletter wurde gesendet.")
   }
 
   private def gastFreigeschaltet(bewerber: Benutzer) = {

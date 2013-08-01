@@ -10,6 +10,7 @@ import play.api.Play.current
  */
 trait Gästeliste {
   def gäste: List[Benutzer]
+  def vip: List[Benutzer]
   def findeGastMitName(name: BenutzerName): Option[Benutzer]
   def findeGastMitId(id: Long): Option[Benutzer]
   def findeGastMitEMail(email: EMail): Option[Benutzer]
@@ -44,12 +45,21 @@ class PersistenteGästeliste extends Gästeliste {
     }
   }
 
-
   def gäste = {
     DB.withConnection { implicit connection =>
       SQL(
         """
           SELECT * FROM users
+        """
+      ).as(Benutzer.simple *)
+    }
+  }
+
+  def vip = {
+    DB.withConnection { implicit connection =>
+      SQL(
+        """
+          SELECT * FROM users WHERE passwort IS NOT NULL
         """
       ).as(Benutzer.simple *)
     }

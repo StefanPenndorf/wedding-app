@@ -12,6 +12,8 @@ trait MailController {
 
   def sendeFreischaltungsbenachrichtigung(benutzer: Benutzer, passwort: KlartextPasswort)
 
+  def sendeNewsletter(empfaenger: Benutzer)
+
 }
 
 /**
@@ -26,9 +28,15 @@ class TemplateMailController extends MailController {
        .send(views.txt.mail.freischalteBenachrichtigung(benutzer, passwort).toString())
   }
 
+  def sendeNewsletter(empfänger: Benutzer) {
+    createMail
+      .addRecipient(empfänger.email.email)
+      .setSubject("Neues von Steffi's und Stefans Hochzeit")
+      .send(views.txt.mail.newsletter(empfänger).toString())
+  }
+
   private[TemplateMailController] def createMail: MailerAPI = {
     val mail = use[MailerPlugin].email
     mail.addFrom("Steffi und Stefan <hochzeit@cyphoria.net>")
   }
-
 }

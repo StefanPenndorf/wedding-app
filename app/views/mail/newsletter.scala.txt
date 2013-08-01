@@ -1,0 +1,4 @@
+@(gast: model.Benutzer)
+Hallo @gast.name.vorname,
+
+Wir heiraten jetzt in Zwenkau und feiern im Bayerische Bahnhof!

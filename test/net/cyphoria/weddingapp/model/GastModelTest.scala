@@ -19,6 +19,10 @@ class GastModelTest extends Specification {
         gästeliste.gäste must contain(einGast)
     }
 
+    "auf der VIP-Liste stehen" in DatenbankMit("einemGast") {
+        gästeliste.vip must contain(einGast)
+    }
+
     "auf der Gästeliste unter der angegebenen E-Mail stehen" in DatenbankMit("einemGast") {
          val derGast = gästeliste.findeGastMitEMail(einGast.email).get
 
@@ -48,7 +52,13 @@ class GastModelTest extends Specification {
 
   }
 
-  "Ein nicht freigeschalteter Gast" should {
+  "Ein freigeschalteter Gast" should {
+
+  }
+
+
+
+    "Ein nicht freigeschalteter Gast" should {
 
     val teresasEMail = "teresa@cyphoria.net"
     def nichtFreigeschalteterGast = gästeliste.findeGastMitEMail(teresasEMail).get
@@ -67,7 +77,15 @@ class GastModelTest extends Specification {
       Benutzer.authentifiziere(teresasEMail, passwort) must beSome
     }
 
+    "auf der Gästeliste stehen" in DatenbankMit("einemNichtFreigeschaltetenGast") {
+        gästeliste.gäste must contain(nichtFreigeschalteterGast)
+    }
 
-  }
+    "nicht auf der VIP-Liste stehen" in DatenbankMit("einemNichtFreigeschaltetenGast") {
+        gästeliste.vip must not(contain(nichtFreigeschalteterGast))
+    }
+
+
+    }
 
 }
