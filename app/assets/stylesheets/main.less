@@ -1,8 +1,9 @@
 @default-padding: 10px;
+@default-color: #EE3F00;
 @left-bar-width: 150px;
 
 body, label, h1, h2, h3, input {
-    color: #EE3F00;
+    color: @default-color;
 }
 
 #page-content {
@@ -30,6 +31,22 @@ body, label, h1, h2, h3, input {
     margin-left:    @left-bar-width;
     width:          780px;
 }
+
+#ablauf {
+    list-style: none;
+    color: @default-color;
+    margin-left: 20px;
+}
+
+#ablauf dd {
+    padding-left: 10px;
+}
+
+#ablauf dt {
+    display:list-item;
+    list-style: circle;
+}
+
 
 #footer {
     clear:      both;
