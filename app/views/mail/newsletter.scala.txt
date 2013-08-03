@@ -1,4 +1,22 @@
 @(gast: model.Benutzer)
 Hallo @gast.name.vorname,
 
-Wir heiraten jetzt in Zwenkau und feiern im Bayerische Bahnhof!
+da die Schiffsmühle ja leider den Fluten zum Opfer gefallen ist, mussten wir uns eine neue Location für unsere Hochzeitsfeier suchen. Wir haben eine sehr schöne Alternative gefunden: den Bayerischen Bahnhof hier in Leipzig. Die Trauung findet nun 16 Uhr in Zwenkau statt – bei schönem Wetter im Pavillon im Innenhof des Rathauses, bei schlechtem Wetter im Ratssaal. Laut hundertjährigem Kalender scheint die Sonne :)
+
+Hier der voraussichtliche Ablauf:
+
+16:00 - 17:00 Standesamt Zwenkau (Bürgermeister-Ahnert-Platz 1, 04442 Zwenkau, http://www.zwenkau.de/index.php/rathaus-und-verwaltung/heiraten-in-zwenkau)
+17:00 - 17:30 Überfahrt zum Bayerischen Bahnhof (Bayrischer Platz 1, 04103 Leipzig, www.bayerischer-bahnhof.de)
+17:30 - 18:00 Empfang
+19:00 - 21:00 Abendessen
+21:00 - open end feiern, feiern, feiern, …
+
+Falls du eine Übernachtungsmöglichkeit benötigst - einfach melden.
+
+Wir wurden mehrfach wegen Geschenkwünschen gefragt und haben uns nun doch entschlossen, einen „Geschenketisch“ im Internet einzurichten. Da wir ja nun schon eine kleine Weile zusammenleben, haben wir ja schon so gut wie alles für den Haushalt aber ein paar Dinge sind uns dann doch noch eingefallen. Ansonsten freuen wir uns auch immer sehr über ein kleines Stück Hochzeitsreise und natürlich auch über kreative Ideen von euch ;) Wenn du magst kannst du gern mal bei http://www.wunsch-galerie.de/?wz=K837N3DC vorbeischauen.
+
+Wenn die Braut nun noch ein paar Schuhe und der Bräutigam einen Anzug findet kann es losgehen :)
+
+
+Liebe Grüße
+Steffi & Stefan

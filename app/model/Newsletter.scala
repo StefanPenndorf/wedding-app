@@ -9,6 +9,7 @@ import mail.MailController
  */
 trait Newsletter {
    def sendNewsletter()
+   def testNewsletter()
 }
 
 
@@ -19,5 +20,9 @@ class MailNewsletter  @Inject()(
                                  ) extends Newsletter{
   def sendNewsletter() {
      benutzerRepository.vip map mailController.sendeNewsletter
+  }
+
+  def testNewsletter() {
+    benutzerRepository.admins map mailController.sendeNewsletter
   }
 }

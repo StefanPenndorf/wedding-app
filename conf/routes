@@ -25,5 +25,6 @@ GET     /viparea                    controllers.VipArea.viparea
 # ADMIN Area
 GET     /gaesteliste                @controllers.AdminArea.gaesteliste
 POST    /gast/freischalten/:id      @controllers.AdminArea.gastFreischalten(id: Long)
-POST    /newsletter                 @controllers.AdminArea.sendNewsletter
+POST    /newsletter                 @controllers.AdminArea.sendNewsletter()
+POST    /newsletter?test            @controllers.AdminArea.testNewsletter()
 

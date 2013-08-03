@@ -11,6 +11,7 @@ import play.api.Play.current
 trait Gästeliste {
   def gäste: List[Benutzer]
   def vip: List[Benutzer]
+  def admins: List[Benutzer]
   def findeGastMitName(name: BenutzerName): Option[Benutzer]
   def findeGastMitId(id: Long): Option[Benutzer]
   def findeGastMitEMail(email: EMail): Option[Benutzer]
@@ -77,4 +78,13 @@ class PersistenteGästeliste extends Gästeliste {
     }
   }
 
+  def admins: List[Benutzer] = {
+    DB.withConnection { implicit connection =>
+      SQL(
+        """
+          SELECT * FROM users WHERE istAdmin = TRUE
+        """
+      ).as(Benutzer.simple *)
+    }
+  }
 }

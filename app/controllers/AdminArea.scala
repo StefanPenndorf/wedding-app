@@ -33,6 +33,12 @@ class AdminArea @Inject()(
       .flashing("erfolgsMeldung"  -> "Der Newsletter wurde gesendet.")
   }
 
+  def testNewsletter(): Action[AnyContent] = StackAction(AuthorityKey -> AdminBerechtigung) { implicit request =>
+    newsletter.testNewsletter()
+    Redirect(routes.AdminArea.gaesteliste())
+      .flashing("erfolgsMeldung"  -> "Der Newsletter wurde getestet.")
+  }
+
   private def gastFreigeschaltet(bewerber: Benutzer) = {
     Redirect(routes.AdminArea.gaesteliste())
       .flashing("erfolgsMeldung"  -> (bewerber.name.vorname + " wurde freigeschaltet"))
