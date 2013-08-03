@@ -1,5 +1,5 @@
 #language:de
-@current
+@finished
 Funktionalität: Newsletter
 Es ist möglich einen Newsletter an alle freigeschalteten Gäste zu verschicken.
 
