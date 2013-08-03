@@ -46,6 +46,10 @@ case class Benutzer(
 
     passwort
   }
+
+  def istVIP(): Boolean = {
+    passwort.isDefined
+  }
 }
 
 object Benutzer {

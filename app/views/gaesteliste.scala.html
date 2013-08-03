@@ -34,6 +34,9 @@
                     <td>@gast.name.nachname</td>
                     <td>@gast.email.email</td>
                     <td>
+                        @if(gast.istVIP) {
+                            (VIP)
+                        }
                         @form(action = routes.AdminArea.gastFreischalten(gast.id.get)) {
                             <input type="submit" alt="@gast.name.vorname freischalten" value="Freischalten">
                         }
