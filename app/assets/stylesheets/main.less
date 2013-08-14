@@ -1,16 +1,21 @@
 @default-padding: 10px;
 @default-color: #EE3F00;
 @left-bar-width: 150px;
+@total-width: 1280px;
 
 body, label, h1, h2, h3, input {
     color: @default-color;
 }
 
 #page-content {
-    width:  1280px;
+    width: @total-width;
     height: 100%;
     background-image: url("/assets/images/blumen3.png");
     background-repeat:no-repeat;
+    @media print {
+        width: @total-width - @left-bar-width;
+        background-position: -@left-bar-width top;
+    }
 }
 
 #top-header {
@@ -21,6 +26,10 @@ body, label, h1, h2, h3, input {
     float:  left;
     height: 640px;
     width:  @left-bar-width;
+    @media print {
+        width: 0;
+        display: none;
+    }
 }
 
 #heading {
@@ -30,7 +39,10 @@ body, label, h1, h2, h3, input {
 #content {
     padding:        @default-padding;
     margin-left:    @left-bar-width;
-    width:          780px;
+    width:          @total-width -  @left-bar-width - 350;
+    @media print {
+        margin-left: 0;
+    }
 }
 
 #ablauf {
