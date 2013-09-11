@@ -32,7 +32,7 @@ class TemplateMailController extends MailController {
     createMail
       .addRecipient(empfänger.email.email)
       .setSubject("Neues von Steffi's und Stefans Hochzeit")
-      .send(views.txt.mail.newsletter(empfänger).toString())
+      .send(views.txt.mail.newsletter2(empfänger).toString())
   }
 
   private[TemplateMailController] def createMail: MailerAPI = {

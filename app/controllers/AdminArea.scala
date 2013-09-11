@@ -2,7 +2,7 @@ package controllers
 
 import jp.t2v.lab.play2.auth.AuthElement
 import play.api.mvc._
-import model.{Newsletter, Hochzeitsplaner, Gästeliste, Benutzer}
+import model.{NewsletterSender, Hochzeitsplaner, Gästeliste, Benutzer}
 import com.google.inject._
 
 /**
@@ -13,7 +13,7 @@ import com.google.inject._
 class AdminArea @Inject()(
                            gästeliste: Gästeliste,
                            hochzeitsplaner: Hochzeitsplaner,
-                           newsletter: Newsletter
+                           newsletter: NewsletterSender
                            ) extends Controller with AuthElement with WeddingAuthConfig {
 
   def gaesteliste =  StackAction(AuthorityKey -> AdminBerechtigung) { implicit request =>

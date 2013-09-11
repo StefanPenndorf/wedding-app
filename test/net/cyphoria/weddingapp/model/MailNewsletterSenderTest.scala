@@ -11,7 +11,7 @@ import scala.Some
  *
  * @author Stefan Penndorf <stefan@cyphoria.net>
  */
-class MailNewsletterTest extends Specification with MockFactory {
+class MailNewsletterSenderTest extends Specification with MockFactory {
 
   val gast1 = Benutzer(Id(1L), BenutzerName("Kerstin", "Albert"), "kerstin@cyphoria.net", Some("$2a$10$k5TmtHnitQvFCNAp8SbuFeq1VlhlcSGkXl6JAcwZFX20mRZKgEgm."))
   val gast2 = Benutzer(Id(2L), BenutzerName("Penndorf", "Stefan"), "stefan@cyphoria.net", Some("$2a$10$k5TmtHnitQvFCNAp8SbuFeq1VlhlcSGkXl6JAcwZFX20mRZKgEgm."), istAdmin = true)
@@ -24,7 +24,7 @@ class MailNewsletterTest extends Specification with MockFactory {
       (mailController.sendeNewsletter _).expects(gast1)
       (mailController.sendeNewsletter _).expects(gast2)
 
-      new MailNewsletter(gästeliste, mailController).sendNewsletter()
+      new MailNewsletterSender(gästeliste, mailController).sendNewsletter()
     }
   }
 }

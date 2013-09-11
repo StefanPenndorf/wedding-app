@@ -13,6 +13,6 @@ class ProductionModule extends ScalaModule {
        bind[MailController].to[TemplateMailController]
        bind[Gästeliste].to[PersistenteGästeliste]
        bind[Hochzeitsplaner].to[HochzeitsplanerImpl]
-       bind[Newsletter].to[MailNewsletter]
+       bind[NewsletterSender].to[MailNewsletterSender]
   }
 }

@@ -13,6 +13,8 @@ import org.openqa.selenium.WebDriver
  */
 class NewsletterSchritte extends Schritte with ScalaDsl with DE with Browser with FakeMailer {
 
+  val BETREFF = "Neues von Steffi's und Stefans Hochzeit"
+
   Angenommen("""^es wurden Gäste freigeschaltet$"""){ () =>
     loadFixture("gaeste-und-ein-admin.dbt")
   }
@@ -36,10 +38,14 @@ class NewsletterSchritte extends Schritte with ScalaDsl with DE with Browser wit
       val email = receivedEMailTo(rcp)
 
       email should beFrom("hochzeit@cyphoria.net")
-      email should haveSubject("Neues von Steffi's und Stefans Hochzeit")
-      email.text should include("Hallo")
-      email.text should include("Zwenkau")
-      email.text should include regex("Bayerische(.)? Bahnhof")
+      email should haveSubject(BETREFF)
+      assertNachrichtKorrekt(email.text)
     }
+  }
+
+  def assertNachrichtKorrekt(nachricht: String) {
+    nachricht should include("Hallo")
+    nachricht should include("Zwenkau")
+    nachricht should include regex("Bayerische(.)? Bahnhof")
   }
 }
