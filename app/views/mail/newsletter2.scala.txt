@@ -1,7 +1,7 @@
 @(gast: model.Benutzer)
 Hallo @gast.name.vorname,
 
-nur noch 2 Tage! Die Wetteraussichten sind ja leider nicht so berauschend aber davon lassen wir uns die Laune nicht vermiesen :) Falls es so kalt bleibt oder regnet findet die Trauung im Ratssaal des Rathauses in Zwenkau statt. Das Radio meinte vorhin: Morgen regnet es sich aus und Freitag gibt es dann immerhin schon wieder 3 – 5 Sonnenstunden und etwa 19 Grad. Bringt euch bitte auf jeden Fall ein Jäckchen mit! Wir hoffen immer noch, dass die Trauung draußen stattfinden kann…
+nur noch 1 Tag! Die Wetteraussichten sind ja leider nicht so berauschend aber davon lassen wir uns die Laune nicht vermiesen :) Falls es so kalt bleibt oder regnet findet die Trauung im Ratssaal des Rathauses in Zwenkau statt. Das Radio meinte vorhin: Morgen regnet es sich aus und Freitag gibt es dann immerhin schon wieder 3 – 5 Sonnenstunden und etwa 19 Grad. Bringt euch bitte auf jeden Fall ein Jäckchen mit! Wir hoffen immer noch, dass die Trauung draußen stattfinden kann…
 
 Anfahrtsskizzen für das Standesamt in Zwenkau und den Bayerischen Bahnhof findet ihr unter den folgenden Links:
 - Anfahrt Standesamt - http://goo.gl/maps/nqV1M
