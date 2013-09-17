@@ -28,7 +28,7 @@ object ApplicationBuild extends Build {
 
 
     // TEST DEPENDENCIES
-    "play" %% "play-test" % "2.1.1" % "test",
+    "play" %% "play-test" % "2.1.2" % "test",
     "org.scalatest" %% "scalatest" % "1.9.1" % "test",
     "org.scalamock" %% "scalamock-scalatest-support" % "3.0.1" % "test",
     "org.scalamock" %% "scalamock-specs2-support" % "3.0.1" % "test",
