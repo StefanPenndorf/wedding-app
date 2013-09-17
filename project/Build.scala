@@ -28,13 +28,13 @@ object ApplicationBuild extends Build {
 
 
     // TEST DEPENDENCIES
-    "play" %% "play-test" % "2.1.4" % "test",
+    "play" %% "play-test" % "2.1.1" % "test",
     "org.scalatest" %% "scalatest" % "1.9.1" % "test",
     "org.scalamock" %% "scalamock-scalatest-support" % "3.0.1" % "test",
     "org.scalamock" %% "scalamock-specs2-support" % "3.0.1" % "test",
     "jp.t2v" %% "play2.auth.test" % "0.9" % "test",
 
-    "junit" % "junit" % "4.11" % "test",
+    "junit" % "junit-dep" % "4.11" % "test",
     "info.cukes" % "cucumber-scala" % "1.1.2" % "test",
     "info.cukes" % "cucumber-junit" % "1.1.2" % "test",
     "org.fluentlenium" % "fluentlenium-core" % "0.8.0" % "test",
