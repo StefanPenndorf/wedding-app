@@ -3,7 +3,7 @@
 @import helper._
 @import helper.twitterBootstrap._
 
-@main(heading="Als Hochzeitsgast registrieren") {
+@main(heading="Als Hochzeitsgast registrieren", displayNavigation=false) {
     @form(action = routes.Registrierung.registrieren, 'id -> "registrierungsformular") {
 
         @if(!registrierungsFormular.globalErrors.isEmpty) {

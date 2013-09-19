@@ -32,6 +32,15 @@ body, label, h1, h2, h3, input {
     }
 }
 
+#navigation ul {
+    margin-top: 130px;
+}
+
+#navigation ul li {
+    list-style: none;
+    margin: 20px 0;
+}
+
 #heading {
     margin-bottom: 80px;
 }
@@ -39,7 +48,7 @@ body, label, h1, h2, h3, input {
 #content {
     padding:        @default-padding;
     margin-left:    @left-bar-width;
-    width:          @total-width -  @left-bar-width - 350;
+    width:          @total-width -  @left-bar-width - 350px;
     @media print {
         margin-left: 0;
     }
@@ -64,6 +73,10 @@ body, label, h1, h2, h3, input {
     list-style: circle;
 }
 
+input[type="file"][id="bildDatei"] {
+    width:auto;
+}
+
 
 #footer {
     clear:      both;
@@ -82,3 +95,6 @@ form .error .help-block, form .error .help-inline {
     color: #B94A48;
 }
 
+hr.separator {
+   border-color: -moz-use-text-color -moz-use-text-color @default-color;
+}

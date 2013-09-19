@@ -1,4 +1,4 @@
-@(heading: String, title: String = "Steffi und Stefan heiraten!")(content: Html)
+@(heading: String, title: String = "Steffi und Stefan heiraten!", displayNavigation: Boolean = true)(content: Html)
 @import _root_.modules._
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
@@ -17,7 +17,7 @@
     <body>
     <div id="page-content">
         <div id="top-header"></div>
-        <div id="left-bar"></div>
+        <div id="left-bar">@if(displayNavigation){@navigation()}</div>
         <div id="content">
             <h1 id="heading">@heading</h1>
             @content

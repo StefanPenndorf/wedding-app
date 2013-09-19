@@ -1,0 +1,53 @@
+@()(implicit flash: Flash)
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@main(heading="Fotoalben") {
+<div>
+    <h3>Hochladen</h3>
+
+    Hier kannst du deinem Fotoalbum ein (weiteres) Bild hinzufügen. Das Bild wird dann für alle registrierten Gäste
+    sichtbar.
+
+    @form(action = routes.FotoVorfuehrer.hochladen, 'id -> "fotohochladeformular", 'enctype -> "multipart/form-data") {
+    @if(flash.get("erfolgsMeldung").isDefined) {
+    <div id="erfolgsMeldungen">
+        <ul>
+            <li class="alert-message success">@flash.get("erfolgsMeldung").get</li>
+        </ul>
+    </div>
+    }
+    @if(flash.get("fehlerMeldung").isDefined) {
+    <div id="fehlerMeldungen">
+        <ul>
+            <li class="alert-message error">@flash.get("fehlerMeldung").get</li>
+        </ul>
+    </div>
+    }
+
+    <fieldset>
+        <div class="clearfix">
+            <label for="bilddatei">Bild ausw&auml;hlen:</label>
+            <div class="input">
+                <input type="file" size="50" name="bilddatei" id="bildDatei">
+            </div>
+        </div>
+    </fieldset>
+    <div class="input"><input type="submit" id="starteHochladen" value="Hochladen"/></div>
+    }
+    <hr class="separator" />
+    <h3>Fotoalben</h3>
+    <div>
+        Folgende Benutzer haben bereits ein Fotoalbum angelegt:
+
+        <ul id="fotoalben">
+            <!--<li><a href="mara">Mara (5 Bilder)</a></li>-->
+        </ul>
+
+
+    </div>
+
+</div>
+
+}

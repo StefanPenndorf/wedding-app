@@ -20,7 +20,8 @@ GET     /impressum                  controllers.Application.impressum
 
 # VIP Area
 GET     /viparea                    controllers.VipArea.viparea
-
+GET     /fotoalben                  controllers.FotoVorfuehrer.fotoalben
+POST    /fotoalben                  controllers.FotoVorfuehrer.hochladen
 
 # ADMIN Area
 GET     /gaesteliste                @controllers.AdminArea.gaesteliste
