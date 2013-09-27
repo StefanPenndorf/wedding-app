@@ -15,7 +15,7 @@ class VipAreaStartSeite extends FluentPage with ShouldMatchers {
 
 
   def geheZuFotoalbum() {
-    $("""#navigation a[id="fotoalbum"]""").click
+    $("""#navigation a[id="nav-fotoalben"]""").first.click
     fotoalbum isAt()
     fotoalbum
   }
