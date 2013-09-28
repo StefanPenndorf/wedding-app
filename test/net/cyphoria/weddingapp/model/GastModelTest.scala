@@ -50,9 +50,16 @@ class GastModelTest extends Specification {
       Benutzer.authentifiziere(einGast.email, passwort = "falsch") must beNone
     }
 
-  }
+    "initial kein Album haben" in DatenbankMit("einemGast") {
+      gästeliste.gästeMitFotoalbum must beEmpty
+    }
 
-  "Ein freigeschalteter Gast" should {
+    "ein Album haben wenn er ein Foto gespeichert hat" in DatenbankMit("einemGast") {
+      val file = new Array[Byte](5)
+      Benutzer.speichereFoto(einGast, file)
+
+      gästeliste.gästeMitFotoalbum must contain(einGast)
+    }
 
   }
 

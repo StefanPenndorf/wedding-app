@@ -16,14 +16,15 @@ object FotoVorfuehrer extends Controller with AuthenticationElement with Wedding
   def hochladen = StackAction(parse.multipartFormData){ implicit request =>
     request.body.file("bilddatei").map { picture =>
 //      import java.io.File
-//      val filename = picture.filename
+      val filename = picture.filename
+      picture.ref
 //      val contentType = picture.contentType
 //      picture.ref.moveTo(new File("/tmp/picture"))
-      Redirect(routes.FotoVorfuehrer.fotoalben).flashing(
+      Redirect(routes.FotoVorfuehrer.fotoalben()).flashing(
         "erfolgsMeldung" -> "Bild erfolgreich zu deinem Album hinzugefügt."
       )
     }.getOrElse {
-      Redirect(routes.FotoVorfuehrer.fotoalben).flashing(
+      Redirect(routes.FotoVorfuehrer.fotoalben()).flashing(
         "fehlerMeldung" -> "Keine Datei ausgewählt."
       )
     }

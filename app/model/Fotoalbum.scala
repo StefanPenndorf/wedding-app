@@ -9,3 +9,8 @@ import anorm.{NotAssigned, Pk}
 case class Fotoalbum(id: Pk[Long] = NotAssigned) {
 
 }
+
+
+object Fotoalben {
+
+}
