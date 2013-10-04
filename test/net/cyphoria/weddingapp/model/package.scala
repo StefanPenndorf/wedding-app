@@ -11,7 +11,7 @@ import anorm.Id
 package object model {
 
   // TODO Refactor tests so dass Konstanten aus model benutzt werden.
-  val KERSTIN = new Benutzer(Id(1L), BenutzerName("Kerstin", "Albert"), "kerstin@cyphoria.net")
+  val KERSTIN = new Benutzer(Id(1L), BenutzerName("Kerstin", "Albert"), "kerstin@cyphoria.net", Some("$2a$10$k5TmtHnitQvFCNAp8SbuFeq1VlhlcSGkXl6JAcwZFX20mRZKgEgm."))
 
   def mitDatenbank[T](block: => T) = laufenderAnwendung(block)
 

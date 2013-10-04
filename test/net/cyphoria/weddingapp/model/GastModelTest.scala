@@ -2,7 +2,6 @@ package net.cyphoria.weddingapp.model
 
 import org.specs2.mutable.Specification
 import model._
-import anorm.Id
 
 /**
  *
@@ -10,7 +9,8 @@ import anorm.Id
  */
 class GastModelTest extends Specification {
 
-  val einGast = Benutzer(Id(1L), BenutzerName("Kerstin", "Albert"), "kerstin@cyphoria.net", Some("$2a$10$k5TmtHnitQvFCNAp8SbuFeq1VlhlcSGkXl6JAcwZFX20mRZKgEgm."))
+//  val einGast = Benutzer(Id(1L), BenutzerName("Kerstin", "Albert"), "kerstin@cyphoria.net", Some("$2a$10$k5TmtHnitQvFCNAp8SbuFeq1VlhlcSGkXl6JAcwZFX20mRZKgEgm."))
+  val einGast = KERSTIN
   val gästeliste = new PersistenteGästeliste
 
   "Ein Gast" should {
