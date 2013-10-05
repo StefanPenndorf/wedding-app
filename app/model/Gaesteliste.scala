@@ -94,7 +94,7 @@ class PersistenteGästeliste extends Gästeliste {
       SQL(
         """
           SELECT u.* FROM users u
-          WHERE EXISTS (SELECT * FROM fotoalben f WHERE f.besitzer = u.id)
+          WHERE EXISTS (SELECT * FROM fotos f WHERE f.besitzer = u.id)
           GROUP BY u.id
         """
       ).as(Benutzer.simple *).to[Set]

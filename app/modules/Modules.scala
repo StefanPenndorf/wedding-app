@@ -14,5 +14,6 @@ class ProductionModule extends ScalaModule {
        bind[Gästeliste].to[PersistenteGästeliste]
        bind[Hochzeitsplaner].to[HochzeitsplanerImpl]
        bind[NewsletterSender].to[MailNewsletterSender]
+       bind[FotoImporter].to[FotoImporterImpl]
   }
 }

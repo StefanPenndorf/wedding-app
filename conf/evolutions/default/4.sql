@@ -1,7 +1,7 @@
 # Neue Tabelle Fotoalben für die Fotos
 
 # --- !Ups
-CREATE TABLE fotoalben (
+CREATE TABLE fotos (
     id bigint(20) NOT NULL AUTO_INCREMENT,
     besitzer bigint(20) NOT NULL,
     foto LONGBLOB NOT NULL,
@@ -11,4 +11,4 @@ CREATE TABLE fotoalben (
 
 
 # --- !Downs
-DROP TABLE fotoalben
+DROP TABLE fotos

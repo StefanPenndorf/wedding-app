@@ -2,31 +2,42 @@ package controllers
 
 import play.api.mvc.Controller
 import jp.t2v.lab.play2.auth.AuthenticationElement
+import java.io.File
+import model.{FotoImporter, Gästeliste, Benutzer}
+import com.google.inject._
 
 /**
  *
  * @author Stefan Penndorf <stefan@cyphoria.net>
  */
-object FotoVorfuehrer extends Controller with AuthenticationElement with WeddingAuthConfig  {
+@Singleton
+class FotoVorfuehrer @Inject()(
+                                gästeliste: Gästeliste,
+                                fotoImporter: FotoImporter
+                              ) extends Controller with AuthenticationElement with WeddingAuthConfig  {
 
   def fotoalben = StackAction{ implicit request =>
-    Ok(views.html.fotoalben())
+    Ok(views.html.fotoalben(List[(Benutzer, Int)]()))
   }
 
   def hochladen = StackAction(parse.multipartFormData){ implicit request =>
+    val currentUser = loggedIn
     request.body.file("bilddatei").map { picture =>
-//      import java.io.File
-      val filename = picture.filename
-      picture.ref
-//      val contentType = picture.contentType
-//      picture.ref.moveTo(new File("/tmp/picture"))
-      Redirect(routes.FotoVorfuehrer.fotoalben()).flashing(
-        "erfolgsMeldung" -> "Bild erfolgreich zu deinem Album hinzugefügt."
-      )
+        val tempfile = File.createTempFile("pic", "png")
+        try {
+          picture.ref.moveTo(tempfile, replace = true)
+          fotoImporter.importiere(tempfile, currentUser)
+        } finally {
+          tempfile.delete()
+        }
+
+        Redirect(routes.FotoVorfuehrer.fotoalben()).flashing(
+          "erfolgsMeldung" -> "Bild erfolgreich zu deinem Album hinzugefügt."
+        )
     }.getOrElse {
-      Redirect(routes.FotoVorfuehrer.fotoalben()).flashing(
-        "fehlerMeldung" -> "Keine Datei ausgewählt."
-      )
+        Redirect(routes.FotoVorfuehrer.fotoalben()).flashing(
+          "fehlerMeldung" -> "Keine Datei ausgewählt."
+        )
     }
   }
 

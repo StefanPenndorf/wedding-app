@@ -53,27 +53,11 @@ case class Benutzer(
 }
 
 object Benutzer {
-  def speichereFoto(benutzer: Benutzer, foto: Array[Byte]) {
-    DB.withConnection { implicit connection =>
-      SQL(
-        """
-          insert into fotoalben
-          (besitzer,   foto) values
-          ({besitzerid}, {foto})
-        """
-      ).on(
-        'besitzerid -> benutzer.id,
-        'foto -> foto
-      ).executeUpdate()
-    }
-  }
 
   def authentifiziere(email: String, passwort: String): Option[Benutzer] = {
     (new PersistenteGästeliste).findeGastMitEMail(email).filter {
-      benutzer => benutzer match {
-        case Benutzer(_,_,_, Some(benutzerPasswort),_) => BCrypt.checkpw(passwort, benutzer.passwort.get)
-        case _ => false
-      }
+      case benutzer@Benutzer(_, _, _, Some(benutzerPasswort), _) => BCrypt.checkpw(passwort, benutzer.passwort.get)
+      case _ => false
     }
   }
 

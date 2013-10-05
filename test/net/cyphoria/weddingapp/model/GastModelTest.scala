@@ -56,7 +56,7 @@ class GastModelTest extends Specification {
 
     "ein Album haben wenn er ein Foto gespeichert hat" in DatenbankMit("einemGast") {
       val file = new Array[Byte](5)
-      Benutzer.speichereFoto(einGast, file)
+      Foto.speichereFoto(file, einGast)
 
       gästeliste.gästeMitFotoalbum must contain(einGast)
     }
