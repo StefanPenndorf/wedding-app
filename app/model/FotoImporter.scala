@@ -14,9 +14,12 @@ trait FotoImporter {
 }
 
 @Singleton
-class FotoImporterImpl extends FotoImporter {
+class FotoImporterImpl @Inject()(
+      verwalter: FotoalbenVerwalter
+) extends FotoImporter {
   def importiere(bild: File, besitzer: Benutzer) {
+    val fotoalbum = verwalter.findeFotoalbumVon(besitzer).getOrElse(Fotoalbum(besitzer, 0))
 
-    Foto.speichereFoto(new Array[Byte](2), besitzer)
+    verwalter.speichereFoto(new Array[Byte](2), fotoalbum)
   }
 }

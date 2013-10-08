@@ -3,8 +3,7 @@ package net.cyphoria.weddingapp.templates
 import org.specs2.mutable.Specification
 import play.api.test.Helpers._
 import play.api.test.FakeApplication
-import model.{BenutzerName, Benutzer}
-import anorm.Id
+import model.Fotoalbum
 import play.api.mvc.Flash
 
 /**
@@ -13,13 +12,11 @@ import play.api.mvc.Flash
  */
 class FotoalbenTemplateTest extends Specification {
 
-  val IGNORED = None
-
   val fotoalben = running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
     views.html.fotoalben(List(
-      (Benutzer(id=Id(1), name = BenutzerName("Teresa", "Merfert"), email = "teresa@cyphoria.net", passwort = IGNORED), 5),
-      (Benutzer(id=Id(2), name = BenutzerName("Stephanie", "Geiler"), email = "steffi@cyphoria.net", passwort = IGNORED), 3),
-      (Benutzer(id=Id(3), name = BenutzerName("Kerstin", "Albert"), email = "kerstin@cyphoria.net", passwort = IGNORED), 0)
+      Fotoalbum(TERESA, 5),
+      Fotoalbum(STEPHANIE, 3),
+      Fotoalbum(KERSTIN, 0)
     ))(Flash())
   }
 

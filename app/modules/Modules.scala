@@ -15,5 +15,6 @@ class ProductionModule extends ScalaModule {
        bind[Hochzeitsplaner].to[HochzeitsplanerImpl]
        bind[NewsletterSender].to[MailNewsletterSender]
        bind[FotoImporter].to[FotoImporterImpl]
+       bind[FotoalbenVerwalter].to[PersistenterFotoalbenVerwalter]
   }
 }

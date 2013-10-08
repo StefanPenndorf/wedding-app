@@ -12,7 +12,6 @@ trait Gästeliste {
   def gäste: List[Benutzer]
   def vip: List[Benutzer]
   def admins: List[Benutzer]
-  def gästeMitFotoalbum: Set[Benutzer]
   def findeGastMitName(name: BenutzerName): Option[Benutzer]
   def findeGastMitId(id: Long): Option[Benutzer]
   def findeGastMitEMail(email: EMail): Option[Benutzer]
@@ -89,15 +88,4 @@ class PersistenteGästeliste extends Gästeliste {
     }
   }
 
-  def gästeMitFotoalbum: Set[Benutzer] = {
-    DB.withConnection { implicit connection =>
-      SQL(
-        """
-          SELECT u.* FROM users u
-          WHERE EXISTS (SELECT * FROM fotos f WHERE f.besitzer = u.id)
-          GROUP BY u.id
-        """
-      ).as(Benutzer.simple *).to[Set]
-    }
-  }
 }

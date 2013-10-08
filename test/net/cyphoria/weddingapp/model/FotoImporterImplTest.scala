@@ -2,8 +2,7 @@ package net.cyphoria.weddingapp.model
 
 import org.specs2.mutable.Specification
 import org.scalamock.specs2.MockFactory
-import model.{PersistenteGästeliste, FotoImporterImpl}
-import java.io.File
+import model.{Fotoalbum, FotoalbenVerwalter, PersistenteGästeliste, FotoImporterImpl}
 
 /**
  *
@@ -14,13 +13,16 @@ class FotoImporterImplTest extends Specification with MockFactory {
   val einGast = KERSTIN
 
   "FotoImporter" should {
-    "ein neues Album anlegen, wenn ein Foto hochgeladen wird" in DatenbankMit("einemGast") {
-      val gästeliste = new PersistenteGästeliste()
-      val tempfile = new File("/tmp/doesnotexist")
-      val importer: FotoImporterImpl = new FotoImporterImpl()
+    val fotoalbum: Fotoalbum = Fotoalbum(einGast, 0)
 
-      importer.importiere(tempfile, einGast)
-      gästeliste.gästeMitFotoalbum must contain(einGast)
+    "ein neues Foto zum Album des Benutzers hinzufügen, wenn ein Foto hochgeladen wird" in DatenbankMit("einemGast") {
+      val gästeliste = new PersistenteGästeliste()
+      val verwalter = mock[FotoalbenVerwalter]
+      val importer: FotoImporterImpl = new FotoImporterImpl(verwalter)
+      (verwalter.findeFotoalbumVon _).expects(einGast).returns(Option(fotoalbum)).anyNumberOfTimes()
+      (verwalter.speichereFoto _).expects(*, fotoalbum)
+
+      importer.importiere(null, einGast)
     }
 
   }

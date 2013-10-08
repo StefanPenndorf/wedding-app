@@ -1,4 +1,4 @@
-@(gästeMitFotoalbum: List[(model.Benutzer, Int)])(implicit flash: Flash)
+@(fotoalben: List[model.Fotoalbum])(implicit flash: Flash)
 
 @import helper._
 @import helper.twitterBootstrap._
@@ -42,8 +42,8 @@
         Folgende Benutzer haben bereits ein Fotoalbum angelegt:
 
         <ul id="fotoalben">
-            @for(gastMitFotos<-gästeMitFotoalbum) {
-                <li><a href="/mara">@gastMitFotos._1.name.vorname (@gastMitFotos._2 Bilder)</a></li>
+            @for(fotoalbum<-fotoalben) {
+                <li><a href="/mara">@fotoalbum.besitzer.name.vorname (@fotoalbum.anzahlFotos Bilder)</a></li>
             }
         </ul>
     </div>

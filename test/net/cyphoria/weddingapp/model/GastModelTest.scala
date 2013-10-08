@@ -49,18 +49,6 @@ class GastModelTest extends Specification {
     "sich nicht authentifizieren können, wenn das Passwort falsch ist" in DatenbankMit("einemGast") {
       Benutzer.authentifiziere(einGast.email, passwort = "falsch") must beNone
     }
-
-    "initial kein Album haben" in DatenbankMit("einemGast") {
-      gästeliste.gästeMitFotoalbum must beEmpty
-    }
-
-    "ein Album haben wenn er ein Foto gespeichert hat" in DatenbankMit("einemGast") {
-      val file = new Array[Byte](5)
-      Foto.speichereFoto(file, einGast)
-
-      gästeliste.gästeMitFotoalbum must contain(einGast)
-    }
-
   }
 
 

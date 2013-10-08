@@ -3,7 +3,7 @@ package controllers
 import play.api.mvc.Controller
 import jp.t2v.lab.play2.auth.AuthenticationElement
 import java.io.File
-import model.{FotoImporter, Gästeliste, Benutzer}
+import model.{FotoalbenVerwalter, FotoImporter, Gästeliste}
 import com.google.inject._
 
 /**
@@ -13,11 +13,12 @@ import com.google.inject._
 @Singleton
 class FotoVorfuehrer @Inject()(
                                 gästeliste: Gästeliste,
-                                fotoImporter: FotoImporter
+                                fotoImporter: FotoImporter,
+                                verwalter: FotoalbenVerwalter
                               ) extends Controller with AuthenticationElement with WeddingAuthConfig  {
 
   def fotoalben = StackAction{ implicit request =>
-    Ok(views.html.fotoalben(List[(Benutzer, Int)]()))
+    Ok(views.html.fotoalben(verwalter.alleFotoalben()))
   }
 
   def hochladen = StackAction(parse.multipartFormData){ implicit request =>
