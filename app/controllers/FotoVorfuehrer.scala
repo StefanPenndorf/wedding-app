@@ -1,10 +1,12 @@
 package controllers
 
-import play.api.mvc.Controller
+import play.api.mvc._
 import jp.t2v.lab.play2.auth.AuthenticationElement
 import java.io.File
-import model.{FotoalbenVerwalter, FotoImporter, Gästeliste}
+import model._
 import com.google.inject._
+import model.BenutzerName
+import scala.Some
 
 /**
  *
@@ -20,6 +22,21 @@ class FotoVorfuehrer @Inject()(
   def fotoalben = StackAction{ implicit request =>
     Ok(views.html.fotoalben(verwalter.alleFotoalben()))
   }
+
+  def fotoalbum(besitzerName: BenutzerName): Action[AnyContent] =  StackAction{ implicit request =>
+    gästeliste.findeGastMitName(besitzerName) match {
+      case Some(besitzer) => fotoalbum(besitzer)
+      case None => NotFound("Ungültiges Album")
+    }
+  }
+
+  private def fotoalbum(albumBesitzer: Benutzer)(implicit flash: Flash): Result  = {
+    verwalter.findeFotoalbumVon(albumBesitzer) match {
+      case Some(album) => Ok(views.html.foto(album))
+      case None => NotFound("Ungültiges Album")
+    }
+  }
+
 
   def hochladen = StackAction(parse.multipartFormData){ implicit request =>
     val currentUser = loggedIn

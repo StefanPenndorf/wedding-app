@@ -4,6 +4,7 @@ import net.cyphoria.weddingapp.specification.infrastructure.{Browser, Schritte}
 import cucumber.api.scala.{DE, ScalaDsl}
 import net.cyphoria.weddingapp.specification.seiten.{VipAreaStartSeite, FotoalbenSeite}
 import org.springframework.core.io.ClassPathResource
+import cucumber.api.PendingException
 
 /**
  *
@@ -27,6 +28,10 @@ class FotoalbumSchritte extends Schritte with ScalaDsl with DE with Browser {
 
   Dann("""^wird ein Fotoalbum für sie erstellt$"""){ () =>
     fotoalben oeffneAlbumVon "Kerstin"
+  }
+
+  Dann("""^kann sie das Foto anschauen$"""){ () =>
+    throw new PendingException()
   }
 
 }

@@ -1,0 +1,18 @@
+@(album: model.Fotoalbum)
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@heading = {
+Fotoalbum von @album.besitzer.name.vorname
+}
+
+@main(heading=heading.toString) {
+<div>
+    <img  style="display:block;float:right;" width="620px"
+          alt="Lukas hebt den Kopf: Ich will auch mit feiern!" title="Lukas hebt den Kopf: Ich will auch mit feiern!"
+          src="@routes.Assets.at("images/lukas.jpg")">
+
+</div>
+
+}

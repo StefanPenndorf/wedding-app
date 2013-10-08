@@ -30,7 +30,7 @@ class PersistenterFotoalbenVerwalter extends FotoalbenVerwalter {
     DB.withConnection { implicit connection =>
       SQL(
         """
-          SELECT COUNT(u.id) as anzahlFotos, u.* FROM fotos f
+          SELECT COUNT(f.id) as anzahlFotos, u.* FROM fotos f
           LEFT JOIN users u ON f.besitzer = u.id
           GROUP BY u.id
         """
@@ -59,12 +59,14 @@ class PersistenterFotoalbenVerwalter extends FotoalbenVerwalter {
     DB.withConnection { implicit connection =>
       SQL(
         """
-          SELECT COUNT(u.id) as anzahlFotos, u.* FROM fotos f
-          LEFT JOIN users u ON f.besitzer = u.id
-          GROUP BY u.id
+          SELECT COUNT(f.id) as anzahlFotos FROM fotos f
+          WHERE f.besitzer = {besitzerId}
+          HAVING COUNT(f.id) > 0
         """
-      ).as((Benutzer.simple ~ long("anzahlFotos")).singleOpt) map {
-        case `besitzer`~anzahlFotos => Fotoalbum(besitzer, anzahlFotos)
+      ).on(
+        'besitzerId -> besitzer.id
+      ).as(long("anzahlFotos").singleOpt) map {
+        case anzahlFotos => Fotoalbum(besitzer, anzahlFotos)
       }
     }
   }

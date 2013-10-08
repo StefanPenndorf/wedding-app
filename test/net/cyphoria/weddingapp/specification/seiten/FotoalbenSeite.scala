@@ -19,6 +19,13 @@ class FotoalbenSeite extends FluentPage with ShouldMatchers {
   def oeffneAlbumVon(s: String) {
     $(s"""#fotoalben a[href*="$s"]""").first.click
 
+    await().atMost(50, TimeUnit.SECONDS).until(new Predicate[WebDriver] {
+      def apply(p1: WebDriver): Boolean = {
+        val heading: String = $("h1").getText
+        heading != null && heading.contains(s"""Fotoalbum von $s""")
+      }
+    })
+
     $("img").first() should be ('displayed)
   }
 
