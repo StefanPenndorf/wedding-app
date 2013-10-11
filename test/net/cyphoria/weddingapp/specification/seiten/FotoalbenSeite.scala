@@ -7,12 +7,17 @@ import java.util.concurrent.TimeUnit
 import com.google.common.base.Predicate
 import org.openqa.selenium.WebDriver
 import org.springframework.core.io.Resource
+import java.net.URL
+import java.awt.image.BufferedImage
+import javax.imageio.ImageIO
+import net.cyphoria.weddingapp.imagecompare.scalatest.ImageCompareMatchers
+
 
 /**
  *
  * @author Stefan Penndorf <stefan@cyphoria.net>
  */
-class FotoalbenSeite extends FluentPage with ShouldMatchers {
+class FotoalbenSeite extends FluentPage with ShouldMatchers with ImageCompareMatchers {
   var bildDatei: FluentWebElement = null
   var starteHochladen: FluentWebElement = null
 
@@ -40,6 +45,15 @@ class FotoalbenSeite extends FluentPage with ShouldMatchers {
       }
     })
 
+  }
+
+  def zeigtBild(reference: Resource) {
+    aktuellesBild should beSameImageAs(reference)
+  }
+
+  private def aktuellesBild: BufferedImage = {
+    val imageSrc = $("img").first().getAttribute("src")
+    ImageIO.read(new URL(imageSrc))
   }
 
   override def getUrl: String = "/fotoalben"
