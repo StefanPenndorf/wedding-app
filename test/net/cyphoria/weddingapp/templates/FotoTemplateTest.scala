@@ -3,7 +3,8 @@ package net.cyphoria.weddingapp.templates
 import org.specs2.mutable.Specification
 import play.api.test.Helpers._
 import play.api.test.FakeApplication
-import model.Fotoalbum
+import model.{Foto, Fotoalbum}
+import anorm.Id
 
 /**
  *
@@ -12,7 +13,7 @@ import model.Fotoalbum
 class FotoTemplateTest extends Specification {
 
   val foto = running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
-    views.html.foto(Fotoalbum(TERESA, 1))
+    views.html.foto(Fotoalbum(TERESA, 1), Foto(Id(1)))
   }
 
   "Die Fotoansicht" should {

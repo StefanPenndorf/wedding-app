@@ -18,6 +18,7 @@ class FotoVorfuehrerControllerTest extends Specification with MockFactory {
   object config extends WeddingAuthConfig
   val einGast = KERSTIN
 
+
   "FotoVorfuehrer" should {
 
     "das Hochladen von Bildern ermoeglichen"  in laufenderAnwendungMitScenario("einemGast") {
@@ -27,6 +28,45 @@ class FotoVorfuehrerControllerTest extends Specification with MockFactory {
       contentAsString(result) must contain("Hochladen")
       contentAsString(result) must contain("""<input type="file"""")
     }
+
+    "ein Foto mit korrektem Mime-Type für PNG zurück geben" in laufenderAnwendungMitScenario("einemGastMitEinemFoto") {
+      val result = route(FakeRequest(GET, "/foto/1").withLoggedIn(config)(einGast.id.get)).get
+
+      status(result) must equalTo(OK)
+      contentType(result) must beSome("image/png")
+    }
+
+    "eine Fehlermeldung anzeigen, wenn das angeforderte Foto nicht existiert" in laufenderAnwendungMitScenario("einemGast") {
+      val result = route(FakeRequest(GET, "/foto/999").withLoggedIn(config)(einGast.id.get)).get
+
+      status(result) must equalTo(NOT_FOUND)
+      contentAsString(result) must contain("Foto nicht gefunden")
+    }
+
+    "ein Foto mit korrektem Mime-Type für JPEG zurück geben" in laufenderAnwendungMitScenario("einemGastMitDreiFotos") {
+      val result = route(FakeRequest(GET, "/foto/2").withLoggedIn(config)(einGast.id.get)).get
+
+      status(result) must equalTo(OK)
+      contentType(result) must beSome("image/jpeg")
+    }
+
+
+    "ein Foto zurück geben" in laufenderAnwendungMitScenario("einemGastMitEinemFoto") {
+      val result = route(FakeRequest(GET, "/foto/1").withLoggedIn(config)(einGast.id.get)).get
+
+      status(result) must equalTo(OK)
+      contentAsBytes(result) must beEqualTo(PNG_IMAGE_CONTENT)
+    }
+
+    "die Fotoseite mit dem ersten Foto im Album anzeigen" in laufenderAnwendungMitScenario("einemGastMitEinemFoto") {
+      val result = route(FakeRequest(GET, "/fotoalbum/Kerstin.Albert").withLoggedIn(config)(einGast.id.get)).get
+
+      status(result) must equalTo(OK)
+      contentAsString(result) must contain("Fotoalbum von Kerstin")
+      contentAsString(result) must contain("src=\"/foto/1\"")
+
+    }
+
 
   }
 

@@ -26,6 +26,8 @@ object ApplicationBuild extends Build {
     "com.google.inject" % "guice" % "3.0",
     "com.tzavellas" % "sse-guice" % "0.7.1",
 
+    "jmimemagic" % "jmimemagic" % "0.1.2",
+
 
     // TEST DEPENDENCIES
     "play" %% "play-test" % "2.1.2" % "test",

@@ -1,4 +1,4 @@
-@(album: model.Fotoalbum)
+@(album: model.Fotoalbum, foto: model.Foto)
 
 @import helper._
 @import helper.twitterBootstrap._
@@ -11,7 +11,7 @@ Fotoalbum von @album.besitzer.name.vorname
 <div>
     <img  style="display:block;float:right;" width="620px"
           alt="Lukas hebt den Kopf: Ich will auch mit feiern!" title="Lukas hebt den Kopf: Ich will auch mit feiern!"
-          src="@routes.Assets.at("images/lukas.jpg")">
+          src="@routes.FotoVorfuehrer.foto(foto.id.get)">
 
 </div>
 

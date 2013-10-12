@@ -23,6 +23,7 @@ GET     /viparea                    controllers.VipArea.viparea
 GET     /fotoalben                  @controllers.FotoVorfuehrer.fotoalben
 POST    /fotoalben                  @controllers.FotoVorfuehrer.hochladen
 GET     /fotoalbum/:besitzer        @controllers.FotoVorfuehrer.fotoalbum(besitzer: model.BenutzerName)
+GET     /foto/:id                   @controllers.FotoVorfuehrer.foto(id: Long)
 
 # ADMIN Area
 GET     /gaesteliste                @controllers.AdminArea.gaesteliste
