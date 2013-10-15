@@ -50,6 +50,10 @@ case class Benutzer(
   def istVIP(): Boolean = {
     passwort.isDefined
   }
+
+  def fotoalbum: Option[Fotoalbum] = Fotoalbum.findeFotoalbumVon(this)
+
+
 }
 
 object Benutzer {

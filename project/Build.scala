@@ -17,8 +17,8 @@ object ApplicationBuild extends Build {
 
     "com.typesafe" %% "play-plugins-mailer" % "2.1.0",
 
-    "org.slf4j" % "jul-to-slf4j" % "1.6.6",
-    "ch.qos.logback" % "logback-classic" % "0.9.11",
+    "org.slf4j" % "jul-to-slf4j" % "1.7.2",
+    "ch.qos.logback" % "logback-classic" % "1.0.7",
 
     "jp.t2v" %% "play2.auth"      % "0.9",
     "org.mindrot" % "jbcrypt"  % "0.3m",
@@ -27,6 +27,7 @@ object ApplicationBuild extends Build {
     "com.tzavellas" % "sse-guice" % "0.7.1",
 
     "jmimemagic" % "jmimemagic" % "0.1.2",
+    "xml-apis" % "xml-apis" % "1.4.01" force(),
 
 
     // TEST DEPENDENCIES

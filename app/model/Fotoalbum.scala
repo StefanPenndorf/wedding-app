@@ -15,13 +15,48 @@ case class Fotoalbum(
     anzahlFotos: Long
                       ) {
 
+  lazy val erstesFoto: Foto = {
+    DB.withConnection { implicit connection =>
+      SQL(
+        """
+          SELECT id,besitzer,foto FROM fotos f
+          WHERE f.besitzer = {besitzerId}
+          ORDER BY ID ASC
+          LIMIT 1
+        """
+      ).on(
+        'besitzerId -> besitzer.id
+      ).as(Foto.simple.single)
+    }
+
+  }
+
 }
-        // TODO CLEAN UP ALL OTHER STUFF USING GÄSTELISTE TO USE FOTOALBUM
+
+object Fotoalbum {
+
+  def findeFotoalbumVon(besitzer: Benutzer): Option[Fotoalbum] = {
+    DB.withConnection { implicit connection =>
+      SQL(
+        """
+          SELECT COUNT(f.id) as anzahlFotos FROM fotos f
+          WHERE f.besitzer = {besitzerId}
+          HAVING COUNT(f.id) > 0
+        """
+      ).on(
+        'besitzerId -> besitzer.id
+      ).as(long("anzahlFotos").singleOpt) map {
+        case anzahlFotos => Fotoalbum(besitzer, anzahlFotos)
+      }
+    }
+  }
+
+
+}
 
 trait FotoalbenVerwalter {
   def alleFotoalben(): List[Fotoalbum]
-  def findeFotoalbumVon(besitzer: Benutzer): Option[Fotoalbum]
-  def speichereFoto(foto: Array[Byte], fotoalbum: Fotoalbum)
+  def speichereFotoFuerBenutzer(foto: Array[Byte], besitzer: Benutzer)
 }
 
 class PersistenterFotoalbenVerwalter extends FotoalbenVerwalter {
@@ -40,7 +75,7 @@ class PersistenterFotoalbenVerwalter extends FotoalbenVerwalter {
     }
   }
 
-  def speichereFoto(foto: Array[Byte], fotoalbum: Fotoalbum) {
+  def speichereFotoFuerBenutzer(foto: Array[Byte], besitzer: Benutzer) {
     DB.withConnection { implicit connection =>
       SQL(
         """
@@ -49,25 +84,10 @@ class PersistenterFotoalbenVerwalter extends FotoalbenVerwalter {
           ({besitzerid}, {foto})
         """
       ).on(
-        'besitzerid -> fotoalbum.besitzer.id,
+        'besitzerid -> besitzer.id,
         'foto -> foto
       ).executeUpdate()
     }
   }
 
-  def findeFotoalbumVon(besitzer: Benutzer): Option[Fotoalbum] = {
-    DB.withConnection { implicit connection =>
-      SQL(
-        """
-          SELECT COUNT(f.id) as anzahlFotos FROM fotos f
-          WHERE f.besitzer = {besitzerId}
-          HAVING COUNT(f.id) > 0
-        """
-      ).on(
-        'besitzerId -> besitzer.id
-      ).as(long("anzahlFotos").singleOpt) map {
-        case anzahlFotos => Fotoalbum(besitzer, anzahlFotos)
-      }
-    }
-  }
 }

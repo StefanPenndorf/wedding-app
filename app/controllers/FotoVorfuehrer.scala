@@ -2,7 +2,6 @@ package controllers
 
 import play.api.mvc._
 import jp.t2v.lab.play2.auth.AuthenticationElement
-import java.io.File
 import model._
 import com.google.inject._
 import model.BenutzerName
@@ -25,17 +24,21 @@ class FotoVorfuehrer @Inject()(
   }
 
   def fotoalbum(besitzerName: BenutzerName): Action[AnyContent] =  StackAction{ implicit request =>
-    gästeliste.findeGastMitName(besitzerName) match {
-      case Some(besitzer) => fotoalbum(besitzer)
-      case None => NotFound("Ungültiges Album")
+    val findFotoalbumTask = scala.concurrent.Future {
+      gästeliste.findeGastMitName(besitzerName)
+    }.map {
+      case Some(besitzer) => besitzer.fotoalbum
+      case None => None
+    }.map {
+      case Some(album) => Some((album, album.erstesFoto))
+      case None => None
     }
-  }
 
-  private def fotoalbum(albumBesitzer: Benutzer)(implicit flash: Flash): Result  = {
-    val foto: Foto = null
-    verwalter.findeFotoalbumVon(albumBesitzer) match {
-      case Some(album) => Ok(views.html.foto(album, foto))
-      case None => NotFound("Ungültiges Album")
+    Async {
+      findFotoalbumTask.map {
+        case Some((album, foto)) => Ok(views.html.foto(album, foto))
+        case None => NotFound("Ungültiges Album")
+      }
     }
   }
 
@@ -52,7 +55,9 @@ class FotoVorfuehrer @Inject()(
   private def sendFotoResult(foto: Foto): Result = {
     val fileContent: Enumerator[Array[Byte]] = Enumerator(foto.content)
     SimpleResult(
-      header = ResponseHeader(200, Map("Content-Type" -> foto.mimeType)),
+      header = ResponseHeader(200, Map(
+        "Content-Type" -> foto.mimeType
+      )),
       body = fileContent
     )
   }
@@ -60,13 +65,7 @@ class FotoVorfuehrer @Inject()(
   def hochladen = StackAction(parse.multipartFormData){ implicit request =>
     val currentUser = loggedIn
     request.body.file("bilddatei").map { picture =>
-        val tempfile = File.createTempFile("pic", "png")
-        try {
-          picture.ref.moveTo(tempfile, replace = true)
-          fotoImporter.importiere(tempfile, currentUser)
-        } finally {
-          tempfile.delete()
-        }
+        fotoImporter.importiere(picture.ref.file, currentUser)
 
         Redirect(routes.FotoVorfuehrer.fotoalben()).flashing(
           "erfolgsMeldung" -> "Bild erfolgreich zu deinem Album hinzugefügt."

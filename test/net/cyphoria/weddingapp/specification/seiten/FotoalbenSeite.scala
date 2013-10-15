@@ -11,6 +11,8 @@ import java.net.URL
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 import net.cyphoria.weddingapp.imagecompare.scalatest.ImageCompareMatchers
+import java.io.File
+import net.cyphoria.weddingapp.imagecompare.FileDownloader
 
 
 /**
@@ -53,12 +55,25 @@ class FotoalbenSeite extends FluentPage with ShouldMatchers with ImageCompareMat
 
   private def aktuellesBild: BufferedImage = {
     val imageSrc = $("img").first().getAttribute("src")
-    ImageIO.read(new URL(imageSrc))
+    imageSrc should include("foto")
+
+    val target = File.createTempFile("image", "")
+    // Das ist schlecht und unsicher und sollte durch eine bessere TEMP-Verwaltung ersetzt werden
+    target.deleteOnExit()
+
+    new FileDownloader(getDriver).downloadFile(new URL(imageSrc), target)
+
+    ImageIO.read(target)
   }
 
   override def getUrl: String = "/fotoalben"
 
   override def isAt() {
+    await().atMost(3, TimeUnit.SECONDS).until(new Predicate[WebDriver] {
+      def apply(p1: WebDriver): Boolean = {
+        title().contains("Steffi und Stefan heiraten!")
+      }
+    })
     title() should be ("Steffi und Stefan heiraten!")
     $("h1").getText should equal ("Fotoalben")
   }

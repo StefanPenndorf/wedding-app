@@ -86,7 +86,7 @@ object ImageComparator {
   }
 
   def imagesAreEqual(referenceImage: BufferedImage, actualImage: BufferedImage): Boolean = {
-    haveSameSize(referenceImage, actualImage) && haveSameContent(referenceImage, actualImage)
+    actualImage != null && haveSameSize(referenceImage, actualImage) && haveSameContent(referenceImage, actualImage)
   }
 
 }

@@ -9,7 +9,6 @@ import model._
  */
 class GastModelTest extends Specification {
 
-//  val einGast = Benutzer(Id(1L), BenutzerName("Kerstin", "Albert"), "kerstin@cyphoria.net", Some("$2a$10$k5TmtHnitQvFCNAp8SbuFeq1VlhlcSGkXl6JAcwZFX20mRZKgEgm."))
   val einGast = KERSTIN
   val gästeliste = new PersistenteGästeliste
 
@@ -49,6 +48,20 @@ class GastModelTest extends Specification {
     "sich nicht authentifizieren können, wenn das Passwort falsch ist" in DatenbankMit("einemGast") {
       Benutzer.authentifiziere(einGast.email, passwort = "falsch") must beNone
     }
+
+    "kein Fotoalbum haben, wenn er noch kein Foto hochgeladen hat" in DatenbankMit("einemGast") {
+      einGast.fotoalbum must beNone
+    }
+
+    "ein Fotoalbum mit einem Foto haben, wenn er ein Foto hochgeladen hat" in DatenbankMit("einemGastMitEinemFoto") {
+      einGast.fotoalbum must beSome(Fotoalbum(einGast, 1))
+    }
+
+    "ein Fotoalbum mit drei Fotos haben, wenn er drei Fotos hochgeladen hat" in DatenbankMit("einemGastMitDreiFotos") {
+      einGast.fotoalbum must beSome(Fotoalbum(einGast, 3))
+    }
+
+
   }
 
 

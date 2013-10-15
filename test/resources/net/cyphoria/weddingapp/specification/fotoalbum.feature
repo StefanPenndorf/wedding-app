@@ -7,7 +7,7 @@ Die Gäste können Fotoalben anschauen und selbst Bilder in ein Fotoalbum hochla
     Und        Kerstin hat sich angemeldet
 
   @current
-  Szenario: Fotos können hochgeladen werden.
+  Szenario: Fotos hochladen
     Angenommen Kerstin ruft die Fotoalben auf
     Wenn       sie ein Bild hochlädt
     Dann       wird ein Fotoalbum für sie erstellt
