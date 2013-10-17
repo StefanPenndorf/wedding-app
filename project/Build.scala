@@ -35,6 +35,7 @@ object ApplicationBuild extends Build {
     "org.scalatest" %% "scalatest" % "1.9.1" % "test",
     "org.scalamock" %% "scalamock-scalatest-support" % "3.0.1" % "test",
     "org.scalamock" %% "scalamock-specs2-support" % "3.0.1" % "test",
+    "org.mockito" % "mockito-all" % "1.9.0",
     "jp.t2v" %% "play2.auth.test" % "0.9" % "test",
 
     "junit" % "junit-dep" % "4.11" % "test",
