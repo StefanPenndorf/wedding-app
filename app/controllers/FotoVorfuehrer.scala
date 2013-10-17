@@ -23,7 +23,7 @@ class FotoVorfuehrer @Inject()(
     Ok(views.html.fotoalben(verwalter.alleFotoalben()))
   }
 
-  def fotoalbum(besitzerName: BenutzerName): Action[AnyContent] =  StackAction{ implicit request =>
+  def fotoalbum(besitzerName: BenutzerName, fotoPosition: Long = 1): Action[AnyContent] =  StackAction{ implicit request =>
     val findFotoalbumTask = scala.concurrent.Future {
       gästeliste.findeGastMitName(besitzerName)
     }.map {

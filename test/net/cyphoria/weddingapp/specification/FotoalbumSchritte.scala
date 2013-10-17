@@ -12,6 +12,9 @@ import org.springframework.core.io.ClassPathResource
 class FotoalbumSchritte extends Schritte with ScalaDsl with DE with Browser {
 
   val bild = new ClassPathResource("images/mara_und_lukas.jpg")
+  val bild1 = bild
+  val bild2 = new ClassPathResource("images/blumen.png")
+  val bild3 = new ClassPathResource("images/mara_und_lukas_mit_kleinem_Fehler.jpg")
 
   def fotoalben = browser.createPage(classOf[FotoalbenSeite])
   def startseite = browser.createPage(classOf[VipAreaStartSeite])
@@ -21,8 +24,23 @@ class FotoalbumSchritte extends Schritte with ScalaDsl with DE with Browser {
     startseite geheZuFotoalbum()
   }
 
+  Angenommen("""^Kerstin hat drei Bilder hochgeladen$"""){ () =>
+    startseite isAt()
+    startseite geheZuFotoalbum()
+
+    Seq(bild1, bild2, bild3).foreach({cp => fotoalben upload cp; fotoalben go()})
+  }
+
+  Angenommen("""^Kerstin ruft ihr Fotoalbum auf$"""){ () =>
+    fotoalben oeffneAlbumVon "Kerstin"
+  }
+
   Wenn("""^sie ein Bild hochlädt$"""){ () =>
     fotoalben upload bild
+  }
+
+  Wenn("""^sie zum zweiten Bild blättert$"""){ () =>
+    fotoalben.naechstesBild
   }
 
   Dann("""^wird ein Fotoalbum für sie erstellt$"""){ () =>
@@ -31,6 +49,10 @@ class FotoalbumSchritte extends Schritte with ScalaDsl with DE with Browser {
 
   Dann("""^kann sie das Foto anschauen$"""){ () =>
     fotoalben zeigtBild bild
+  }
+
+  Dann("""^kann sie das zweite Foto anschauen$"""){ () =>
+    fotoalben zeigtBild bild2
   }
 
 }

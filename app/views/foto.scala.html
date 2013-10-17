@@ -8,7 +8,13 @@ Fotoalbum von @album.besitzer.name.vorname
 }
 
 @main(heading=heading.toString) {
+<div id="foto-blaetterer">
+    <p>
+        <a id="vorhergehendesBild" href="#prev">&lt;&lt;&lt; Zur&uuml;ck</a>&nbsp;|&nbsp;<a id="naechstesBild" href="#next">Weiter &gt;&gt;&gt;</a>
+    </p>
+</div>
 <div>
+
     <img  style="display:block;float:right;" width="620px"
           alt="Lukas hebt den Kopf: Ich will auch mit feiern!" title="Lukas hebt den Kopf: Ich will auch mit feiern!"
           src="@routes.FotoVorfuehrer.foto(foto.id.get)">

@@ -3,31 +3,32 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index
+GET   /                           controllers.Application.index
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET   /assets/*file               controllers.Assets.at(path="/public", file)
 
-POST    /login                      controllers.Application.authenticate
+POST  /login                      controllers.Application.authenticate
 
 # Registrierung
-GET     /register                   controllers.Registrierung.formular
-POST    /register                   controllers.Registrierung.registrieren
-GET     /confirm-registration       controllers.Registrierung.registrierungsBestaetigung
+GET   /register                   controllers.Registrierung.formular
+POST  /register                   controllers.Registrierung.registrieren
+GET   /confirm-registration       controllers.Registrierung.registrierungsBestaetigung
 
 # Impressum
-GET     /impressum                  controllers.Application.impressum
+GET   /impressum                  controllers.Application.impressum
 
 # VIP Area
-GET     /viparea                    controllers.VipArea.viparea
-GET     /fotoalben                  @controllers.FotoVorfuehrer.fotoalben
-POST    /fotoalben                  @controllers.FotoVorfuehrer.hochladen
-GET     /fotoalbum/:besitzer        @controllers.FotoVorfuehrer.fotoalbum(besitzer: model.BenutzerName)
-GET     /foto/:id                   @controllers.FotoVorfuehrer.foto(id: Long)
+GET   /viparea                                        controllers.VipArea.viparea
+GET   /fotoalben                                      @controllers.FotoVorfuehrer.fotoalben
+POST  /fotoalben                                      @controllers.FotoVorfuehrer.hochladen
+GET   /fotoalbum/:besitzer                            @controllers.FotoVorfuehrer.fotoalbum(besitzer: model.BenutzerName, fotoPosition: Long = 1)
+GET   /fotoalbum/:besitzer/$fotoPosition<[0-9]+>      @controllers.FotoVorfuehrer.fotoalbum(besitzer: model.BenutzerName, fotoPosition: Long)
+GET   /foto/:id                                       @controllers.FotoVorfuehrer.foto(id: Long)
 
 # ADMIN Area
-GET     /gaesteliste                @controllers.AdminArea.gaesteliste
-POST    /gast/freischalten/:id      @controllers.AdminArea.gastFreischalten(id: Long)
-POST    /newsletter                 @controllers.AdminArea.sendNewsletter()
-POST    /newsletter/test            @controllers.AdminArea.testNewsletter()
+GET   /gaesteliste                @controllers.AdminArea.gaesteliste
+POST  /gast/freischalten/:id      @controllers.AdminArea.gastFreischalten(id: Long)
+POST  /newsletter                 @controllers.AdminArea.sendNewsletter()
+POST  /newsletter/test            @controllers.AdminArea.testNewsletter()
 
