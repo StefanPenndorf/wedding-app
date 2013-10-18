@@ -15,6 +15,47 @@ case class Fotoalbum(
     anzahlFotos: Long
                       ) {
 
+  def fotoMitPosition(nummer: Long): Option[Foto] = {
+    if(nummer < 1) {
+      None
+    } else {
+      DB.withConnection { implicit connection =>
+        SQL(
+          """
+            SELECT id,besitzer,foto FROM fotos f
+            WHERE f.besitzer = {besitzerId}
+            ORDER BY ID ASC
+            LIMIT {idx},1
+          """
+        ).on(
+          'besitzerId -> besitzer.id,
+          'idx -> (nummer - 1)
+        ).as(Foto.simple.singleOpt)
+      }
+    }
+  }
+
+
+  def naechstePosition(foto: Foto): Option[Long] = {
+    val nextPos = positionVon(foto) + 1
+    fotoMitPosition(nextPos).map( _=> nextPos)
+  }
+
+  private def positionVon(foto: Foto): Long = {
+    DB.withConnection { implicit connection =>
+      SQL(
+        """
+            SELECT COUNT(*)+1 as cnt FROM fotos f
+            WHERE f.besitzer = {besitzerId} AND
+                  f.id < {fotoId}
+        """
+      ).on(
+        'besitzerId -> besitzer.id,
+        'fotoId -> foto.id.get
+      ).as(scalar[Long].single)
+    }
+  }
+
   lazy val erstesFoto: Foto = {
     DB.withConnection { implicit connection =>
       SQL(

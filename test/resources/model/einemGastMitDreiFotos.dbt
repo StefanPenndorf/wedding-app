@@ -3,5 +3,5 @@ users:
 
 fotos:
 - id: 1, besitzer: 1, foto: "89504E470D0A1A0A4142434445"
-- id: 2, besitzer: 1, foto: "FFD8FF4142434445"
+- id: 2, besitzer: 1, foto: "FFD8FFE000104A464946"
 - id: 3, besitzer: 1, foto: "89504E470D0A1A0A4142434445"

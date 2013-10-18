@@ -30,7 +30,7 @@ class FotoVorfuehrer @Inject()(
       case Some(besitzer) => besitzer.fotoalbum
       case None => None
     }.map {
-      case Some(album) => Some((album, album.erstesFoto))
+      case Some(album) => album.fotoMitPosition(fotoPosition).map{f => (album, f)}
       case None => None
     }
 
