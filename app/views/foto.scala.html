@@ -14,7 +14,7 @@ Fotoalbum von @album.besitzer.name.vorname
 
         @album.naechstePosition(foto).map { pos =>
             <a id="naechstesBild" href="@routes.FotoVorfuehrer.fotoalbum(album.besitzer.name, pos)">Weiter &gt;&gt;&gt;</a>
-        } getOrElse {
+        }.getOrElse {
             Weiter &gt;&gt;&gt;
         }
     </p>
