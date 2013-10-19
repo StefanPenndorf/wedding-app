@@ -7,6 +7,6 @@ import org.junit.runner.RunWith;
  * @author Stefan Penndorf <stefan@cyphoria.net>
  */
 @RunWith(Cucumber.class)
-@Cucumber.Options(format = {"pretty", "html:target/cucumber"}, monochrome = true, tags = "@finished")
+@Cucumber.Options(format = {"pretty", "html:target/cucumber"}, monochrome = true, tags = {"@finished", "~@current"})
 public class FinishedAppSpecification {
 }

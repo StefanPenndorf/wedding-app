@@ -41,6 +41,12 @@ case class Fotoalbum(
     fotoMitPosition(nextPos).map( _=> nextPos)
   }
 
+  def vorhergehendePosition(foto: Foto): Option[Long] = {
+    val prevPos = positionVon(foto) - 1
+    fotoMitPosition(prevPos).map( _=> prevPos)
+  }
+
+
   private def positionVon(foto: Foto): Long = {
     DB.withConnection { implicit connection =>
       SQL(

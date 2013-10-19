@@ -66,9 +66,14 @@ class FotoalbenSeite extends FluentPage with ShouldMatchers with ImageCompareMat
     ImageIO.read(target)
   }
 
-  def naechstesBild = {
+  def naechstesBild() = {
     $("#naechstesBild").first.click
   }
+
+  def vorhergehendesBild() = {
+    $("#vorhergehendesBild").first.click
+  }
+
 
   override def getUrl: String = "/fotoalben"
 

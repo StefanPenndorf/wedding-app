@@ -39,15 +39,19 @@ class FotoalbumSchritte extends Schritte with ScalaDsl with DE with Browser {
     fotoalben upload bild
   }
 
-  Wenn("""^sie zum zweiten Bild blättert$"""){ () =>
-    fotoalben.naechstesBild
+  Wenn("""^sie ein Bild weiter blättert$"""){ () =>
+    fotoalben naechstesBild()
+  }
+
+  Wenn("""^sie ein Bild zurück blättert$"""){ () =>
+    fotoalben vorhergehendesBild()
   }
 
   Dann("""^wird ein Fotoalbum für sie erstellt$"""){ () =>
     fotoalben oeffneAlbumVon "Kerstin"
   }
 
-  Dann("""^kann sie das Foto anschauen$"""){ () =>
+  Dann("""^kann sie das erste Foto anschauen$"""){ () =>
     fotoalben zeigtBild bild
   }
 

@@ -10,8 +10,12 @@ Fotoalbum von @album.besitzer.name.vorname
 @main(heading=heading.toString) {
 <div id="foto-blaetterer">
     <p>
-        <a id="vorhergehendesBild" href="#prev">&lt;&lt;&lt; Zur&uuml;ck</a>&nbsp;|&nbsp;
-
+        @album.vorhergehendePosition(foto).map { pos =>
+            <a id="vorhergehendesBild" href="@routes.FotoVorfuehrer.fotoalbum(album.besitzer.name, pos)">Zur&uuml;ck &gt;&gt;&gt;</a>
+        }.getOrElse {
+            Zur&uuml;ck &gt;&gt;&gt;
+        }
+        &nbsp;|&nbsp;
         @album.naechstePosition(foto).map { pos =>
             <a id="naechstesBild" href="@routes.FotoVorfuehrer.fotoalbum(album.besitzer.name, pos)">Weiter &gt;&gt;&gt;</a>
         }.getOrElse {

@@ -12,19 +12,24 @@ class FotoalbumTest extends Specification {
 
   val einGast = KERSTIN
 
+  val erstesFoto: Foto = Foto(Id(1), PNG_IMAGE_CONTENT)
+  val zweitesFoto: Foto = Foto(Id(2), JPEG_IMAGE_CONTENT)
+  val drittesFoto: Foto = Foto(Id(3), PNG_IMAGE_CONTENT)
+
   "Fotoalbum eines Gastes" should {
+
     "das erste Foto zurück geben" in DatenbankMit("einemGastMitEinemFoto") {
-      einGast.fotoalbum.get.erstesFoto must beEqualTo(Foto(Id(1), PNG_IMAGE_CONTENT))
-      einGast.fotoalbum.get.fotoMitPosition(1) must beSome(Foto(Id(1), PNG_IMAGE_CONTENT))
+      einGast.fotoalbum.get.erstesFoto must beEqualTo(erstesFoto)
+      einGast.fotoalbum.get.fotoMitPosition(1) must beSome(erstesFoto)
     }
 
     "das Foto mit der kleinsten ID als Foto mit Nummer 1 zurück geben, selbst wenn drei Fotos hochgeladen wurden" in DatenbankMit("einemGastMitDreiFotos") {
-      einGast.fotoalbum.get.erstesFoto must beEqualTo(Foto(Id(1), PNG_IMAGE_CONTENT))
-      einGast.fotoalbum.get.fotoMitPosition(1) must beSome(Foto(Id(1), PNG_IMAGE_CONTENT))
+      einGast.fotoalbum.get.erstesFoto must beEqualTo(erstesFoto)
+      einGast.fotoalbum.get.fotoMitPosition(1) must beSome(erstesFoto)
     }
 
     "das zweite Foto als Foto mit Fotonummer 2 zurück geben" in DatenbankMit("einemGastMitDreiFotos") {
-      einGast.fotoalbum.get.fotoMitPosition(2) must beSome(Foto(Id(2), JPEG_IMAGE_CONTENT))
+      einGast.fotoalbum.get.fotoMitPosition(2) must beSome(zweitesFoto)
     }
 
     "kein Foto mit negativer Fotonummer finden" in DatenbankMit("einemGastMitDreiFotos") {
@@ -32,15 +37,23 @@ class FotoalbumTest extends Specification {
     }
 
     "kein nächstes Foto für ein einziges Foto haben" in DatenbankMit("einemGastMitEinemFoto") {
-      einGast.fotoalbum.get.naechstePosition(Foto(Id(1), PNG_IMAGE_CONTENT)) must beNone
-    }
-
-    "das zweite Foto als nächstes Foto für das erste Foto haben" in DatenbankMit("einemGastMitDreiFotos") {
-      einGast.fotoalbum.get.naechstePosition(Foto(Id(1), PNG_IMAGE_CONTENT)) must beSome(2)
+      einGast.fotoalbum.get.naechstePosition(erstesFoto) must beNone
     }
 
     "kein nächstes Foto für das letzte Foto haben" in DatenbankMit("einemGastMitDreiFotos") {
-      einGast.fotoalbum.get.naechstePosition(Foto(Id(3), PNG_IMAGE_CONTENT)) must beNone
+      einGast.fotoalbum.get.naechstePosition(drittesFoto) must beNone
+    }
+
+    "das zweite Foto als nächstes Foto für das erste Foto haben" in DatenbankMit("einemGastMitDreiFotos") {
+      einGast.fotoalbum.get.naechstePosition(erstesFoto) must beSome(2)
+    }
+
+    "kein vorhergehendes Foto für das erste Foto haben" in DatenbankMit("einemGastMitEinemFoto") {
+      einGast.fotoalbum.get.vorhergehendePosition(erstesFoto) must beNone
+    }
+
+    "das erste Foto als vorhergehendes Foto für das zweite Foto haben" in DatenbankMit("einemGastMitDreiFotos") {
+      einGast.fotoalbum.get.vorhergehendePosition(zweitesFoto) must beSome(1)
     }
 
   }
