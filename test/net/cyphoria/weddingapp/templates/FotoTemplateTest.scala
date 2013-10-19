@@ -22,6 +22,12 @@ class FotoTemplateTest extends Specification {
       foto.body must contain("Fotoalbum von Teresa")
     }
 
+    "ermöglicht das Blättern im Album" in  {
+      foto.body must contain("Weiter &gt;&gt;&gt;")
+      foto.body must contain("&lt;&lt;&lt; Zur&uuml;ck")
+    }
+
+
     "nicht den Schriftug getOrElse enthalten (Regressionstest)" in  {
       foto.body must not contain("getOrElse")
     }
