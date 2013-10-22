@@ -90,16 +90,40 @@ class PersistenterFotoalbenVerwalter extends FotoalbenVerwalter {
   }
 
   def speichereFotoFuerBenutzer(foto: Array[Byte], besitzer: Benutzer) {
-    DB.withConnection { implicit connection =>
-      SQL(
+    val insertedId = DB.withTransaction { implicit connection =>
+      val pos = SQL(
+        """SELECT COUNT(*)+1 FROM
+              ( SELECT id FROM fotos f
+                WHERE f.besitzer={besitzerid}
+                ORDER BY f.id
+                FOR UPDATE ) r """
+      ).on(
+        'besitzerid -> besitzer.id
+      ).as(scalar[Long].single)
+
+      val insertId = SQL(
         """
           INSERT INTO fotos (besitzer, foto, position) VALUES
-            ( {besitzerid}, {foto}, (SELECT COUNT(*)+1 FROM fotos f2 WHERE f2.besitzer={besitzerid}) )
+            ( {besitzerid}, {foto}, {pos} )
         """
       ).on(
         'besitzerid -> besitzer.id,
-        'foto -> foto
-      ).executeUpdate()
+        'foto -> new Array[Byte](2),
+        'pos -> pos
+      ).executeInsert()
+
+      insertId
+    }
+
+    DB.withConnection { implicit connection =>
+      SQL(
+        """
+            UPDATE fotos SET foto = {foto} WHERE id = {id}
+        """
+        ).on(
+          'id -> insertedId,
+          'foto -> foto
+        ).executeUpdate()
     }
   }
 
