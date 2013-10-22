@@ -13,7 +13,7 @@ import anorm.Id
 class FotoTemplateTest extends Specification {
 
   val foto = running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
-    views.html.foto(Fotoalbum(TERESA, 1), Foto(Id(1)))
+    views.html.foto(Fotoalbum(TERESA, 1), Foto(Id(1), new Array[Byte](11), 1))
   }
 
   "Die Fotoansicht" should {

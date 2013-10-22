@@ -2,4 +2,4 @@ users:
 - id: 1, email: "kerstin@cyphoria.net",  vorname: "Kerstin",  nachname: "Albert", passwort: "$2a$10$k5TmtHnitQvFCNAp8SbuFeq1VlhlcSGkXl6JAcwZFX20mRZKgEgm."
 
 fotos:
-- id: 1, besitzer: 1, foto: "89504E470D0A1A0A4142434445"
+- id: 1, besitzer: 1, foto: "89504E470D0A1A0A4142434445", position: 1

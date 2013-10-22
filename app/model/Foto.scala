@@ -12,7 +12,8 @@ import net.sf.jmimemagic.{MagicMatchNotFoundException, Magic}
  * @author Stefan Penndorf <stefan@cyphoria.net>
  */
 case class Foto(id: Pk[Long] = NotAssigned,
-                imageContent: mutable.WrappedArray[Byte] = new Array[Byte](11)) {
+                imageContent: mutable.WrappedArray[Byte],
+                position: Long) {
 
   def mimeType = {
     try {
@@ -32,8 +33,9 @@ object Foto {
   val simple = {
       get[Long]("fotos.id") ~
       get[Long]("fotos.besitzer") ~
-      bytes("fotos.foto") map {
-        case id~besitzer~foto => Foto(Id(id), foto)
+      bytes("fotos.foto") ~
+      get[Int]("fotos.position") map {
+        case id~besitzer~foto~position => Foto(Id(id), foto, position)
       }
   }
 
@@ -53,7 +55,7 @@ object Foto {
     DB.withConnection { implicit connection =>
       SQL(
         """
-          SELECT id,besitzer,foto FROM fotos WHERE id={id}
+          SELECT id,besitzer,foto,position FROM fotos WHERE id={id}
         """
       ).on(
         'id -> id

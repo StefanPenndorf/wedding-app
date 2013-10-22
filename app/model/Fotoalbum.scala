@@ -15,21 +15,20 @@ case class Fotoalbum(
     anzahlFotos: Long
                       ) {
 
-  def fotoMitPosition(nummer: Long): Option[Foto] = {
-    if(nummer < 1) {
+  def fotoMitPosition(position: Long): Option[Foto] = {
+    if(position < 1) {
       None
     } else {
       DB.withConnection { implicit connection =>
         SQL(
           """
-            SELECT id,besitzer,foto FROM fotos f
-            WHERE f.besitzer = {besitzerId}
-            ORDER BY ID ASC
-            LIMIT {idx},1
+            SELECT id,besitzer,foto,position FROM fotos f
+            WHERE f.besitzer = {besitzerId} AND
+                  f.position = {position}
           """
         ).on(
           'besitzerId -> besitzer.id,
-          'idx -> (nummer - 1)
+          'position -> position
         ).as(Foto.simple.singleOpt)
       }
     }
@@ -37,45 +36,13 @@ case class Fotoalbum(
 
 
   def naechstePosition(foto: Foto): Option[Long] = {
-    val nextPos = positionVon(foto) + 1
+    val nextPos = foto.position + 1
     fotoMitPosition(nextPos).map( _=> nextPos)
   }
 
   def vorhergehendePosition(foto: Foto): Option[Long] = {
-    val prevPos = positionVon(foto) - 1
+    val prevPos = foto.position - 1
     fotoMitPosition(prevPos).map( _=> prevPos)
-  }
-
-
-  private def positionVon(foto: Foto): Long = {
-    DB.withConnection { implicit connection =>
-      SQL(
-        """
-            SELECT COUNT(*)+1 as cnt FROM fotos f
-            WHERE f.besitzer = {besitzerId} AND
-                  f.id < {fotoId}
-        """
-      ).on(
-        'besitzerId -> besitzer.id,
-        'fotoId -> foto.id.get
-      ).as(scalar[Long].single)
-    }
-  }
-
-  lazy val erstesFoto: Foto = {
-    DB.withConnection { implicit connection =>
-      SQL(
-        """
-          SELECT id,besitzer,foto FROM fotos f
-          WHERE f.besitzer = {besitzerId}
-          ORDER BY ID ASC
-          LIMIT 1
-        """
-      ).on(
-        'besitzerId -> besitzer.id
-      ).as(Foto.simple.single)
-    }
-
   }
 
 }
@@ -126,9 +93,8 @@ class PersistenterFotoalbenVerwalter extends FotoalbenVerwalter {
     DB.withConnection { implicit connection =>
       SQL(
         """
-          insert into fotos
-          (besitzer,   foto) values
-          ({besitzerid}, {foto})
+          INSERT INTO fotos (besitzer, foto, position) VALUES
+            ( {besitzerid}, {foto}, (SELECT COUNT(*)+1 FROM fotos f2 WHERE f2.besitzer={besitzerid}) )
         """
       ).on(
         'besitzerid -> besitzer.id,

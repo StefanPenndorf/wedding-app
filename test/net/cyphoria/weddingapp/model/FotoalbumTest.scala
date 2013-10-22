@@ -12,19 +12,17 @@ class FotoalbumTest extends Specification {
 
   val einGast = KERSTIN
 
-  val erstesFoto: Foto = Foto(Id(1), PNG_IMAGE_CONTENT)
-  val zweitesFoto: Foto = Foto(Id(2), JPEG_IMAGE_CONTENT)
-  val drittesFoto: Foto = Foto(Id(3), PNG_IMAGE_CONTENT)
+  val erstesFoto: Foto = Foto(Id(1), PNG_IMAGE_CONTENT, 1)
+  val zweitesFoto: Foto = Foto(Id(2), JPEG_IMAGE_CONTENT, 2)
+  val drittesFoto: Foto = Foto(Id(3), PNG_IMAGE_CONTENT, 3)
 
   "Fotoalbum eines Gastes" should {
 
     "das erste Foto zurück geben" in DatenbankMit("einemGastMitEinemFoto") {
-      einGast.fotoalbum.get.erstesFoto must beEqualTo(erstesFoto)
       einGast.fotoalbum.get.fotoMitPosition(1) must beSome(erstesFoto)
     }
 
     "das Foto mit der kleinsten ID als Foto mit Nummer 1 zurück geben, selbst wenn drei Fotos hochgeladen wurden" in DatenbankMit("einemGastMitDreiFotos") {
-      einGast.fotoalbum.get.erstesFoto must beEqualTo(erstesFoto)
       einGast.fotoalbum.get.fotoMitPosition(1) must beSome(erstesFoto)
     }
 
