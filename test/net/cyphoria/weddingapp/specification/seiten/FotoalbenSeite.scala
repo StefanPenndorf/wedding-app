@@ -43,7 +43,7 @@ class FotoalbenSeite extends FluentPage with ShouldMatchers with ImageCompareMat
     await().atMost(3, TimeUnit.SECONDS).until(new Predicate[WebDriver] {
       def apply(p1: WebDriver): Boolean = {
         val messages: String = $(".alert-message.success").getText
-        messages != null && messages.contains("Bild erfolgreich zu deinem Album hinzugefügt.")
+        messages != null && messages.contains("Bild(er) erfolgreich zu deinem Album hinzugefügt.")
       }
     })
 
