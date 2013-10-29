@@ -2,8 +2,9 @@ package net.cyphoria.weddingapp.specification
 
 import net.cyphoria.weddingapp.specification.infrastructure.{Browser, Schritte}
 import cucumber.api.scala.{DE, ScalaDsl}
-import net.cyphoria.weddingapp.specification.seiten.{VipAreaStartSeite, FotoalbenSeite}
+import net.cyphoria.weddingapp.specification.seiten.{Navigation, VipAreaStartSeite, FotoalbenSeite}
 import org.springframework.core.io.ClassPathResource
+import java.io.File
 
 /**
  *
@@ -18,15 +19,16 @@ class FotoalbumSchritte extends Schritte with ScalaDsl with DE with Browser {
 
   def fotoalben = browser.createPage(classOf[FotoalbenSeite])
   def startseite = browser.createPage(classOf[VipAreaStartSeite])
+  def navigation = browser.createPage(classOf[Navigation])
+
+  var albumZip: Option[File] = None
 
   Angenommen("""^Kerstin ruft die Fotoalben auf$"""){ () =>
-    startseite isAt()
-    startseite geheZuFotoalbum()
+    navigation geheZuFotoalbum()
   }
 
   Angenommen("""^Kerstin hat drei Bilder hochgeladen$"""){ () =>
-    startseite isAt()
-    startseite geheZuFotoalbum()
+    navigation geheZuFotoalbum()
 
     Seq(bild1, bild2, bild3).foreach({cp => fotoalben upload cp; fotoalben go()})
   }
@@ -45,6 +47,10 @@ class FotoalbumSchritte extends Schritte with ScalaDsl with DE with Browser {
 
   Wenn("""^sie ein Bild zurück blättert$"""){ () =>
     fotoalben vorhergehendesBild()
+  }
+
+  Wenn("""^sie ihr Fotoalbum herunterlädt$"""){ () =>
+    albumZip = Some(fotoalben ladeAlbumKomplettHerunterMit "Kerstin" )
   }
 
   Dann("""^wird ein Fotoalbum für sie erstellt$"""){ () =>

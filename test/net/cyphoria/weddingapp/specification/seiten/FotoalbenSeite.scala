@@ -20,6 +20,7 @@ import net.cyphoria.weddingapp.imagecompare.FileDownloader
  * @author Stefan Penndorf <stefan@cyphoria.net>
  */
 class FotoalbenSeite extends FluentPage with ShouldMatchers with ImageCompareMatchers {
+
   var bildDatei: FluentWebElement = null
   var starteHochladen: FluentWebElement = null
 
@@ -74,6 +75,18 @@ class FotoalbenSeite extends FluentPage with ShouldMatchers with ImageCompareMat
     $("#vorhergehendesBild").first.click
   }
 
+  def ladeAlbumKomplettHerunterMit(albumBesitzer: String): File = {
+    val albumZipUrl = $("""a[href$=".zip"][alt*="Kerstin"]""").first().getAttribute("src")
+    albumZipUrl should include("zip")
+
+    val target = File.createTempFile("fotoalbum", "zip")
+    // Das ist schlecht und unsicher und sollte durch eine bessere TEMP-Verwaltung ersetzt werden
+    target.deleteOnExit()
+
+    new FileDownloader(getDriver).downloadFile(new URL(albumZipUrl), target)
+
+    target
+  }
 
   override def getUrl: String = "/fotoalben"
 

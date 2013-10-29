@@ -25,3 +25,9 @@ Die Gäste können Fotoalben anschauen und selbst Bilder in ein Fotoalbum hochla
     Wenn       sie ein Bild weiter blättert
     Und        sie ein Bild zurück blättert
     Dann       kann sie das erste Foto anschauen
+
+  @current
+  Szenario: Herunterladen eines kompletten Albums
+    Angenommen Kerstin hat drei Bilder hochgeladen
+    Wenn       sie ihr Fotoalbum herunterlädt
+    Dann       enthält die ZIP-Datei des Fotoalbums alle drei Bilder
