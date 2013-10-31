@@ -45,7 +45,8 @@ class NewsletterSchritte extends Schritte with ScalaDsl with DE with Browser wit
 
   def assertNachrichtKorrekt(nachricht: String) {
     nachricht should include("Hallo")
-    nachricht should include("Zwenkau")
-    nachricht should include regex("Bayerische(.)? Bahnhof")
+    nachricht should include("Foto")
+    nachricht should include("Hochzeit")
+    nachricht should include("Steffi & Stefan")
   }
 }

@@ -1,0 +1,12 @@
+@(gast: model.Benutzer)
+Hallo @gast.name.vorname,
+
+zunächst erstmal: VIELEN VIELEN DANK!!!
+Es war ein wunderschöner Tag für uns und wir hatten sehr viel Spaß mit euch! Und natürlich auch nochmal vielen Dank für die tollen Geschenke! Ihr werdet auch noch Post von uns bekommen aber ich befürchte, dass dauert noch ein bisschen...
+
+Wir haben es endlich geschafft: die Fotos von unserer Hochzeit sind online unter http://hochzeit.cyphoria.net! Ursprünglich wollten wir sie in Originalqualität hochladen, aber dafür waren sie dann doch zu groß. Wenn ihr gern bestimmte Bilder im Original haben möchtet, gebt einfach Bescheid – dann brennen wir sie euch auf CD. Viel Spaß beim anschauen :)
+
+Wir würden uns sehr freuen, wenn ihr eure Bilder auch auf unserer Internetseite hochladen würdet!
+
+Ganz liebe Grüße
+Steffi & Stefan
