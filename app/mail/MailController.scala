@@ -31,7 +31,7 @@ class TemplateMailController extends MailController {
   def sendeNewsletter(empfänger: Benutzer) {
     createMail
       .addRecipient(empfänger.email.email)
-      .setSubject("Neues von Steffi's und Stefans Hochzeit")
+      .setSubject("Neues von Steffis und Stefans Hochzeit")
       .send(views.txt.mail.newsletter3(empfänger).toString())
   }
 

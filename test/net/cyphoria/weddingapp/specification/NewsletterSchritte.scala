@@ -13,7 +13,7 @@ import org.openqa.selenium.WebDriver
  */
 class NewsletterSchritte extends Schritte with ScalaDsl with DE with Browser with FakeMailer {
 
-  val BETREFF = "Neues von Steffi's und Stefans Hochzeit"
+  val BETREFF = "Neues von Steffis und Stefans Hochzeit"
 
   Angenommen("""^es wurden Gäste freigeschaltet$"""){ () =>
     loadFixture("gaeste-und-ein-admin.dbt")
