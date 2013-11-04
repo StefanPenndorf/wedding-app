@@ -15,13 +15,19 @@ Die Gäste können Fotoalben anschauen und selbst Bilder in ein Fotoalbum hochla
 
   Szenario: Vorblättern im Fotoalbum
     Angenommen Kerstin hat drei Bilder hochgeladen
-    Und        Kerstin ruft ihr Fotoalbum auf
+    Und        Kerstin ruft das erste Foto auf
     Wenn       sie ein Bild weiter blättert
     Dann       kann sie das zweite Foto anschauen
 
   Szenario: Zurückblättern im Fotoalbum
     Angenommen Kerstin hat drei Bilder hochgeladen
-    Und        Kerstin ruft ihr Fotoalbum auf
+    Und        Kerstin ruft das erste Foto auf
     Wenn       sie ein Bild weiter blättert
     Und        sie ein Bild zurück blättert
     Dann       kann sie das erste Foto anschauen
+
+  Szenario: Seiten im Fotoalbum anzeigen
+    Angenommen Kerstin hat drei Bilder hochgeladen
+    Wenn       sie ihr Fotoalbum aufruft
+    Dann       kann sie die erste Seite ihres Fotoalbums mit den drei Bildern sehen
+

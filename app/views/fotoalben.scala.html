@@ -43,7 +43,7 @@
 
         <ul id="fotoalben">
             @for(fotoalbum<-fotoalben) {
-                <li><a href="@routes.FotoVorfuehrer.fotoalbum(fotoalbum.besitzer.name, 1)">@fotoalbum.besitzer.name.vorname (@fotoalbum.anzahlFotos Bilder)</a></li>
+                <li><a href="@routes.FotoVorfuehrer.fotoalbum(fotoalbum.besitzer.name)">@fotoalbum.besitzer.name.vorname (@fotoalbum.anzahlFotos Bilder)</a></li>
             }
         </ul>
     </div>

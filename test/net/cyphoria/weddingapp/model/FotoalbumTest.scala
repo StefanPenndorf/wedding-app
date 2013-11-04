@@ -54,6 +54,14 @@ class FotoalbumTest extends Specification {
       einGast.fotoalbum.get.vorhergehendePosition(zweitesFoto) must beSome(1)
     }
 
+    "ein Foto bereitstellen koennen" in DatenbankMit("einemGastMitEinemFoto") {
+      einGast.fotoalbum.get.alleFotos must beEqualTo(Seq(erstesFoto))
+    }
+
+    "alle Fotos in richtiger Reihenfolge bereitstellen koennen" in DatenbankMit("einemGastMitDreiFotos") {
+      einGast.fotoalbum.get.alleFotos must beEqualTo(Seq(erstesFoto, zweitesFoto, drittesFoto))
+    }
+
   }
 
   val verwalter = new PersistenterFotoalbenVerwalter()

@@ -20,6 +20,8 @@ import net.cyphoria.weddingapp.imagecompare.FileDownloader
  * @author Stefan Penndorf <stefan@cyphoria.net>
  */
 class FotoalbenSeite extends FluentPage with ShouldMatchers with ImageCompareMatchers {
+
+
   var bildDatei: FluentWebElement = null
   var starteHochladen: FluentWebElement = null
 
@@ -54,6 +56,7 @@ class FotoalbenSeite extends FluentPage with ShouldMatchers with ImageCompareMat
   }
 
   private def aktuellesBild: BufferedImage = {
+    await().atMost(3, TimeUnit.SECONDS).until("img").areDisplayed()
     val imageSrc = $("img").first().getAttribute("src")
     imageSrc should include("foto")
 
@@ -67,11 +70,28 @@ class FotoalbenSeite extends FluentPage with ShouldMatchers with ImageCompareMat
   }
 
   def naechstesBild() = {
+    await().atMost(3, TimeUnit.SECONDS).until("#naechstesBild").isPresent
     $("#naechstesBild").first.click
   }
 
   def vorhergehendesBild() = {
+    await().atMost(3, TimeUnit.SECONDS).until("#vorhergehendesBild").isPresent
     $("#vorhergehendesBild").first.click
+  }
+
+  def waehleFoto(i: Int) = {
+    $("img").get(i-1).click()
+  }
+
+  def zeigtSeiteMit(anzahlBilder: Int) = {
+    await().atMost(10, TimeUnit.SECONDS).until(new Predicate[WebDriver] {
+      def apply(p1: WebDriver): Boolean = {
+        val heading: String = $("h1").getText
+        heading != null && heading.contains("Fotoalbum von")
+      }
+    })
+
+    await().atMost(3, TimeUnit.SECONDS).until("img").hasSize(anzahlBilder)
   }
 
 

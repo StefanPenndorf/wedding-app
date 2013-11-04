@@ -1,0 +1,20 @@
+@(fotoalbumSeite: viewmodel.FotoalbumSeite)
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@heading = {
+Fotoalbum von @fotoalbumSeite.besitzer.name.vorname
+}
+
+@main(heading=heading.toString) {
+<div id="fotoalbum-seite">
+    @for(foto <- fotoalbumSeite.fotos) {
+        <div>
+            <a href="@routes.FotoVorfuehrer.fotoalbumEinzelfoto(fotoalbumSeite.besitzer.name, foto.position)">
+                <img class="foto" src="@routes.FotoVorfuehrer.foto(foto.id.get)">
+            </a>
+        </div>
+    }
+</div>
+}

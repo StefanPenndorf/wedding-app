@@ -2,6 +2,7 @@
 @default-color: #EE3F00;
 @left-bar-width: 150px;
 @total-width: 1280px;
+@thumbnail-size: 160px;
 
 body, label, h1, h2, h3, input {
     color: @default-color;
@@ -75,15 +76,15 @@ body, label, h1, h2, h3, input {
 
 #foto-blaetterer {
     padding-left: 160px;
-    padding-top: 20px;
+    padding-top:   20px;
 }
 
 #foto-blaetterer p {
-    display:block;
-    margin-left: auto;
+    display:      block;
+    margin-left:  auto;
     margin-right: auto;
-    width:160px;
-    font-weight:bold;
+    width:        240px;
+    font-weight:  bold;
 }
 
 input[type="file"][id="bildDatei"] {
@@ -91,12 +92,30 @@ input[type="file"][id="bildDatei"] {
 }
 
 img.foto {
-    display:block;
-    float:right;
-    max-width:620px;
-    max-height:620px;
+    display:     block;
+    float:       right;
+    max-width:   620px;
+    max-height:  620px;
 }
 
+#fotoalbum-seite{
+  div {
+    float:   left;
+    margin:  5px;
+    width:   @thumbnail-size;
+    height:  @thumbnail-size;
+    padding: 0;
+  }
+
+  img.foto {
+      float:                  none;
+      max-width:              @thumbnail-size;
+      max-height:             @thumbnail-size;
+      margin:                 auto;
+      -ms-interpolation-mode: nearest-neighbor;
+      image-rendering:        optimizeSpeed;
+  }
+}
 
 #footer {
     clear:      both;

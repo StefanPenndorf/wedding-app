@@ -45,6 +45,20 @@ case class Fotoalbum(
     fotoMitPosition(prevPos).map( _=> prevPos)
   }
 
+  def alleFotos: Seq[model.Foto] = {
+    DB.withConnection { implicit connection =>
+      SQL(
+        """
+            SELECT id,besitzer,foto,position FROM fotos f
+            WHERE f.besitzer = {besitzerId}
+            LIMIT 45
+        """
+      ).on(
+        'besitzerId -> besitzer.id
+      ).as(Foto.simple +)
+    }
+  }
+
 }
 
 object Fotoalbum {

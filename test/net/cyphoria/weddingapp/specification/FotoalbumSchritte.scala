@@ -31,8 +31,9 @@ class FotoalbumSchritte extends Schritte with ScalaDsl with DE with Browser {
     Seq(bild1, bild2, bild3).foreach({cp => fotoalben upload cp; fotoalben go()})
   }
 
-  Angenommen("""^Kerstin ruft ihr Fotoalbum auf$"""){ () =>
+  Angenommen("""^Kerstin ruft das erste Foto auf$"""){ () =>
     fotoalben oeffneAlbumVon "Kerstin"
+    fotoalben waehleFoto 1
   }
 
   Wenn("""^sie ein Bild hochlädt$"""){ () =>
@@ -47,6 +48,10 @@ class FotoalbumSchritte extends Schritte with ScalaDsl with DE with Browser {
     fotoalben vorhergehendesBild()
   }
 
+  Wenn("""sie ihr Fotoalbum aufruft"""){ () =>
+    fotoalben oeffneAlbumVon "Kerstin"
+  }
+
   Dann("""^wird ein Fotoalbum für sie erstellt$"""){ () =>
     fotoalben oeffneAlbumVon "Kerstin"
   }
@@ -57,6 +62,10 @@ class FotoalbumSchritte extends Schritte with ScalaDsl with DE with Browser {
 
   Dann("""^kann sie das zweite Foto anschauen$"""){ () =>
     fotoalben zeigtBild bild2
+  }
+
+  Dann("""^kann sie die erste Seite ihres Fotoalbums mit den drei Bildern sehen$"""){ () =>
+    fotoalben zeigtSeiteMit(anzahlBilder = 3)
   }
 
 }

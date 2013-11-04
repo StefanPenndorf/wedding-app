@@ -22,8 +22,9 @@ GET   /impressum                  controllers.Application.impressum
 GET   /viparea                                        controllers.VipArea.viparea
 GET   /fotoalben                                      @controllers.FotoVorfuehrer.fotoalben
 POST  /fotoalben                                      @controllers.FotoVorfuehrer.hochladen
-GET   /fotoalbum/:besitzer                            @controllers.FotoVorfuehrer.fotoalbum(besitzer: model.BenutzerName, fotoPosition: Long = 1)
-GET   /fotoalbum/:besitzer/$fotoPosition<[0-9]+>      @controllers.FotoVorfuehrer.fotoalbum(besitzer: model.BenutzerName, fotoPosition: Long)
+GET   /fotoalbum/:besitzer                            @controllers.FotoVorfuehrer.fotoalbum(besitzer: model.BenutzerName)
+GET   /fotoalbum/:besitzer/foto                            @controllers.FotoVorfuehrer.fotoalbumEinzelfoto(besitzer: model.BenutzerName, fotoPosition: Long = 1)
+GET   /fotoalbum/:besitzer/foto/$fotoPosition<[0-9]+>      @controllers.FotoVorfuehrer.fotoalbumEinzelfoto(besitzer: model.BenutzerName, fotoPosition: Long)
 GET   /foto/:id                                       @controllers.FotoVorfuehrer.foto(id: Long)
 
 # ADMIN Area

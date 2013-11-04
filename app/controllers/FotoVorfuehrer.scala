@@ -16,6 +16,7 @@ import model.AlleBilderGueltig
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 import java.util.concurrent.TimeUnit
+import viewmodel.FotoalbumSeite
 
 /**
  *
@@ -34,7 +35,23 @@ class FotoVorfuehrer @Inject()(
     Ok(views.html.fotoalben(verwalter.alleFotoalben()))
   }
 
-  def fotoalbum(besitzerName: BenutzerName, fotoPosition: Long = 1): Action[AnyContent] =  StackAction{ implicit request =>
+  def fotoalbum(besitzerName: BenutzerName): Action[AnyContent] =  StackAction{ implicit request =>
+    val findeFotoSeite = scala.concurrent.Future {
+      gästeliste.findeGastMitName(besitzerName)
+    }.map {
+      case Some(besitzer) => besitzer.fotoalbum
+      case None => None
+    }
+
+    Async {
+      findeFotoSeite.map {
+        case Some(fotoalbum) => Ok(views.html.fotoalbumSeite(FotoalbumSeite(fotoalbum)))
+        case None => NotFound("Ungültiges Album")
+      }
+    }
+  }
+
+  def fotoalbumEinzelfoto(besitzerName: BenutzerName, fotoPosition: Long = 1): Action[AnyContent] =  StackAction{ implicit request =>
     val findFotoalbumTask = scala.concurrent.Future {
       gästeliste.findeGastMitName(besitzerName)
     }.map {

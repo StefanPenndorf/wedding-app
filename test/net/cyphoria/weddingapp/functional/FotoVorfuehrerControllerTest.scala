@@ -58,8 +58,19 @@ class FotoVorfuehrerControllerTest extends Specification with MockFactory {
       contentAsBytes(result) must beEqualTo(PNG_IMAGE_CONTENT)
     }
 
-    "die Fotoseite mit dem ersten Foto im Album anzeigen" in laufenderAnwendungMitScenario("einemGastMitEinemFoto") {
+    "die erste Seite vom Fotoalbum anzeigen" in laufenderAnwendungMitScenario("einemGastMitDreiFotos") {
       val result = route(FakeRequest(GET, "/fotoalbum/Kerstin.Albert").withLoggedIn(config)(einGast.id.get)).get
+
+      status(result) must equalTo(OK)
+      contentAsString(result) must contain("Fotoalbum von Kerstin")
+      contentAsString(result) must contain("src=\"/foto/1\"")
+      contentAsString(result) must contain("src=\"/foto/2\"")
+      contentAsString(result) must contain("src=\"/foto/3\"")
+    }
+
+
+    "die Fotoseite mit dem ersten Foto im Album anzeigen" in laufenderAnwendungMitScenario("einemGastMitEinemFoto") {
+      val result = route(FakeRequest(GET, "/fotoalbum/Kerstin.Albert/foto").withLoggedIn(config)(einGast.id.get)).get
 
       status(result) must equalTo(OK)
       contentAsString(result) must contain("Fotoalbum von Kerstin")
