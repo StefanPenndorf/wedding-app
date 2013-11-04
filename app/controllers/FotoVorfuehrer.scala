@@ -124,7 +124,7 @@ class FotoVorfuehrer @Inject()(
         }
         case Right(BilderMitFehlern(ungueltige)) => {
             Redirect(routes.FotoVorfuehrer.fotoalben()).flashing(
-              "fehlerMeldung" -> "Mindestens eine Datei konnte nicht importiert werden, weil sie kein Bild oder zu groß war (max. 10 MB).")
+              "fehlerMeldung" -> "Mindestens eine Datei konnte nicht importiert werden, weil sie kein Bild oder zu groß war (max. 8 MB).")
         }
       }
     }
