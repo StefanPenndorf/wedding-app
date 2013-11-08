@@ -31,3 +31,9 @@ Die Gäste können Fotoalben anschauen und selbst Bilder in ein Fotoalbum hochla
     Wenn       sie ihr Fotoalbum aufruft
     Dann       kann sie die erste Seite ihres Fotoalbums mit den drei Bildern sehen
 
+  @current
+  Szenario: Seiten im Fotoalbum anzeigen
+    Angenommen Kerstin hat 21 Bilder hochgeladen
+    Wenn       sie ihr Fotoalbum aufruft
+    Und        auf die zweite Seite blättert
+    Dann       kann sie die zweite Seite ihres Fotoalbums sehen

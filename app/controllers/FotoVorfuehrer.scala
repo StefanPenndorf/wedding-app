@@ -35,7 +35,7 @@ class FotoVorfuehrer @Inject()(
     Ok(views.html.fotoalben(verwalter.alleFotoalben()))
   }
 
-  def fotoalbum(besitzerName: BenutzerName): Action[AnyContent] =  StackAction{ implicit request =>
+  def fotoalbum(besitzerName: BenutzerName, seite: Int): Action[AnyContent] =  StackAction{ implicit request =>
     val findeFotoSeite = scala.concurrent.Future {
       gästeliste.findeGastMitName(besitzerName)
     }.map {
@@ -45,7 +45,7 @@ class FotoVorfuehrer @Inject()(
 
     Async {
       findeFotoSeite.map {
-        case Some(fotoalbum) => Ok(views.html.fotoalbumSeite(FotoalbumSeite(fotoalbum)))
+        case Some(fotoalbum) => Ok(views.html.fotoalbumSeite(FotoalbumSeite(fotoalbum, seite)))
         case None => NotFound("Ungültiges Album")
       }
     }

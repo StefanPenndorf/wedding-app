@@ -13,29 +13,27 @@ import javax.imageio.ImageIO
 import net.cyphoria.weddingapp.imagecompare.scalatest.ImageCompareMatchers
 import java.io.File
 import net.cyphoria.weddingapp.imagecompare.FileDownloader
+import org.fluentlenium.core.annotation.Page
 
 
 /**
  *
  * @author Stefan Penndorf <stefan@cyphoria.net>
  */
-class FotoalbenSeite extends FluentPage with ShouldMatchers with ImageCompareMatchers {
-
+class FotoalbenSeite extends FluentPage with ShouldMatchers with ImageCompareMatchers with NavigationHelpers {
 
   var bildDatei: FluentWebElement = null
   var starteHochladen: FluentWebElement = null
 
-  def oeffneAlbumVon(s: String) {
-    $(s"""#fotoalben a[href*="$s"]""").first.click
+  @Page
+  var fotoalbum: FotoalbumSeiteSeite = null
 
-    await().atMost(50, TimeUnit.SECONDS).until(new Predicate[WebDriver] {
-      def apply(p1: WebDriver): Boolean = {
-        val heading: String = $("h1").getText
-        heading != null && heading.contains(s"""Fotoalbum von $s""")
-      }
-    })
+  def oeffneAlbumVon(besitzer: String) {
+    $(s"""#fotoalben a[href*="$besitzer"]""").first.click
 
-    $("img").first() should be ('displayed)
+    await().atMost(3, TimeUnit.SECONDS).untilPage(fotoalbum).isAt()
+    fotoalbum.isAt(besitzer)
+    fotoalbum
   }
 
   def upload(s: Resource) {
@@ -69,15 +67,9 @@ class FotoalbenSeite extends FluentPage with ShouldMatchers with ImageCompareMat
     ImageIO.read(target)
   }
 
-  def naechstesBild() = {
-    await().atMost(3, TimeUnit.SECONDS).until("#naechstesBild").isPresent
-    $("#naechstesBild").first.click
-  }
+  def naechstesFoto() = warteAufUndKlickeDann("#naechstesBild")
 
-  def vorhergehendesBild() = {
-    await().atMost(3, TimeUnit.SECONDS).until("#vorhergehendesBild").isPresent
-    $("#vorhergehendesBild").first.click
-  }
+  def vorhergehendesFoto() = warteAufUndKlickeDann("#vorhergehendesBild")
 
   def waehleFoto(i: Int) = {
     $("img").get(i-1).click()
@@ -94,6 +86,7 @@ class FotoalbenSeite extends FluentPage with ShouldMatchers with ImageCompareMat
     await().atMost(3, TimeUnit.SECONDS).until("img").hasSize(anzahlBilder)
   }
 
+  def naechsteSeite = warteAufUndKlickeDann("#naechsteSeite")
 
   override def getUrl: String = "/fotoalben"
 

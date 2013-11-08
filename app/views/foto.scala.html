@@ -16,7 +16,7 @@ Fotoalbum von @album.besitzer.name.vorname
             &lt;&lt;&lt; Zur&uuml;ck
         }
         &nbsp;|&nbsp;
-            <a id="uebersicht" href="@routes.FotoVorfuehrer.fotoalbum(album.besitzer.name)">Übersicht</a>
+            <a id="uebersicht" href="@routes.FotoVorfuehrer.fotoalbum(album.besitzer.name, album.seiteVon(foto))">Übersicht</a>
         &nbsp;|&nbsp;
         @album.naechstePosition(foto).map { pos =>
             <a id="naechstesBild" href="@routes.FotoVorfuehrer.fotoalbumEinzelfoto(album.besitzer.name, pos)">Weiter &gt;&gt;&gt;</a>

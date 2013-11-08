@@ -13,7 +13,7 @@ import anorm.Id
 class FotoTemplateTest extends Specification {
 
   val foto = running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
-    views.html.foto(Fotoalbum(TERESA, 1), Foto(Id(1), new Array[Byte](11), 1))
+    views.html.foto(Fotoalbum(TERESA, 22), Foto(Id(21), new Array[Byte](11), 21))
   }
 
   "Die Fotoansicht" should {
@@ -30,6 +30,10 @@ class FotoTemplateTest extends Specification {
 
     "nicht den Schriftug getOrElse enthalten (Regressionstest)" in  {
       foto.body must not contain("getOrElse")
+    }
+
+    "einen Link zur richtigen Seite der Übersicht enthalten" in  {
+      foto.body must contain("href=\"/fotoalbum/Teresa.Merfert?seite=2\"")
     }
 
 

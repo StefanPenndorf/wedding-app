@@ -3,6 +3,7 @@ package net.cyphoria.weddingapp.specification.seiten
 import org.fluentlenium.core.FluentPage
 import org.scalatest.matchers.ShouldMatchers
 import org.fluentlenium.core.annotation.Page
+import java.util.concurrent.TimeUnit
 
 /**
  *
@@ -11,13 +12,13 @@ import org.fluentlenium.core.annotation.Page
 class VipAreaStartSeite extends FluentPage with ShouldMatchers {
 
   @Page
-  var fotoalbum: FotoalbenSeite = null
+  var fotoalben: FotoalbenSeite = null
 
 
   def geheZuFotoalbum() {
     $("""#navigation a[id="nav-fotoalben"]""").first.click
-    fotoalbum isAt()
-    fotoalbum
+    await().atMost(3, TimeUnit.SECONDS).untilPage(fotoalben).isAt()
+    fotoalben
   }
 
   override def getUrl: String = "/vip"

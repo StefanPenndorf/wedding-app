@@ -15,6 +15,10 @@ case class Fotoalbum(
     anzahlFotos: Long
                       ) {
 
+  val itemsPerPage = 20
+
+  val anzahlSeiten =  seiteVonPosition(anzahlFotos)
+
   def fotoMitPosition(position: Long): Option[Foto] = {
     if(position < 1) {
       None
@@ -45,19 +49,28 @@ case class Fotoalbum(
     fotoMitPosition(prevPos).map( _=> prevPos)
   }
 
-  def alleFotos: Seq[model.Foto] = {
+  def alleFotosAufSeite(seite: Int): Seq[model.Foto] = {
+
     DB.withConnection { implicit connection =>
       SQL(
         """
             SELECT id,besitzer,foto,position FROM fotos f
             WHERE f.besitzer = {besitzerId}
-            LIMIT 45
+            ORDER BY position
+            LIMIT {offset},{anzahlFotosAufSeite}
         """
       ).on(
-        'besitzerId -> besitzer.id
+        'besitzerId -> besitzer.id,
+        'offset -> ( (seite - 1) * itemsPerPage),
+        'anzahlFotosAufSeite -> itemsPerPage
       ).as(Foto.simple +)
     }
   }
+
+  def seiteVon(foto: Foto): Int = seiteVonPosition(foto.position)
+
+  private def seiteVonPosition(position: Long): Int = (position/itemsPerPage).toInt +
+      (if(position % itemsPerPage > 0) 1 else 0)
 
 }
 

@@ -16,6 +16,10 @@ class FotoalbumTest extends Specification {
   val zweitesFoto: Foto = Foto(Id(2), JPEG_IMAGE_CONTENT, 2)
   val drittesFoto: Foto = Foto(Id(3), PNG_IMAGE_CONTENT, 3)
 
+  val einundzwanzigstesFoto: Foto = Foto(Id(21), JPEG_IMAGE_CONTENT, 21)
+  val zweiundzwanzigstesFoto: Foto = Foto(Id(22), JPEG_IMAGE_CONTENT, 22)
+
+
   "Fotoalbum eines Gastes" should {
 
     "das erste Foto zurück geben" in DatenbankMit("einemGastMitEinemFoto") {
@@ -54,13 +58,48 @@ class FotoalbumTest extends Specification {
       einGast.fotoalbum.get.vorhergehendePosition(zweitesFoto) must beSome(1)
     }
 
-    "ein Foto bereitstellen koennen" in DatenbankMit("einemGastMitEinemFoto") {
-      einGast.fotoalbum.get.alleFotos must beEqualTo(Seq(erstesFoto))
+    "alle Fotos der ersten Seite bereitstellen koennen" in DatenbankMit("einemGastMitDreiFotos") {
+      einGast.fotoalbum.get.alleFotosAufSeite(1) must beEqualTo(Seq(erstesFoto, zweitesFoto, drittesFoto))
     }
 
-    "alle Fotos in richtiger Reihenfolge bereitstellen koennen" in DatenbankMit("einemGastMitDreiFotos") {
-      einGast.fotoalbum.get.alleFotos must beEqualTo(Seq(erstesFoto, zweitesFoto, drittesFoto))
+    "alle Fotos der zweiten Seite bereitstellen koennen" in DatenbankMit("einemGastMitZweiUndZwanzigFotos") {
+      einGast.fotoalbum.get.alleFotosAufSeite(2) must beEqualTo(Seq(einundzwanzigstesFoto, zweiundzwanzigstesFoto))
     }
+
+    "alle 20 Fotos pro Seite bereitstellen koennen" in DatenbankMit("einemGastMitZweiUndZwanzigFotos") {
+      einGast.fotoalbum.get.alleFotosAufSeite(1) must haveSize(20)
+    }
+
+    "Seite 1 für ein Foto auf der ersten Seite bestimmen" in DatenbankMit("einemGastMitEinemFoto") {
+      einGast.fotoalbum.get.seiteVon(erstesFoto) must beEqualTo(1)
+    }
+
+    "Seite 2 für ein Foto auf der zweiten Seite bestimmen" in DatenbankMit("einemGastMitEinemFoto") {
+      einGast.fotoalbum.get.seiteVon(einundzwanzigstesFoto) must beEqualTo(2)
+    }
+
+    "Seite 1 für das zwanzigste Foto bestimmen" in DatenbankMit("einemGastMitZweiUndZwanzigFotos") {
+      val album = einGast.fotoalbum.get
+      album.seiteVon(album.fotoMitPosition(20).get) must beEqualTo(1)
+    }
+
+    "Seite 2 für das einundzwanzigste Foto bestimmen" in DatenbankMit("einemGastMitZweiUndZwanzigFotos") {
+      val album = einGast.fotoalbum.get
+      album.seiteVon(album.fotoMitPosition(21).get) must beEqualTo(2)
+    }
+
+    "mit einem Bild eine Seite haben"  in DatenbankMit("einemGastMitEinemFoto") {
+      einGast.fotoalbum.get.anzahlSeiten must beEqualTo(1)
+    }
+
+    "mit drei Bildern eine Seite haben"  in DatenbankMit("einemGastMitDreiFotos") {
+      einGast.fotoalbum.get.anzahlSeiten must beEqualTo(1)
+    }
+
+    "mit zweiundzwanzig Bilden zwei Seiten haben"  in DatenbankMit("einemGastMitZweiUndZwanzigFotos") {
+      einGast.fotoalbum.get.anzahlSeiten must beEqualTo(2)
+    }
+
 
   }
 

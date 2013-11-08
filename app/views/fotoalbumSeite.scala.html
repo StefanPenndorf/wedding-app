@@ -7,7 +7,36 @@
 Fotoalbum von @fotoalbumSeite.besitzer.name.vorname
 }
 
+@lowbound() = @{
+    (fotoalbumSeite.seite - 3).max(1)
+}
+
+@highbound() = @{
+    (fotoalbumSeite.seite + 3).min(fotoalbumSeite.album.anzahlSeiten)
+}
+
 @main(heading=heading.toString) {
+<div id="fotoalbum-seiten-blaetterer">
+    <ul>
+        @if(fotoalbumSeite.seite == 1){
+            <li>&laquo;</li>
+            <li>&lt;</li>
+        } else {
+            <li><a id="ersteSeite" href="@routes.FotoVorfuehrer.fotoalbum(fotoalbumSeite.besitzer.name, 1)">&laquo;</a></li>
+            <li><a id="vorhergehendeSeite" href="@routes.FotoVorfuehrer.fotoalbum(fotoalbumSeite.besitzer.name, fotoalbumSeite.seite-1)">&lt;</a></li>
+        }
+
+        <li class="seitennummer">Seite @fotoalbumSeite.seite von @fotoalbumSeite.album.anzahlSeiten</li>
+
+        @if(fotoalbumSeite.seite == fotoalbumSeite.album.anzahlSeiten) {
+            <li>&gt;</li>
+            <li>&raquo;</li>
+        } else {
+            <li><a id="naechsteSeite" href="@routes.FotoVorfuehrer.fotoalbum(fotoalbumSeite.besitzer.name, fotoalbumSeite.seite+1)">&gt;</a></li>
+            <li><a id="letzteSeite" href="@routes.FotoVorfuehrer.fotoalbum(fotoalbumSeite.besitzer.name, fotoalbumSeite.album.anzahlSeiten)">&raquo;</a></li>
+        }
+    </ul>
+</div>
 <div id="fotoalbum-seite">
     @for(foto <- fotoalbumSeite.fotos) {
         <div>
