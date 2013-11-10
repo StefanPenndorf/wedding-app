@@ -27,7 +27,7 @@ object BildDateiPruefer {
 
   private val log = Logger("hochladen")
 
-  private val MAXIMALE_DATEIGROESSE: Int = 10 * 1024 * 1024
+  private val MAXIMALE_DATEIGROESSE: Int = 8 * 1024 * 1024
 
   type Prueffunktion = FilePart[TemporaryFile] => BildDateiPruefergebnis
 
